@@ -7,9 +7,8 @@
     margin-bottom: 10px;
 }
 
-.inputElement {
-}
-
-.invalid {
-    border: 1px solid #f00;
+.disabled {
+    border: 1px solid #999999 !important;
+    background-color: #cccccc !important;
+    color: #666666 !important;
 }

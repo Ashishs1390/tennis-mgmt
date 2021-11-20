@@ -154,10 +154,15 @@ function PlayerRegistration(props) {
         errorMessageFor: '',
         isValid: false,
         touched: false,
-      },
-      formIsValid: false
+      }
     }
   });
+  const [isdisable,setDisable] = useState(0)
+  let isValid = inputs.registrationForm.fromIsValid;
+
+  console.log("----------inputs--------------")
+  console.log(inputs.registrationForm.formIsValid);
+
   console.log(error.status);
   console.log(error.status == 200);
   let bool = false;
@@ -224,12 +229,13 @@ function PlayerRegistration(props) {
     updateFormElement.errorMessageFor = errors.errorMessageFor;
     updatedRegistrationForm[inputIdentifier] = updateFormElement;
 
-    let formIsValid = true;
+    let formIsValidVal = 1;
     for (let inputIdentifier in updatedRegistrationForm) {
-      formIsValid = updatedRegistrationForm[inputIdentifier].isValid && formIsValid;
+        formIsValidVal = updatedRegistrationForm[inputIdentifier].isValid && formIsValidVal;     
     }
 
-    setInputs({ registrationForm: updatedRegistrationForm, formIsValid: formIsValid });
+    setDisable(formIsValidVal)
+    setInputs({ registrationForm: updatedRegistrationForm, formIsValid: formIsValidVal });
   }
 
 
@@ -243,8 +249,8 @@ function PlayerRegistration(props) {
   console.log(bool);
 
   const onSubmit = () => {
-      if(inputs.registrationForm.fromIsValid) {
-        const outObj = { ...inputs, role: "player" };
+      if(isdisable) {
+        const outObj = { ...inputs, role: role };
         fetchDetails(outObj);
       }
   };
@@ -283,7 +289,10 @@ function PlayerRegistration(props) {
             />)
           })}
          <div className="fieldwrapper">
-            <Button disabled={inputs.registrationForm.fromIsValid} fullWidth variant="contained" color="secondary" onClick={onSubmit}>Submit </Button>
+
+            {/* <Button disabled={inputs.registrationForm.fromIsValid} fullWidth variant="contained" color="secondary" onClick={onSubmit}>Submit </Button> */}
+            <Button className={isdisable ? 'unabled':'disabled'} fullWidth variant="contained" color="secondary" onClick={onSubmit}>Submit </Button>
+
           </div>
         </Box>
       </div>
