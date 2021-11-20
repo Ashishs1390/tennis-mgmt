@@ -14,6 +14,7 @@ import "./login.scss";
 function Login(props) {
 const [inputs,setInputs] = useState({});
 const [role,setRole] = useState("player");
+const [errmsg,setErrmsg] = useState({});
 const {onAuth } = props;
 const navigate = useNavigate();
 
@@ -32,8 +33,14 @@ const navigate = useNavigate();
     .catch( (error) =>{
       console.log("-------error--------")
       console.log(error.response.data);
+      setErrmsg({...error.response.data})
+
     });
   }
+
+  useEffect(()=>{
+console.log(errmsg)
+  },[errmsg])
 
 
   const onSumbit =()=>{
@@ -81,6 +88,13 @@ const navigate = useNavigate();
           </p>
         </nav>
       </div>
+      {!(errmsg && Object.keys(errmsg).length === 0 
+              && Object.getPrototypeOf(errmsg) === Object.prototype) 
+              &&
+              <div className="errorDiv">
+               <p>{errmsg.msg}</p>
+          </div>}
+     
     </div>
   );
 }
