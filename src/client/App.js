@@ -4,7 +4,8 @@ import {Provider} from 'react-redux';
 import Login from "./components/login/Login";
 import store from './redux/store';
 import LandingPage from './components/LandingPage/LandingPage'
-import PlayerRegistration from "./components/registration/PlayerRegistration/PlayerRegistration";
+// import PlayerRegistration from "./components/registration/PlayerRegistration/PlayerRegistration";
+import PlayerRegistration from './components/registration/registartion/registartion';
 import Cookies from 'js-cookie';
 
 
