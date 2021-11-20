@@ -21,10 +21,10 @@ function App() {
       <BrowserRouter>
         <Routes>
             <Route path="/" element={<Login onAuth = {setISLoggedIn}/>}> </Route>
-            <Route path="/login" element={<Login onAuth = {setISLoggedIn}/>}> </Route>
-            <Route path="/registration/:role" element = {<PlayerRegistration/>}></Route>
+            <Route path="login" element={<Login onAuth = {setISLoggedIn}/>}> </Route>
+            <Route path="registration/:role" element = {<PlayerRegistration/>}></Route>
 
-            <Route path="/landingpage" element={isLoggedIn ?<LandingPage/> :<Navigate to="/"></Navigate>}></Route>
+            <Route path="landingpage" element={isLoggedIn ?<LandingPage/> :<Navigate to="/"></Navigate>}></Route>
 
 
             <Route path="*" element = {<PageNotFound/>}></Route>
