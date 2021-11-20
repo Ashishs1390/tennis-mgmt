@@ -3,6 +3,7 @@ import { FETCH_BASICINFO_REQUEST,FETCH_BASICINFO_SUCCESS,FETCH_BASICINFO_FAILURE
 const initialState = {
     data:[],  
     error:{status:200}
+    
 }
 
 const reducer = (state = initialState,action)=>{
