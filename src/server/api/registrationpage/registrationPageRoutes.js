@@ -6,7 +6,7 @@ const basicInformation = require('./../../models/basicInformation');
 
 
 router.route('/').get(async(req,res,next)=>{
-    const aa = await test.find({});
+    const aa = await basicInformation.find({});
     console.log(aa);
     res.send({a:aa})
 });
