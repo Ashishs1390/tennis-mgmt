@@ -11,6 +11,14 @@ router.route('/').get(async(req,res,next)=>{
     res.send({a:aa})
 });
 
+router.route('/emailvalidation').get(async(req,res,next)=>{
+    const email = req.query.email;
+    console.log('---------------------------------------------------------------------------',email);
+    const aa = await basicInformation.find({email: email});
+    console.log(aa);
+    res.send({isUnique:aa.length === 0})
+});
+
 router.route('/:role').post(async(req,res,next)=>{
     const salt = genSaltSync(10);
     const {body,params} = req;

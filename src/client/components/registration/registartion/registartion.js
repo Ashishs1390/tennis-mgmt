@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
-import { fetchDetails } from "./../../../redux/index";
+import { fetchDetails, emailValidation } from "./../../../redux/index";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -63,10 +63,11 @@ function PlayerRegistration(props) {
   const {
     data: { data, error },
     fetchDetails,
+    emailValidation
   } = props;
   const [inputs, setInputs] = useState({
     registrationForm: {
-      firstName: {
+      first_name: {
         elementType: "input",
         elementConfig: {
           type: "text",
@@ -77,12 +78,21 @@ function PlayerRegistration(props) {
           name: 'required',
           value: true,
           errorMessage: 'Please enter first name'
+        },{
+            name: 'minLength',
+            value: 3,
+            errorMessage: 'Minimum 3 letters are required'
+        },{
+            name: 'maxLength',
+            value: 20,
+            errorMessage: 'Maximum 20 letters are accepted'
         }],
         errorMessageFor: '',
         isValid: false,
         touched: false,
+        isValidationProgress: false,
       },
-      lastName: {
+      last_name: {
         elementType: "input",
         elementConfig: {
           type: "text",
@@ -91,12 +101,21 @@ function PlayerRegistration(props) {
         value: "",
         validations: [{
             name: 'required',
-            value: true,
+            value: false,
             errorMessage: 'Please enter last name'
+        },{
+            name: 'minLength',
+            value: 3,
+            errorMessage: 'Minimum 3 letters are required'
+        },{
+            name: 'maxLength',
+            value: 20,
+            errorMessage: 'Maximum 20 letters are accepted'
         }],
         errorMessageFor: '',
         isValid: false,
         touched: false,
+        isValidationProgress: false,
       },
       email: {
         elementType: "input",
@@ -117,6 +136,7 @@ function PlayerRegistration(props) {
         errorMessageFor: '',
         isValid: false,
         touched: false,
+        isValidationProgress: false,
       },
       password: {
         elementType: "input",
@@ -129,10 +149,19 @@ function PlayerRegistration(props) {
             name: 'required',
             value: true,
             errorMessage: 'Please enter password'
+        },{
+            name: 'minLength',
+            value: 5,
+            errorMessage: 'Minimum 3 letters are required'
+        },{
+            name: 'maxLength',
+            value: 20,
+            errorMessage: 'Maximum 20 letters are accepted'
         }],
         errorMessageFor: '',
         isValid: false,
         touched: false,
+        isValidationProgress: false,
       },
       confirmPassword: {
         elementType: "input",
@@ -154,6 +183,7 @@ function PlayerRegistration(props) {
         errorMessageFor: '',
         isValid: false,
         touched: false,
+        isValidationProgress: false,
       }
     }
   });
@@ -185,27 +215,33 @@ function PlayerRegistration(props) {
             errorMessageFor = error;
         }
     }
+
+    let notRequired = false;
     for(const rule of rules) {
         switch(rule.name) {
             case 'required': 
                 if(rule.value) {
                     isValid = value.trim() !== '' && isValid;
                     setErrorMesage(!isValid, 'required');
+                } else {
+                    notRequired = true && value.trim() === '';
                 }
             break;
             case 'minLength':
-                if(rule.value > 0) {
-                    isValid = value.length >= rule.minLength && isValid;
-                    setErrorMesage(!isValid, 'minLength');
-                }
+                isValid = (rule.value <= value.length && isValid) || notRequired;
+                setErrorMesage(!isValid, 'minLength');
+            break;
+            case 'maxLength':
+                isValid = (rule.value > value.length && isValid) || notRequired;
+                setErrorMesage(!isValid, 'maxLength');
             break;
             case 'email':
                 const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                isValid = re.test(String(value.trim()).toLowerCase());
+                isValid = re.test(String(value.trim()).toLowerCase()) || notRequired;
                 setErrorMesage(!isValid, 'email');
             break;
             case 'confirm':
-                isValid = value.trim() !== '' && value === allControls[rule.value].value && isValid;
+                isValid = (value.trim() !== '' && value === allControls[rule.value].value && isValid) || notRequired;
                 setErrorMesage(!isValid, 'confirm');
             break;
         }
@@ -250,10 +286,16 @@ function PlayerRegistration(props) {
 
   const onSubmit = () => {
       if(isdisable) {
-        const outObj = { ...inputs, role: role };
+        const registrationData = Object.entries(inputs.registrationForm).reduce((a,b)=>(Object.assign(a,{[b[0]]:b[1].value}),a), {})
+        const outObj = { ...registrationData, role: role };
         fetchDetails(outObj);
       }
   };
+
+  const emailValidate = () => {
+    emailValidation({email: 'abcd@gmail.com'});
+  }
+
   try {
 
     const formElementsArray = [];
@@ -264,11 +306,13 @@ function PlayerRegistration(props) {
       });
     }
     console.log(formElementsArray);
+   
     return (
       <div className="registationform">
         <p>
           Registration Page <b>{bool}</b>
         </p>
+        <button onClick={emailValidate}>Call API</button>
         <Box
           className="fieldbox"
           component="form"
@@ -305,6 +349,7 @@ function PlayerRegistration(props) {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchDetails: (outObj) => dispatch(fetchDetails(outObj)),
+    emailValidation: (outObj) => dispatch(emailValidation(outObj))
   };
 };
 
