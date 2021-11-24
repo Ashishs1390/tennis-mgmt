@@ -7,6 +7,12 @@ function checkToken(req,res,next){
         token = req.get("authorization");
         token = token.slice(7);
     }
+    else{
+        res.status(401).json({
+            errMsg:"Invalid token",
+            code:401
+        })
+    }
 
     if(token){
         console.log(JWT_KEY);
