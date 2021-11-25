@@ -2,61 +2,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import { fetchDetails, emailValidation } from "./../../../redux/index";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "./PlayerRegistation.scss";
 import { useParams } from "react-router-dom";
-
-const Input = (props) => {
-  let inputElement = null;
-  let inputClasses = ['fieldwrapper'];
-  let errorMessage = '';
-
-  if ((props.isValid && props.shouldValidate.length > 0) || !props.touched) {
-    inputClasses = [...inputClasses, 'inputElement'];
-  } else {
-    inputClasses = [...inputClasses, 'invalid'];
-    errorMessage = props.errorMessageFor;
-  }
-
-  const errorContainer = () => {
-      const message = props.shouldValidate.find(x => x.name === errorMessage)?.errorMessage;
-      return (message && <label>{message}</label>)
-    };
-
-  switch (props.elementType) {
-    case ('input'):
-      inputElement = <div className={inputClasses.join(' ')}>
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          {...props.elementConfig}
-          variant="outlined"
-          key="first_name"
-          onChange={props.changed}
-          value={props.value}
-        />
-        {errorMessage && errorContainer()}
-      </div>
-      break;
-    default:
-    inputElement = <div className={inputClasses.join(' ')}>
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          {...props.elementConfig}
-          variant="outlined"
-          key="first_name"
-          onChange={props.changed}
-          value={props.value}
-        />
-        {errorMessage && errorContainer()}
-      </div>
-      break;
-  }
-
-  return inputElement;
-}
+import Input from "../../input/input.control";
+import checkValidity from "../../input/validations";
 
 function PlayerRegistration(props) {
   console.log(props);
@@ -206,61 +156,12 @@ function PlayerRegistration(props) {
     setInputs((state) => ({ ...state, [name]: value }), [])
   );
 
-  const checkValidity = (value, rules) => {
-    let isValid = true;
-    let errorMessageFor = '';
-    const allControls = {...inputs.registrationForm};
-    const setErrorMesage = (valid, error) => {
-        if (valid && errorMessageFor === '') {
-            errorMessageFor = error;
-        }
-    }
-
-    let notRequired = false;
-    for(const rule of rules) {
-        switch(rule.name) {
-            case 'required': 
-                if(rule.value) {
-                    isValid = value.trim() !== '' && isValid;
-                    setErrorMesage(!isValid, 'required');
-                } else {
-                    notRequired = true && value.trim() === '';
-                }
-            break;
-            case 'minLength':
-                isValid = (rule.value <= value.length && isValid) || notRequired;
-                setErrorMesage(!isValid, 'minLength');
-            break;
-            case 'maxLength':
-                isValid = (rule.value > value.length && isValid) || notRequired;
-                setErrorMesage(!isValid, 'maxLength');
-            break;
-            case 'email':
-                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                isValid = re.test(String(value.trim()).toLowerCase()) || notRequired;
-                setErrorMesage(!isValid, 'email');
-            break;
-            case 'confirm':
-                isValid = (value.trim() !== '' && value === allControls[rule.value].value && isValid) || notRequired;
-                setErrorMesage(!isValid, 'confirm');
-            break;
-        }
-    }
-
-    if(isValid) {
-        return {isValid, errorMessageFor: ''};
-    } else {
-        return {isValid, errorMessageFor};
-    }
-    
-  }
-
   const inputChangeHandler = (event, inputIdentifier) => {
     const updatedRegistrationForm = { ...inputs.registrationForm };
     const updateFormElement = { ...updatedRegistrationForm[inputIdentifier] };
     updateFormElement.value = event.target.value;
     updateFormElement.touched = true;
-    const errors = checkValidity(event.target.value, updateFormElement.validations);
+    const errors = checkValidity(event.target.value, updateFormElement.validations, {...inputs.registrationForm});
     updateFormElement.isValid = errors.isValid;
     updateFormElement.errorMessageFor = errors.errorMessageFor;
     updatedRegistrationForm[inputIdentifier] = updateFormElement;
