@@ -8,7 +8,8 @@ router.route("/").get(async (req, res, next) => {
     { email: req.user[0].email },
     { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, _id: 0 }
   );
-  res.send({ data });
+  const resObj = data["0"];
+  res.send(resObj);
 });
 
 

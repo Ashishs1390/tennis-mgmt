@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
-import { fetchDetails, emailValidation } from "./../../../redux/index";
+import { postDetails, emailValidation } from "./../../../redux/index";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import "./PlayerRegistation.scss";
@@ -12,7 +12,7 @@ function PlayerRegistration(props) {
   console.log(props);
   const {
     data: { data, error },
-    fetchDetails,
+    postDetails,
     emailValidation
   } = props;
   const [inputs, setInputs] = useState({
@@ -189,7 +189,7 @@ function PlayerRegistration(props) {
       if(isdisable) {
         const registrationData = Object.entries(inputs.registrationForm).reduce((a,b)=>(Object.assign(a,{[b[0]]:b[1].value}),a), {})
         const outObj = { ...registrationData, role: role };
-        fetchDetails(outObj);
+        postDetails(outObj);
       }
   };
 
@@ -249,14 +249,12 @@ function PlayerRegistration(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchDetails: (outObj) => dispatch(fetchDetails(outObj)),
+    postDetails: (outObj) => dispatch(postDetails(outObj)),
     emailValidation: (outObj) => dispatch(emailValidation(outObj))
   };
 };
 
 const mapStateToProps = (state) => {
-  console.log("82");
-  console.log(state);
   return state;
 };
 

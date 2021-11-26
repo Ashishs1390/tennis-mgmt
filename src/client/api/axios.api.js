@@ -2,11 +2,18 @@ import axios from "axios";
 
 const defaultConfig = (config) => {
     const token = document.cookie.split('=')[1];
-    return Object.assign({}, ...config, {
+    // return Object.assign({}, ...config, {
+    //     headers: {
+    //         Authorization: `Bearer ${token}`
+    //     }
+    // })
+    return {
+        ...config,
         headers: {
             Authorization: `Bearer ${token}`
         }
-    })
+
+    }
 }
 
 const success = (data) => ({
@@ -23,11 +30,13 @@ const failure = (error) => (
 }));
 
 // get<T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
-const get = async (url, config) => {
+const get = async (url, config = {}) => {
     try {
         const response = await axios.get(url,defaultConfig(config));
         return success(response);
     } catch(error) {
+        console.log("-------error------------")
+
         return failure(error);
     }
 }
@@ -38,6 +47,7 @@ const post = async (url, data, config) => {
         const response = await axios.post(url,{...data},defaultConfig(config));
         return success(response);
     } catch(error) {
+        console.log("-------------------")
         return failure(error);
     }
 }
@@ -59,5 +69,12 @@ const deleteData = async (url, config) => {
     } catch(error) {
         return failure(error);
     }
+}
+
+export {
+   get,
+   post,
+   put,
+   deleteData 
 }
 
