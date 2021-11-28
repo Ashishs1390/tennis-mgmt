@@ -4,12 +4,21 @@ const { genSaltSync, hashSync } = require("bcrypt");
 const basicInformation = require("./../../models/basicInformation");
 
 router.route("/").get(async (req, res, next) => {
+
   const data = await basicInformation.find(
     { email: req.user[0].email },
     { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, _id: 0 }
   );
-  const resObj = data["0"];
-  res.send(resObj);
+
+  if(data.length ==0) {
+    res.status(404).send({
+        errMsg:"user not found!!!",
+        status:504
+    })
+  }else{
+    const resObj = data["0"];
+    res.send(resObj);
+  }
 });
 
 
@@ -25,7 +34,6 @@ router.route("/").put(async(req,res,next)=>{
             userObj = {...userObj,email}
         }else{
             res.status(404).send({msg:"user exist",status:403});
-    
         }
     }
 
@@ -39,7 +47,8 @@ router.route("/").put(async(req,res,next)=>{
             }).catch((err)=>{
                 console.log(err);
                 res.status(504).json({
-                    errMsg:"internal server error"
+                    errMsg:"internal server error",
+                    status:504
                 })
             })
         if(updatedData.length != 0){

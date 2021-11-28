@@ -234,7 +234,7 @@ function PlayerRegistration(props) {
             />)
           })}
          <div className="fieldwrapper">
-
+            {isdisable}
             {/* <Button disabled={inputs.registrationForm.fromIsValid} fullWidth variant="contained" color="secondary" onClick={onSubmit}>Submit </Button> */}
             <Button className={isdisable ? 'unabled':'disabled'} fullWidth variant="contained" color="secondary" onClick={onSubmit}>Submit </Button>
 

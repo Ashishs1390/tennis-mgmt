@@ -22,12 +22,12 @@ const success = (data) => ({
 });
 
 const failure = (error) => (
-    console.log('%c Error occured :', 'color:#f00;font-size:18px;', error),
-    ({
+    {
     message: error.message,
     error: true,
     errorStatus: error.status 
-}));
+});
+
 
 // get<T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
 const get = async (url, config = {}) => {
@@ -42,22 +42,26 @@ const get = async (url, config = {}) => {
 }
 
 // post<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
-const post = async (url, data, config) => {
+const post = async (url, data, config = {}) => {
+    
     try {
         const response = await axios.post(url,{...data},defaultConfig(config));
         return success(response);
     } catch(error) {
-        console.log("-------------------")
+        console.log("---------error----------")
         return failure(error);
     }
 }
 
 //  put<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
 const put = async (url, data, config) => {
+    console.log("------put-------")
     try {
         const response = await axios.put(url,{...data},defaultConfig(config));
+        console.log("============sucess")
         return success(response);
     } catch(error) {
+        console.log("error==================")
         return failure(error);
     }
 }

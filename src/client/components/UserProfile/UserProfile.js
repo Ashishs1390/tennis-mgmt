@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import { emailValidation,fetchDetails } from "./../../redux/index";
+import {put} from "./../../api/axios.api";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import "./userprofile.scss";
@@ -8,8 +9,14 @@ import TextField from '@mui/material/TextField';
 import { useParams } from "react-router-dom";
 // import Input from "../../input/input.control";
 import Input from "../input/input.control";
+import {useNavigate,Link} from "react-router-dom";
 
 import checkValidity from "../input/validations";
+import Cookies from 'js-cookie';
+
+
+
+
 
 function UserProfile(props){
     console.log(props);
@@ -20,7 +27,7 @@ function UserProfile(props){
       fetchDetails
     } = props;
     const formElementsArray = []; 
-
+    const navigate = useNavigate();
     const [inputs, setInputs] = useState({
       registrationForm: {
         first_name: {
@@ -97,7 +104,12 @@ function UserProfile(props){
 
       }
     });
-    const [isdisable,setDisable] = useState(0)
+
+
+    const [isdisable,setDisable] = useState(0);
+    const [toastMsg,setToastmsg] = useState(0);
+
+    const [errorMsg,setError] = useState(0);
     let isValid = inputs.registrationForm.fromIsValid;
   
     console.log("----------inputs--------------")
@@ -110,6 +122,24 @@ function UserProfile(props){
     const params = useParams();
     const { role } = params;
     console.log(role);
+    const updateUserInfo = async (obj) =>{
+        const data = await put('api/tennismgmt/registration/authed/',{...obj}).catch((err)=>{
+            console.log(err)
+        })
+        console.log("----------------data------------------------")
+        console.log(data);
+        if(data.error){
+            setError(1)
+        }else{
+            Cookies.remove("token");
+            setToastmsg(1);
+            setTimeout(() => {
+                navigate("/");
+            }, 1000);
+        }
+            
+        
+    }
 
     useEffect(()=>{
         fetchDetails();
@@ -154,10 +184,18 @@ function UserProfile(props){
   
     const onSubmit = () => {
         if(isdisable) {
-          const registrationData = Object.entries(inputs.registrationForm).reduce((a,b)=>(Object.assign(a,{[b[0]]:b[1].value}),a), {})
-          const outObj = { ...registrationData, role: role };
-        //   fetchDetails(outObj);
+        //   const registrationData = Object.entries(inputs.registrationForm).reduce((a,b)=>(Object.assign(a,{[b[0]]:b[1].value}),a), {})
+        //   const outObj = { ...registrationData, role: role };
+        
+  
         }
+
+        const obj = {
+            first_name: "ashish",
+            last_name: "sharma",
+            email: "ashishs1404@gmail.com",
+          };
+          updateUserInfo(obj);
     };
   
     const emailValidate = () => {
@@ -174,6 +212,9 @@ function UserProfile(props){
       }
      
       return (
+          <div className="registrationWrapper">
+
+          
         <div className="registationform">
           <p>
             Registration Page <b>{bool}</b>
@@ -185,37 +226,60 @@ function UserProfile(props){
             noValidate
             autoComplete="off"
           >
-          
-            {formElementsArray.map(element => {
-                console.log("-------element----------")
-                console.log(element)
-                element.config.value = getData.data[element.id];
-                element.config.elementConfig = {defaultValue:getData.data[element.id]}
-              return (element.config.elementType && <Input key={element.id}
-                elementType={element.config.elementType}
-                elementConfig={{...element.config.elementConfig}}
-                value={element.config.value}
-                changed={(event) => inputChangeHandler(event, element.id,element)}
-                isValid={element.config.isValid}
-                errorMessageFor={element.config.errorMessageFor}
-                touched={element.config.touched}
-                shouldValidate={element.config.validations}
-              />)
+            {formElementsArray.map((element) => {
+              console.log("-------element----------");
+              console.log(element);
+              element.config.value = getData.data[element.id];
+              element.config.elementConfig = {
+                defaultValue: getData.data[element.id],
+              };
+              return (
+                element.config.elementType && (
+                  <Input
+                    key={element.id}
+                    elementType={element.config.elementType}
+                    elementConfig={{ ...element.config.elementConfig }}
+                    value={element.config.value}
+                    changed={(event) =>
+                      inputChangeHandler(event, element.id, element)
+                    }
+                    isValid={element.config.isValid}
+                    errorMessageFor={element.config.errorMessageFor}
+                    touched={element.config.touched}
+                    shouldValidate={element.config.validations}
+                  />
+                )
+              );
             })}
 
-<TextField
-          
-          id="outlined"
-          label="Required"
-          value="Hello World"
-        />
-           <div className="fieldwrapper">
-  
+            <TextField id="outlined" label="Required" value="Hello World" />
+            <div className="fieldwrapper">
               {/* <Button disabled={inputs.registrationForm.fromIsValid} fullWidth variant="contained" color="secondary" onClick={onSubmit}>Submit </Button> */}
-              <Button className={isdisable ? 'unabled':'disabled'} fullWidth variant="contained" color="secondary" onClick={onSubmit}>Submit </Button>
-  
+              <Button
+                className={1 ? "unabled" : "unabled"}
+                fullWidth
+                variant="contained"
+                color="secondary"
+                onClick={onSubmit}
+              >
+                Submit
+              </Button>
             </div>
           </Box>
+        </div>
+        {
+            toastMsg && 
+            <div className="toastMsg">
+                <p>Need to login again..!!!</p>
+            </div>
+        }
+        {
+            errorMsg && 
+            <div className="errorMsg">
+            <p>User exsist</p>
+        </div>
+
+        }
         </div>
       );
     } catch (error) {
