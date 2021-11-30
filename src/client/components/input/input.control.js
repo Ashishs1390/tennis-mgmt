@@ -42,7 +42,7 @@ const Input = (props) => {
             variant="outlined"
             key="first_name"
             onChange={props.changed}
-            value={props.value}
+            defaultValue={props.value}
           />
           {errorMessage && errorContainer()}
         </div>

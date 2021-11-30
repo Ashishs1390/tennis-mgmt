@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import "./userprofile.scss";
 import TextField from '@mui/material/TextField';
 import { useParams } from "react-router-dom";
-// import Input from "../../input/input.control";
+import updateValue from "../../components/input/updateValue";
 import Input from "../input/input.control";
 import {useNavigate,Link} from "react-router-dom";
 
@@ -108,6 +108,7 @@ function UserProfile(props){
 
     const [isdisable,setDisable] = useState(0);
     const [toastMsg,setToastmsg] = useState(0);
+    const [updatedData,setupDatedData] = useState({"first_name":"","last_name":"","email":""});
 
     const [errorMsg,setError] = useState(0);
     let isValid = inputs.registrationForm.fromIsValid;
@@ -142,8 +143,23 @@ function UserProfile(props){
     }
 
     useEffect(()=>{
+      console.log("=================ca;;ed")
         fetchDetails();
     },[])
+
+    // let obj = {}
+    useEffect(()=>{
+      console.log("-------------------------------------------------------")
+      if(getData.data.length != 0){
+        const obj = {
+          first_name:getData.data.first_name,
+          last_name:getData.data.last_name,
+          email:getData.data.email
+        }
+        console.log(obj)
+        updateValue(obj, setInputs, inputs, 'registrationForm')
+      }
+    },[getData])
     // const [bool,setBool] = useState((error.status == 200) ? true : false);
   
     const onChangeHandler = useCallback(({ target: { name, value } }) =>
@@ -151,8 +167,10 @@ function UserProfile(props){
     );
   
     const inputChangeHandler = (event, inputIdentifier) => {
-      console.log(event.target.value
-        )
+      console.log(event.target.value)
+      let obj = {};
+      obj[inputIdentifier] = event.target.value;
+      setupDatedData(old =>  ({...old,...obj}));
       const updatedRegistrationForm = { ...inputs.registrationForm };
       const updateFormElement = { ...updatedRegistrationForm[inputIdentifier] };
       updateFormElement.value = event.target.value;
@@ -183,20 +201,23 @@ function UserProfile(props){
     console.log(bool);
   
     const onSubmit = () => {
-        if(isdisable) {
+      let putObj = {}
+console.log(updatedData)
+      if (isdisable) {
         //   const registrationData = Object.entries(inputs.registrationForm).reduce((a,b)=>(Object.assign(a,{[b[0]]:b[1].value}),a), {})
         //   const outObj = { ...registrationData, role: role };
-        
-  
+       
+      }
+      for(let data in updatedData){
+        if(updatedData[data] !== ''){
+          putObj[data] = updatedData[data]
         }
+      }
+      console.log(putObj);
+      updateUserInfo(putObj)
 
-        const obj = {
-            first_name: "ashish",
-            last_name: "sharma",
-            email: "ashishs1404@gmail.com",
-          };
-          updateUserInfo(obj);
     };
+    
   
     const emailValidate = () => {
       emailValidation({email: 'abcd@gmail.com'});
@@ -229,7 +250,7 @@ function UserProfile(props){
             {formElementsArray.map((element) => {
               console.log("-------element----------");
               console.log(element);
-              element.config.value = getData.data[element.id];
+              // element.config.value = getData.data[element.id];
               element.config.elementConfig = {
                 defaultValue: getData.data[element.id],
               };
