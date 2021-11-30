@@ -129,10 +129,9 @@ const fetchUsersFailure = (error) =>{
   }
 }
 
-export const fetchDetails = (fields) => {
-  console.log(fields)
+export const fetchDetails = () => {
+  debugger;
   return (dispatch) => {
-    dispatch(fetchDetailsRequest);
     get(`/api/tennismgmt/registration/authed/`)
       .then( (response)=> {
         console.log("sucess")

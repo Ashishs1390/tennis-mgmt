@@ -31,6 +31,7 @@ const failure = (error) => (
 
 // get<T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
 const get = async (url, config = {}) => {
+    debugger
     try {
         const response = await axios.get(url,defaultConfig(config));
         return success(response);

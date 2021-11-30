@@ -1,9 +1,18 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import Login from './../login/Login';
+import { connect } from "react-redux";
 import {useNavigate,Link} from "react-router-dom";
+import {fetchDetails } from "./../../redux/index";
 
 
 function LandingPage(props){
+
+
+
+  useEffect(()=>{
+    props.fetchDetails();
+  },[])
+
     return(
         <div>
            <p>Landing page</p> 
@@ -17,5 +26,16 @@ function LandingPage(props){
     )
 
 }
+const mapStateToProps = (state) => {
+  console.log(state)
+return state;
+};
 
-export default LandingPage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchDetails:() => dispatch(fetchDetails({type:"FETCH_BASICINFO_REQUEST"}))
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

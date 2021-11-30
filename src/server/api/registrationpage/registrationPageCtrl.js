@@ -25,7 +25,6 @@ router.route("/").get(async (req, res, next) => {
 router.route("/").put(async(req,res,next)=>{
     const {first_name,last_name,email} = req.body;
     let userObj = {first_name,last_name};
-    console.log(req.body["email"] !== undefined)
     if(req.body["email"] !== undefined){
         let userDetails = await basicInformation.find({email},{email:1,_id:0});
         console.log(userDetails)
