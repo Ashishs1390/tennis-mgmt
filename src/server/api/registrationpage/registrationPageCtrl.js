@@ -27,9 +27,7 @@ router.route("/").put(async(req,res,next)=>{
     let userObj = {first_name,last_name};
     if(req.body["email"] !== undefined){
         let userDetails = await basicInformation.find({email},{email:1,_id:0});
-        console.log(userDetails)
         if(userDetails.length == 0){
-            console.log("in if")
             userObj = {...userObj,email}
         }else{
             res.status(404).send({msg:"user exist",status:403});

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const videoInfoSchema = new Schema({
-    user_name:{
+    email:{
         type:String,
         required:true,
 
@@ -20,7 +20,8 @@ const videoInfoSchema = new Schema({
         type:String
     },
     date:{
-        type:String
+        type:String,
+        required:true,
     }
 
 },

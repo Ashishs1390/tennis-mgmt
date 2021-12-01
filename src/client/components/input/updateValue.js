@@ -1,11 +1,5 @@
 const updateValue = (values, setFormValue, formObj, formObjName) => {
-    //  values = {
-//     first_name: 'papu',
-//     last_name: 'pande',
-//     email: 'papu.pande@gmail.com',
-//     password: '12345',
-//     confirmPassword:'12345'
-// };
+
     const allControls = Object.entries(values);
     const updatedForm = { ...formObj[formObjName] };
     for(let i = 0; i < allControls.length; i++) {
