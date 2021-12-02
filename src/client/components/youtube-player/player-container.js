@@ -59,7 +59,7 @@ function VideoPlayerContainer() {
             </select>
             <input style={{marginLeft: '10px'}} type="range" name="vol" min="0" max="5000" style={{width: '500px'}} onChange={(event) => {
                 setStartTime(event.target.value);    
-            }}></input><span>{startTime/60}</span>
+            }}></input><span>{(startTime/60).toFixed(2)} (sec)</span>
             </div>
         </div>
     );
