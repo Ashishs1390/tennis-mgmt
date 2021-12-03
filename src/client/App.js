@@ -29,8 +29,10 @@ function App() {
 
             <Route path="landingpage" element={isLoggedIn ?<LandingPage/> :<Navigate to="/"></Navigate>}></Route>
             <Route path="profilepage" element={isLoggedIn ?<UserProfile/> :<Navigate to="/"></Navigate>}></Route>
-            <Route path="video" element={<VideoPlayerContainer/>}></Route>
-            <Route path="strockanalysislist" element={<StrockAnalysisList/>}></Route>
+            <Route path="video" element={isLoggedIn ? <VideoPlayerContainer/>:<Navigate to="/"></Navigate>}></Route>
+            <Route path="strockanalysislist" element={isLoggedIn ?<StrockAnalysisList/> :<Navigate to="/"></Navigate>
+            
+            }></Route>
             <Route path="*" element = {<PageNotFound/>}></Route>
 
          

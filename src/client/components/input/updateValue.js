@@ -1,5 +1,6 @@
 const updateValue = (values, setFormValue, formObj, formObjName) => {
-
+    console.log("dfsdfsdfsfsdfsf")
+    console.log(values)
     const allControls = Object.entries(values);
     const updatedForm = { ...formObj[formObjName] };
     for(let i = 0; i < allControls.length; i++) {

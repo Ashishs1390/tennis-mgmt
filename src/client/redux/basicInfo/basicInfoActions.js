@@ -130,7 +130,6 @@ const fetchUsersFailure = (error) =>{
 }
 
 export const fetchDetails = () => {
-  debugger;
   return (dispatch) => {
     get(`/api/tennismgmt/registration/authed/`)
       .then( (response)=> {
