@@ -7,8 +7,6 @@ const initalVideoState = {
 
 
 export const initalVideoReducer = (state = initalVideoState,action)=>{
-    console.log(initalVideoState)
-    console.log(action.payload)
     switch(action.type){
         
         case FETCH_VIDEO_REQUEST: 
