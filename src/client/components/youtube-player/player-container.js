@@ -1,10 +1,14 @@
 import React, { useState, useEffect,useRef } from "react";
 import YoutubeComponent from './youtube.component';
-import {post} from "./../../api/axios.api"
-
+import { connect } from "react-redux";
+import {post} from "./../../api/axios.api";
 import "./player.scss";
+import { fetchVideo } from "./../../redux/index";
 
-function VideoPlayerContainer() {
+function VideoPlayerContainer(props) {
+    console.log("-----------props-----------------");
+    console.log(props);
+    const {fetchVideo,videoData} = props;
     const nameForm = useRef(null);
     const [startPlay, setStartPlay] = useState(false);
     const [startTime, setStartTime] = useState(0);
@@ -44,6 +48,16 @@ function VideoPlayerContainer() {
         setMute(mute);
     }
 
+    useEffect(()=>{
+        console.log("qqqqqqqqqqqqqq")
+        fetchVideo();
+    },[])
+
+    useEffect(()=>{
+        console.log("--------videoData----------")
+        console.log(videoData)
+        setYouTubeId({...videoData})
+    },[videoData]);
 
 
     const updatePlayBackSpeed = (event) => {
@@ -69,9 +83,10 @@ function VideoPlayerContainer() {
         if(returnedData){
             returnedData = returnedData.data.data
             setYouTubeId({...returnedData});
+        }else{
+            console.log("error")
         }
     }
-
     const submitFrameInfo = () =>{
         const arr = [];
         frames.forEach((frame)=>{
@@ -111,9 +126,7 @@ function VideoPlayerContainer() {
                                 <YoutubeComponent isStart={startPlay} startTime={startTime} id={youtubeId[ele.frameId]} isMute={mute} playbackSpeed={payBackSpeed}/>
                             </div>
                             <div>
-                              
                                 <input id = {ele.frameId} value = {ele.src} onChange= {setDynamicValue}  ></input>
-                              
                             </div>
                         </li>
                     )
@@ -146,4 +159,16 @@ function VideoPlayerContainer() {
     );
 }
 
-export default VideoPlayerContainer;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchVideo: () =>{
+            dispatch(fetchVideo())
+        }
+    };
+  };
+  
+  const mapStateToProps = (state = {}) => {
+    return state.videoInfo;
+  };
+
+export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayerContainer);
