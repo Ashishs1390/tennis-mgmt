@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useEffect } from "react";
+
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -17,10 +19,20 @@ import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { connect } from "react-redux";
+import { getVideosForAnalysis, selectVideoAnalysis } from "../../redux/videoanalysis/videoAnalysisActions";
 
-export default function AlignItemsList() {
+
+function AlignItemsList(props) {
   const [checked, setChecked] = React.useState([1]);
   const [age, setAge] = React.useState("");
+  const { getVideosForAnalysis, selectVideoAnalysis} = props;
+
+  useEffect(()=>{
+    getVideosForAnalysis()
+}, []);
+
+
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -170,3 +182,16 @@ export default function AlignItemsList() {
     </>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      getVideosForAnalysis: () => dispatch(getVideosForAnalysis()),
+    selectVideoAnalysis: (outObj) => dispatch(selectVideoAnalysis(outObj))
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {videoAnalysis: state.videoAnalysis};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlignItemsList);

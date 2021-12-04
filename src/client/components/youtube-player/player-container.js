@@ -1,10 +1,9 @@
 import React, { useState, useEffect,useRef } from "react";
 import YoutubeComponent from './youtube.component';
-import {post} from "./../../api/axios.api"
-
+import {post} from "./../../api/axios.api";
 import "./player.scss";
 
-function VideoPlayerContainer() {
+function VideoPlayerContainer(props) {
     const nameForm = useRef(null);
     const [startPlay, setStartPlay] = useState(false);
     const [startTime, setStartTime] = useState(0);
@@ -30,7 +29,6 @@ function VideoPlayerContainer() {
     ]);
     const [youtubeId,setYouTubeId] = useState({})
     const playBackSpeeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-
 
     const startAllVideos = () => {
         setStartPlay(true);
@@ -144,5 +142,5 @@ function VideoPlayerContainer() {
         </div>
     );
 }
-
+  
 export default VideoPlayerContainer;
