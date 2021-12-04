@@ -22,7 +22,6 @@ router.route('/').post(async(req,res,next)=>{
             msg:"internal server error",status:504
         })
     });
-    console.log(data);
     let srcArr = [];
     if(data){
 
@@ -31,9 +30,6 @@ router.route('/').post(async(req,res,next)=>{
                 srcArr.push(data[d])
             }
         }
-        console.log("---------srcArr---------")
-        console.log(srcArr);
-        console.log(req.body);
 
         const pushObj = srcArr.reduce((acc,val)=>{
             if(acc){
@@ -42,7 +38,6 @@ router.route('/').post(async(req,res,next)=>{
             return acc;
         },{"$push":{"frames":{"$each":[]}}})
         
-        console.log(JSON.stringify(pushObj));
         videoHistoryInfoSchema.updateOne({email:req.user[0].email},
             {
                 ...pushObj,
@@ -74,9 +69,17 @@ router.route('/').get(async(req,res,next)=>{
         })
     });
     console.log(data);
-    const resObj = data[0]._doc;
-    console.log(resObj)
-    res.send({...resObj})
+    let resObj;
+    if(data.length != 0){
+        resObj = data[0]._doc;
+        res.send({...resObj})
+
+    }else{
+        res.status(404).send({
+            msg:"no data",status:404
+        })
+    }
+    
 
 });
 
@@ -87,10 +90,15 @@ router.route('/history').get(async(req,res,next)=>{
             msg:"internal server error",status:504
         })
     });
-    console.log(data);
-    const resObj = data[0]._doc;
-    console.log(resObj)
-    res.send({...resObj})
+    if(data.length != 0){
+        const resObj = data[0]._doc;
+        res.send({...resObj})
+    }else{
+        res.status(404).send({
+            msg:"no data",status:404
+        })
+    }
+
 
 });
 

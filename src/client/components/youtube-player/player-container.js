@@ -44,7 +44,7 @@ function VideoPlayerContainer() {
         setMute(mute);
     }
 
-    
+
 
     const updatePlayBackSpeed = (event) => {
         setStartPlay(true);
@@ -80,6 +80,7 @@ function VideoPlayerContainer() {
                 arr.push(frameObj)
             }
         });
+        console.log(frames)
         const finalObj = arr.reduce((acc,cur)=>{
             if(acc){
                 acc = {...acc,...cur};
