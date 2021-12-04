@@ -24,9 +24,9 @@ import { getVideosForAnalysis, selectVideoAnalysis } from "../../redux/videoanal
 
 
 function AlignItemsList(props) {
-  const [checked, setChecked] = React.useState([1]);
+  // const [checked, setChecked] = React.useState([1]);
   const [age, setAge] = React.useState("");
-  const { getVideosForAnalysis, selectVideoAnalysis} = props;
+  const { getVideosForAnalysis, selectVideoAnalysis, videoAnalysis = {email: '', frames: []}} = props;
 
   useEffect(()=>{
     getVideosForAnalysis()
@@ -39,6 +39,7 @@ function AlignItemsList(props) {
   };
 
   const handleToggle = (value) => () => {
+    console.log(props);
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -48,7 +49,7 @@ function AlignItemsList(props) {
       newChecked.splice(currentIndex, 1);
     }
 
-    setChecked(newChecked);
+    // setChecked(newChecked);
   };
 
   return (
@@ -115,7 +116,7 @@ function AlignItemsList(props) {
             </FormControl>
           </Grid>
           <Grid item xs={10} md={2}>
-            <Button variant="contained">Filter</Button>
+            <Button variant="contained" onClick={() => { console.log(props)}}>Filter</Button>
           </Grid>
         </Grid>
       </Box>
@@ -129,29 +130,27 @@ function AlignItemsList(props) {
         />
       </Stack>
       <List sx={{ width: "100%", maxWidth: 1080, bgcolor: "background.paper" }}>
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((value) => {
-          const labelId = `checkbox-list-secondary-label-${value}`;
+      {videoAnalysis.data && videoAnalysis.data.length > 0 && videoAnalysis.data.map((value, i) => {
+          const labelId = `checkbox-list-secondary-label-${i}`;
           return (
-            <React.Fragment key={value}>
-              <ListItem
+            <React.Fragment key={i}>
+               <ListItem
                 alignItems="flex-start"
                 secondaryAction={
                   <Checkbox
                     edge="end"
-                    onChange={handleToggle(value)}
-                    checked={checked.indexOf(value) !== -1}
+                    onChange={handleToggle(i)}
                     inputProps={{ "aria-labelledby": labelId }}
                   />
                 }
               >
                 <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                   <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                 </ListItemAvatar>
                 <ListItemText
-                  primary="Brunch this weekend?"
-                  secondary={
-                    <p style={{ fontStyle: "italic", margin: 0 }}>
-                      <Typography
+                   primary="Brunch this weekend?"
+                  secondary={<p style={{ fontStyle: "italic", margin: 0 }}>
+                    <Typography
                         sx={{ display: "inline" }}
                         component="span"
                         variant="body2"
@@ -160,23 +159,23 @@ function AlignItemsList(props) {
                         Sasha Frijanic (MOT2010)'s T-Log, by
                       </Typography>
                       <Link href="#">
-                        {" Sasha Frijanic (MOT2010)'s T-Log"}
-                      </Link>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        , posted on: 11/11/2021
+                         {" Sasha Frijanic (MOT2010)'s T-Log"}
+                       </Link>
+                       <Typography
+                         sx={{ display: "inline" }}
+                         component="span"
+                         variant="body2"
+                         color="text.primary"
+                       >
+                         , posted on: {value.date}
                       </Typography>
-                    </p>
-                  }
-                />
+                  </p>}/>
+
+                  <Divider variant="inset" component="li" />
+                  
               </ListItem>
-              <Divider variant="inset" component="li" />
             </React.Fragment>
-          );
+          )
         })}
       </List>
     </>

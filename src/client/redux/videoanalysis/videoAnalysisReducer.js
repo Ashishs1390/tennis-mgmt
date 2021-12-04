@@ -10,7 +10,8 @@ const initalVideoAnalysisState = {
     data:[],
     loading: false,
     error:{},
-    selectedVideos: []
+    selectedVideos: [],
+    email: ''
 }
 
 export const reducer = (state = initalVideoAnalysisState, action)=>{
@@ -24,9 +25,11 @@ export const reducer = (state = initalVideoAnalysisState, action)=>{
             }
 
         case FETCH_VIDEO_ANALYSIS_SUCCESS:
+            console.log('--->', action.payload);
             return {
                 ...state,
-                data:action.payload,
+                data: action.payload.frames,
+                email: action.payload.email,
                 error:{},
                 loading: false
             }
