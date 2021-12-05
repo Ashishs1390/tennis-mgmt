@@ -4,12 +4,14 @@ import {combineReducers} from 'redux';
 import  {reducer,initalFetchReducer, validateEmailReducer } from './basicInfo/basicInfoReducer';
 import  {reducer as  videoAnalysisReducer } from './videoanalysis/videoAnalysisReducer';
 
+import {initalVideoReducer} from './videoanalysis/videoAnalysisReducer'
 
 const rootReducer = combineReducers({
     data:reducer,
     getData:initalFetchReducer,
     emailValidation: validateEmailReducer,
-    videoAnalysis: videoAnalysisReducer
+    videoAnalysis: videoAnalysisReducer,
+    videoInfo: initalVideoReducer
 });
 
 export default rootReducer;

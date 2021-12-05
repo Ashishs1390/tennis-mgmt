@@ -21,15 +21,17 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { connect } from "react-redux";
 import { getVideosForAnalysis, selectVideoAnalysis } from "../../redux/videoanalysis/videoAnalysisActions";
+import { useNavigate } from "react-router-dom";
+import { SELECT_VIDEO_FOR_ANALYSIS } from "../../redux/videoanalysis/videoAnalysisActionsTypes";
 
 
 function AlignItemsList(props) {
-  // const [checked, setChecked] = React.useState([1]);
+  const [checkedVideo, setCheckedVideo] = React.useState([]);
   const [age, setAge] = React.useState("");
   const { getVideosForAnalysis, selectVideoAnalysis, videoAnalysis = {email: '', frames: []}} = props;
-
+  const navigate = useNavigate();
   useEffect(()=>{
-    getVideosForAnalysis()
+    getVideosForAnalysis();
 }, []);
 
 
@@ -38,18 +40,26 @@ function AlignItemsList(props) {
     setAge(event.target.value);
   };
 
-  const handleToggle = (value) => () => {
-    console.log(props);
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const selectVideoForAnalysis = () => {
+    navigate("/video");
+  } 
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
+  const handleToggle = (value) => () => {
+    console.log(value);
+    const currentIndex = checkedVideo.findIndex(x => x.id === value.id);
+    const currentSelectedList = [...checkedVideo];
+    if(currentIndex === -1) {
+      if (currentSelectedList.length > 4) {
+        alert('not allowed');
+      } else {
+        currentSelectedList.push(value);
+      }
     } else {
-      newChecked.splice(currentIndex, 1);
+      currentSelectedList.splice(currentIndex, 1);
     }
 
-    // setChecked(newChecked);
+    setCheckedVideo(currentSelectedList);
+    selectVideoAnalysis(currentSelectedList);
   };
 
   return (
@@ -117,6 +127,7 @@ function AlignItemsList(props) {
           </Grid>
           <Grid item xs={10} md={2}>
             <Button variant="contained" onClick={() => { console.log(props)}}>Filter</Button>
+            <Button variant="contained" onClick={() => { selectVideoForAnalysis() }}>select</Button>
           </Grid>
         </Grid>
       </Box>
@@ -139,7 +150,7 @@ function AlignItemsList(props) {
                 secondaryAction={
                   <Checkbox
                     edge="end"
-                    onChange={handleToggle(i)}
+                    onChange={handleToggle(value)}
                     inputProps={{ "aria-labelledby": labelId }}
                   />
                 }

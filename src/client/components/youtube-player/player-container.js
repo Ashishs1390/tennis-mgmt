@@ -1,9 +1,14 @@
 import React, { useState, useEffect,useRef } from "react";
 import YoutubeComponent from './youtube.component';
+import { connect } from "react-redux";
 import {post} from "./../../api/axios.api";
 import "./player.scss";
+import { fetchVideo } from "./../../redux/index";
 
 function VideoPlayerContainer(props) {
+    console.log("-----------props-----------------");
+    console.log(props);
+    const {fetchVideo,videoData, videoAnalysis} = props;
     const nameForm = useRef(null);
     const [startPlay, setStartPlay] = useState(false);
     const [startTime, setStartTime] = useState(0);
@@ -42,8 +47,26 @@ function VideoPlayerContainer(props) {
         setMute(mute);
     }
 
+    useEffect(()=>{
+        console.log("qqqqqqqqqqqqqq")
+        fetchVideo();
+    },[])
 
+    useEffect(()=>{
+        console.log("--------videoData----------")
+        console.log(videoData)
+        setYouTubeId({...videoData})
+    },[videoData]);
 
+    useEffect(() => {
+        let framesData = [...videoAnalysis.selectedVideos];
+        framesData = framesData.map(x => {
+            return {frameId: x.src, src: 0};
+        });
+        framesData.length > 0 && setFrame(framesData);
+    }, [videoAnalysis.selectedVideos]);
+
+    
     const updatePlayBackSpeed = (event) => {
         setStartPlay(true);
         setPayBackSpeed(event.target.value);
@@ -67,9 +90,10 @@ function VideoPlayerContainer(props) {
         if(returnedData){
             returnedData = returnedData.data.data
             setYouTubeId({...returnedData});
+        }else{
+            console.log("error")
         }
     }
-
     const submitFrameInfo = () =>{
         const arr = [];
         frames.forEach((frame)=>{
@@ -106,12 +130,10 @@ function VideoPlayerContainer(props) {
                     return(
                         <li className="video-item" key = {ele.frameId}> 
                             <div>
-                                <YoutubeComponent isStart={startPlay} startTime={startTime} id={youtubeId[ele.frameId]} isMute={mute} playbackSpeed={payBackSpeed}/>
+                                <YoutubeComponent isStart={startPlay} startTime={startTime} id={ele.src !== 0 ? youtubeId[ele.frameId] : ele.frameId} isMute={mute} playbackSpeed={payBackSpeed}/>
                             </div>
                             <div>
-                              
-                                <input id = {ele.frameId} value = {ele.src} onChange= {setDynamicValue}  ></input>
-                              
+                                {ele.src !== 0 && <input id = {ele.frameId} value = {ele.src} onChange= {setDynamicValue}  ></input>}
                             </div>
                         </li>
                     )
@@ -143,5 +165,19 @@ function VideoPlayerContainer(props) {
         </div>
     );
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchVideo: () =>{
+            dispatch(fetchVideo())
+        }
+    };
+  };
   
-export default VideoPlayerContainer;
+  const mapStateToProps = (state = {}) => {
+    return {
+        videoInfo: state.videoInfo,
+        videoAnalysis: state.videoAnalysis};
+  };
+
+export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayerContainer);
