@@ -82,11 +82,13 @@ export const fetchVideoFailure = (error) =>{
 
 export const fetchVideo = () =>{
     return async (dispatch) =>{
-        let response = await get("api/tennismgmt/videoanalysis/")
-        if(response){
+        let response = await get("api/tennismgmt/videoanalysis/");
+        console.log("-------response----------")
+        console.log(response);
+        if(response.error == false){
             dispatch(fetchVideoSuccess({...response.data.data}));
         }else{
-            dispatch(fetchVideoFailure({...response.data.data}));
+            dispatch(fetchVideoFailure({errMsg:"Please upload the videos"}));
 
         }
     }

@@ -8,7 +8,7 @@ import { fetchVideo } from "./../../redux/index";
 function VideoPlayerContainer(props) {
     console.log("-----------props-----------------");
     console.log(props);
-    const {fetchVideo,videoData, videoAnalysis} = props;
+    const {fetchVideo,videoData,error, videoAnalysis} = props;
     const nameForm = useRef(null);
     const [startPlay, setStartPlay] = useState(false);
     const [startTime, setStartTime] = useState(0);
@@ -32,7 +32,9 @@ function VideoPlayerContainer(props) {
             src:""
         }
     ]);
-    const [youtubeId,setYouTubeId] = useState({})
+    const [youtubeId,setYouTubeId] = useState({});
+
+    const [errMsg,setErrorMsg] = useState({})
     const playBackSpeeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
     const startAllVideos = () => {
@@ -55,7 +57,13 @@ function VideoPlayerContainer(props) {
     useEffect(()=>{
         console.log("--------videoData----------")
         console.log(videoData)
-        setYouTubeId({...videoData})
+        if(videoData && videoData.length != 0){
+            setYouTubeId({...videoData})
+            // setErrorMsg({})
+
+        }else{
+            setErrorMsg({...error})
+        }
     },[videoData]);
 
     useEffect(() => {
@@ -88,7 +96,10 @@ function VideoPlayerContainer(props) {
             console.log(err);        
         })
         if(returnedData){
-            returnedData = returnedData.data.data
+            console.log("-----------------returnedData------------------------")
+            returnedData = returnedData.data.data;
+            console.log(returnedData)
+            returnedData = JSON.parse(JSON.stringify(returnedData))
             setYouTubeId({...returnedData});
         }else{
             console.log("error")
@@ -126,10 +137,12 @@ function VideoPlayerContainer(props) {
     return (
         <div className="video-player-container">
             <ul className="video-item-list">
-                {  frames.map((ele)=>{
+            
+                {  frames.map((ele, i)=>{
                     return(
-                        <li className="video-item" key = {ele.frameId}> 
+                        <li className="video-item" key = {ele.frameId + i}> 
                             <div>
+                                {youtubeId[ele.frameId]}
                                 <YoutubeComponent isStart={startPlay} startTime={startTime} id={ele.src !== 0 ? youtubeId[ele.frameId] : ele.frameId} isMute={mute} playbackSpeed={payBackSpeed}/>
                             </div>
                             <div>
@@ -145,6 +158,14 @@ function VideoPlayerContainer(props) {
                 
             </ul>
             <button onClick={() => submitFrameInfo()}>submit</button>
+
+                {!(errMsg && Object.keys(errMsg).length === 0 
+              && Object.getPrototypeOf(errMsg ) === Object.prototype) 
+              &&
+              <div className="errorDiv">
+                  <p>{errMsg.errMsg}</p>
+               {/* <p>{errMsg.msg}</p> */}
+          </div>}
 
             <div className="video-player-controls" style={{paddingLeft: '50px'}}>
             { !startPlay && <button onClick={startAllVideos} style={{marginLeft: '10px'}}>Play</button> }
@@ -177,7 +198,8 @@ const mapDispatchToProps = (dispatch) => {
   const mapStateToProps = (state = {}) => {
     return {
         videoInfo: state.videoInfo,
-        videoAnalysis: state.videoAnalysis};
+        videoAnalysis: state.videoAnalysis
+    };
   };
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayerContainer);

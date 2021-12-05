@@ -15,11 +15,11 @@ router.route('/').post(async(req,res,next)=>{
         $set:{...obj}
     },{
         upsert:true,
-        returnNewDocument: false
+        returnOriginal: false
     }).catch((err)=>{
         console.log(err);
         res.status(504).send({
-            msg:"internal server error",status:504
+            errMsg:"internal server error",status:504
         })
     });
     let srcArr = [];
@@ -47,8 +47,16 @@ router.route('/').post(async(req,res,next)=>{
                 returnNewDocument: false
             }
             ).then((output)=>{
+                console.log("----------output-----------")
                 console.log(output);
         })
+        const resObj = data._doc;
+        console.log("---------------resObj---------------------")
+        console.log(resObj)
+        res.send({
+            ...resObj
+        });
+
     }
 
     if(data && data.length > 0) {
@@ -62,13 +70,18 @@ router.route('/').post(async(req,res,next)=>{
         })
     }
     
+
+
+
+
+   
 });
 
 router.route('/').get(async(req,res,next)=>{
     const data = await videoanalysis.find({email: req.user[0].email},{_v:0,_id:0}).catch((err)=>{
         console.log(err);
         res.status(504).send({
-            msg:"internal server error",status:504
+            errMsg:"internal server error",status:504
         })
     });
     console.log(data);
@@ -79,7 +92,7 @@ router.route('/').get(async(req,res,next)=>{
 
     }else{
         res.status(404).send({
-            msg:"no data",status:404
+            errMsg:"no data",status:404
         })
     }
     
@@ -90,7 +103,7 @@ router.route('/history').get(async(req,res,next)=>{
     const data = await videoHistoryInfoSchema.find({email: req.user[0].email},{_v:0,_id:0}).catch((err)=>{
         console.log(err);
         res.status(504).send({
-            msg:"internal server error",status:504
+            errMsg:"internal server error",status:504
         })
     });
     if(data.length != 0){
@@ -98,7 +111,7 @@ router.route('/history').get(async(req,res,next)=>{
         res.send({...resObj})
     }else{
         res.status(404).send({
-            msg:"no data",status:404
+            errMsg:"no data",status:404
         })
     }
 
