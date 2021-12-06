@@ -3,17 +3,21 @@ import YoutubeComponent from './youtube.component';
 import { connect } from "react-redux";
 import {post} from "./../../api/axios.api";
 import "./player.scss";
+import { useLocation,useParams } from "react-router-dom";
 import { fetchVideo } from "./../../redux/index";
 
 function VideoPlayerContainer(props) {
     console.log("-----------props-----------------");
     console.log(props);
-    const {fetchVideo,videoData,error, videoAnalysis} = props;
+    const {fetchVideo,videoInfo:{videoData},error, videoAnalysis} = props;
     const nameForm = useRef(null);
     const [startPlay, setStartPlay] = useState(false);
     const [startTime, setStartTime] = useState(0);
     const [mute, setMute] = useState(false);
     const [payBackSpeed, setPayBackSpeed] = useState(1);
+    let location  = useLocation();
+    const {from} = useParams();
+    console.log(from)
     const [frames,setFrame] = useState([
         {
             frameId:"frame1",
@@ -48,6 +52,8 @@ function VideoPlayerContainer(props) {
     const muteUnmute = (mute) => {
         setMute(mute);
     }
+    console.log(location);
+
 
     useEffect(()=>{
         console.log("qqqqqqqqqqqqqq")
@@ -55,23 +61,31 @@ function VideoPlayerContainer(props) {
     },[])
 
     useEffect(()=>{
+        if(from == "analysis"){
         console.log("--------videoData----------")
-        console.log(videoData)
-        if(videoData && videoData.length != 0){
-            setYouTubeId({...videoData})
-            // setErrorMsg({})
+            console.log(videoData)
+            if(videoData && videoData.length != 0){
+                setYouTubeId({...videoData})
+                // setErrorMsg({})
 
-        }else{
-            setErrorMsg({...error})
+            }else{
+                setErrorMsg({...error})
+            }
         }
     },[videoData]);
 
     useEffect(() => {
-        let framesData = [...videoAnalysis.selectedVideos];
-        framesData = framesData.map(x => {
-            return {frameId: x.src, src: 0};
-        });
-        framesData.length > 0 && setFrame(framesData);
+        
+        // if(from == "strokeanalysis"){
+            console.log("fdfdfdfdfdfdfdfdfdfd")
+            let framesData = [...videoAnalysis.selectedVideos];
+            framesData = framesData.map(x => {
+                return {frameId: x.src, src: 0};
+            });
+            framesData.length > 0 && setFrame(framesData);
+        // }
+       
+
     }, [videoAnalysis.selectedVideos]);
 
     
@@ -142,7 +156,7 @@ function VideoPlayerContainer(props) {
                     return(
                         <li className="video-item" key = {ele.frameId + i}> 
                             <div>
-                                {youtubeId[ele.frameId]}
+                                {ele.src}
                                 <YoutubeComponent isStart={startPlay} startTime={startTime} id={ele.src !== 0 ? youtubeId[ele.frameId] : ele.frameId} isMute={mute} playbackSpeed={payBackSpeed}/>
                             </div>
                             <div>

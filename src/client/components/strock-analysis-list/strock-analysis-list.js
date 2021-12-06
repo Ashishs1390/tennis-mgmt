@@ -41,7 +41,7 @@ function AlignItemsList(props) {
   };
 
   const selectVideoForAnalysis = () => {
-    navigate("/video");
+    navigate("/video/strokeanalysis");
   } 
 
   const handleToggle = (value) => () => {

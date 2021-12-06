@@ -5,6 +5,7 @@ import {useNavigate,Link} from "react-router-dom";
 import {fetchDetails } from "./../../redux/index";
 
 
+
 function LandingPage(props){
 
 
@@ -19,6 +20,11 @@ function LandingPage(props){
            <nav>
           <p>
             <Link to="./../profilepage">Profile Page</Link>
+
+          </p>
+          <p>
+            <Link to="./../video/analysis">Video Page</Link>
+            
           </p>
         </nav>
            

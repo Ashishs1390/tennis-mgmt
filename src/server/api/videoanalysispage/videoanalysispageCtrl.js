@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const videoanalysis = require("./../../models/videoInformation");
 const videoHistoryInfoSchema = require("./../../models/videohistoryinformation");
+const { v4: uuidv4 } = require('uuid');
 
 
 router.route('/').post(async(req,res,next)=>{
@@ -33,7 +34,7 @@ router.route('/').post(async(req,res,next)=>{
 
         const pushObj = srcArr.reduce((acc,val)=>{
             if(acc){
-                acc["$push"]["frames"]["$each"].push({date:date,src:val})
+                acc["$push"]["frames"]["$each"].push({date:date,src:val,id:uuidv4()});
             }
             return acc;
         },{"$push":{"frames":{"$each":[]}}})

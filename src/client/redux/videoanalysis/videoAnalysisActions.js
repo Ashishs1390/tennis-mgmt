@@ -82,7 +82,7 @@ export const fetchVideoFailure = (error) =>{
 
 export const fetchVideo = () =>{
     return async (dispatch) =>{
-        let response = await get("api/tennismgmt/videoanalysis/");
+        let response = await get("/api/tennismgmt/videoanalysis/");
         console.log("-------response----------")
         console.log(response);
         if(response.error == false){
