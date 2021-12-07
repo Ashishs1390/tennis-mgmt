@@ -30,7 +30,7 @@ export const reducer = (state = initalVideoAnalysisState, action)=>{
             console.log('--->', action.payload);
             return {
                 ...state,
-                data: action.payload.frames.map((x, i) => ({...x, id: i})),
+                data: action.payload.frames,
                 email: action.payload.email,
                 error:{},
                 loading: false

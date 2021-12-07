@@ -26,6 +26,10 @@ function LandingPage(props){
             <Link to="./../video/analysis">Video Page</Link>
             
           </p>
+          <p>
+            <Link to="./../strockanalysislist">Strock Analysis List Page</Link>
+            
+          </p>
         </nav>
            
         </div>

@@ -167,7 +167,7 @@ function AlignItemsList(props) {
                         variant="body2"
                         color="text.primary"
                       >
-                        Sasha Frijanic (MOT2010)'s T-Log, by
+                       {value.id}, by
                       </Typography>
                       <Link href="#">
                          {" Sasha Frijanic (MOT2010)'s T-Log"}
