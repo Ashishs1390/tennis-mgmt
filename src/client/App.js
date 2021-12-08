@@ -9,6 +9,7 @@ import UserProfile from './components/UserProfile/UserProfile';
 import PlayerRegistration from './components/registration/registartion/registartion';
 import VideoPlayerContainer from './components/youtube-player/player-container';
 import StrockAnalysisList from './components/strock-analysis-list/strock-analysis-list';
+import CompareLibrary from './components/compare-library/compare-library';
 import Cookies from 'js-cookie';
 
 
@@ -30,9 +31,8 @@ function App() {
             <Route path="landingpage" element={isLoggedIn ?<LandingPage/> :<Navigate to="/"></Navigate>}></Route>
             <Route path="profilepage" element={isLoggedIn ?<UserProfile/> :<Navigate to="/"></Navigate>}></Route>
             <Route path="video/:from" element={isLoggedIn ? <VideoPlayerContainer/>:<Navigate to="/"></Navigate>}></Route>
-            <Route path="strockanalysislist" element={isLoggedIn ?<StrockAnalysisList/> :<Navigate to="/"></Navigate>
-            
-            }></Route>
+            <Route path="strockanalysislist" element={isLoggedIn ?<StrockAnalysisList/> :<Navigate to="/"></Navigate>}></Route>
+            <Route path="comparelibrary" element={isLoggedIn ?<CompareLibrary/> :<Navigate to="/"></Navigate>}></Route>
             <Route path="*" element = {<PageNotFound/>}></Route>
 
          
