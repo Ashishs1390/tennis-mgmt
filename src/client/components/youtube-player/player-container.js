@@ -7,8 +7,6 @@ import { useLocation,useParams } from "react-router-dom";
 import { fetchVideo } from "./../../redux/index";
 
 function VideoPlayerContainer(props) {
-    console.log("-----------props-----------------");
-    console.log(props);
     const {fetchVideo,videoInfo:{videoData},error, videoAnalysis} = props;
     const nameForm = useRef(null);
     const [startPlay, setStartPlay] = useState(false);
@@ -17,7 +15,6 @@ function VideoPlayerContainer(props) {
     const [payBackSpeed, setPayBackSpeed] = useState(1);
     let location  = useLocation();
     const {from} = useParams();
-    console.log(from)
     const [frames,setFrame] = useState([
         {
             frameId:"frame1",
@@ -52,21 +49,17 @@ function VideoPlayerContainer(props) {
     const muteUnmute = (mute) => {
         setMute(mute);
     }
-    console.log(location);
 
 
     useEffect(()=>{
-        console.log("qqqqqqqqqqqqqq")
         fetchVideo();
     },[])
 
     useEffect(()=>{
         if(from == "analysis"){
-        console.log("--------videoData----------")
-            console.log(videoData)
             if(videoData && videoData.length != 0){
                 setYouTubeId({...videoData})
-                // setErrorMsg({})
+                pauseAllVideo();
 
             }else{
                 setErrorMsg({...error})
@@ -76,14 +69,13 @@ function VideoPlayerContainer(props) {
 
     useEffect(() => {
         
-        // if(from == "strokeanalysis"){
-            console.log("fdfdfdfdfdfdfdfdfdfd")
+        if(from == "strokeanalysis"){
             let framesData = [...videoAnalysis.selectedVideos];
             framesData = framesData.map(x => {
                 return {frameId: x.src, src: 0};
             });
             framesData.length > 0 && setFrame(framesData);
-        // }
+        }
        
 
     }, [videoAnalysis.selectedVideos]);
@@ -100,7 +92,6 @@ function VideoPlayerContainer(props) {
         if (videoid != null) {
         return {[id]:videoid[1]
         }
-        //   console.log("video id = ", videoid[1]);
         } else {
           console.log("The youtube url is not valid.");
         }
@@ -110,9 +101,7 @@ function VideoPlayerContainer(props) {
             console.log(err);        
         })
         if(returnedData){
-            console.log("-----------------returnedData------------------------")
             returnedData = returnedData.data.data;
-            console.log(returnedData)
             returnedData = JSON.parse(JSON.stringify(returnedData))
             setYouTubeId({...returnedData});
         }else{
@@ -127,7 +116,6 @@ function VideoPlayerContainer(props) {
                 arr.push(frameObj)
             }
         });
-        console.log(frames)
         const finalObj = arr.reduce((acc,cur)=>{
             if(acc){
                 acc = {...acc,...cur};
@@ -139,6 +127,7 @@ function VideoPlayerContainer(props) {
     }
 
     const setDynamicValue = (event) =>{
+        console.log(event.target)
         const {id,value} = event.target;
             let newFrame = frames.map((f)=>{
                 if(id ==f.frameId){
@@ -156,7 +145,10 @@ function VideoPlayerContainer(props) {
                     return(
                         <li className="video-item" key = {ele.frameId + i}> 
                             <div>
-                                {ele.src}
+           {youtubeId[ele.frameId]}
+           {/* {ele.frameId} */}
+           {/* <YoutubeComponent isStart={startPlay} startTime={startTime} id={ele.src !== 0 ? youtubeId[ele.frameId] : ele.frameId} isMute={mute} playbackSpeed={payBackSpeed}/> */}
+
                                 <YoutubeComponent isStart={startPlay} startTime={startTime} id={ele.src !== 0 ? youtubeId[ele.frameId] : ele.frameId} isMute={mute} playbackSpeed={payBackSpeed}/>
                             </div>
                             <div>
@@ -180,7 +172,7 @@ function VideoPlayerContainer(props) {
                   <p>{errMsg.errMsg}</p>
                {/* <p>{errMsg.msg}</p> */}
           </div>}
-
+            <p>{startPlay}</p>
             <div className="video-player-controls" style={{paddingLeft: '50px'}}>
             { !startPlay && <button onClick={startAllVideos} style={{marginLeft: '10px'}}>Play</button> }
             { startPlay && <button onClick={pauseAllVideo}  style={{marginLeft: '10px'}}>Pause</button> }
@@ -194,6 +186,7 @@ function VideoPlayerContainer(props) {
                 }
             </select>
             <input style={{marginLeft: '10px'}} type="range" name="vol" min="0" max="5000" style={{width: '500px'}} onChange={(event) => {
+                console.log(event.target.value);
                 setStartTime(event.target.value);    
             }}></input><span>{(startTime/60).toFixed(2)} (sec)</span>
             </div>
