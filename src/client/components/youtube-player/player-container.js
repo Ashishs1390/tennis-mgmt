@@ -7,7 +7,7 @@ import { useLocation,useParams } from "react-router-dom";
 import { fetchVideo } from "./../../redux/index";
 
 function VideoPlayerContainer(props) {
-    const {fetchVideo,videoInfo:{videoData},error, videoAnalysis} = props;
+    const {fetchVideo,videoInfo:{videoData},error, videoAnalysis, showPlayerVideo} = props;
     const nameForm = useRef(null);
     const [startPlay, setStartPlay] = useState(false);
     const [startTime, setStartTime] = useState(0);
@@ -56,7 +56,7 @@ function VideoPlayerContainer(props) {
     },[])
 
     useEffect(()=>{
-        if(from == "analysis"){
+        if(from == "analysis" && !showPlayerVideo){
             if(videoData && videoData.length != 0){
                 setYouTubeId({...videoData})
                 pauseAllVideo();
@@ -69,7 +69,7 @@ function VideoPlayerContainer(props) {
 
     useEffect(() => {
         
-        if(from == "strokeanalysis"){
+        if(from == "strokeanalysis" || showPlayerVideo){
             let framesData = [...videoAnalysis.selectedVideos];
             framesData = framesData.map(x => {
                 return {frameId: x.src, src: 0};
@@ -163,7 +163,7 @@ function VideoPlayerContainer(props) {
                
                 
             </ul>
-            <button onClick={() => submitFrameInfo()}>submit</button>
+            { !showPlayerVideo && <button onClick={() => submitFrameInfo()}>submit</button>}
 
                 {!(errMsg && Object.keys(errMsg).length === 0 
               && Object.getPrototypeOf(errMsg ) === Object.prototype) 

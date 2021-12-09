@@ -23,7 +23,7 @@ function CompareLibrary(props) {
     },{
         id: 2,
         label: 'CD - Anghg kjhjkjhk kjhjk',
-        src: '9SQOwGEyG7c'
+        src: 'w389Y350c_c'
     },{
         id: 3,
         label: 'EF - Anghg kjhjkjhk kjhjk',
@@ -34,8 +34,11 @@ function CompareLibrary(props) {
         src: 'r2p5dZMuP1M'
     } ]
     const onChangeHandler = (event) => {
-        const val = event.target.value;
-        setCompareVideo(val);
+        const url = event.target.value;
+        const val = url.match(
+            /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
+          );
+        setCompareVideo(val[1]);
         selectVideoAnalysis([{src: compareVideo}, {src: libraryVideo}]);
     };
     const handleChange = (event) => {
@@ -80,7 +83,7 @@ function CompareLibrary(props) {
           </Grid>
         </Grid>
       </Box>
-      { compareVideo && libraryVideo && <VideoPlayerContainer/> }
+      { compareVideo && libraryVideo && <VideoPlayerContainer showPlayerVideo="true"/> }
     </>
   );
 }
