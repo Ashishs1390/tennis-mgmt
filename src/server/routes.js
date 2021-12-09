@@ -4,6 +4,6 @@ router.use('/tennismgmt/registration/authed',checkToken,require('./api/registrat
 router.use('/tennismgmt/registration',require('./api/registrationpage/registrationPageRoutes'));
 router.use('/tennismgmt/login',require('./api/login/loginCtrl'));
 router.use('/tennismgmt/videoanalysis',checkToken,require('./api/videoanalysispage/videoanalysispageCtrl'));
-
+router.use('/tennismgmt/videolibrary',require("./api/videoanalysispage/videolibrary"))
 
 module.exports = router;
