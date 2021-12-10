@@ -144,7 +144,6 @@ function VideoPlayerContainer(props) {
                     return(
                         <li className="video-item" key = {ele.frameId + i}> 
                             <div>
-                                {ele.src}
                                 <YoutubeComponent isStart={startPlay} startTime={startTime} id={ele.src !== 0 ? youtubeId[ele.frameId] : ele.frameId} isMute={mute} playbackSpeed={payBackSpeed}/>
                             </div>
                             <div>
