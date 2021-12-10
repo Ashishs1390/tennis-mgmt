@@ -29,6 +29,9 @@ function AlignItemsList(props) {
   const [checkedVideo, setCheckedVideo] = React.useState([]);
   const [age, setAge] = React.useState("");
   const { getVideosForAnalysis, selectVideoAnalysis, videoAnalysis = {email: '', frames: []}} = props;
+  console.log("----------------selectVideoAnalysis-----------------")
+  console.log(selectVideoAnalysis)
+  
   const navigate = useNavigate();
   useEffect(()=>{
     getVideosForAnalysis();

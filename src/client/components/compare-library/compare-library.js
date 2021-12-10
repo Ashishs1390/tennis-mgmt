@@ -10,41 +10,48 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { connect } from "react-redux";
 import { selectVideoAnalysis } from "../../redux/videoanalysis/videoAnalysisActions";
+import {getCompareVideo} from "./../../redux/index"
 import VideoPlayerContainer from '../youtube-player/player-container';
 function CompareLibrary(props) {
     const [compareVideo, setCompareVideo]  = useState('');
     const [libraryVideo, setLibraryVideo]  = useState('');
-  const { selectVideoAnalysis } = props;
+    const [videolist,setVideoList] = useState([])
+  const { selectVideoAnalysis,getCompareVideo,videoCompare:{videoCompare} } = props;
+   
+    useEffect(()=>{
+      getCompareVideo()
+    },[getCompareVideo]);
 
-    const list = [{
-        id: 1,
-        label: 'AB - Anghg kjhjkjhk kjhjk',
-        src: 'Lp1n5fyazQ8'
-    },{
-        id: 2,
-        label: 'CD - Anghg kjhjkjhk kjhjk',
-        src: 'w389Y350c_c'
-    },{
-        id: 3,
-        label: 'EF - Anghg kjhjkjhk kjhjk',
-        src: 'Ad0AI1WmiXw'
-    },{
-        id: 4,
-        label: 'GH - Anghg kjhjkjhk kjhjk',
-        src: 'r2p5dZMuP1M'
-    } ]
+    useEffect(()=>{
+      if(videoCompare !== undefined){
+        setVideoList([...videoCompare])
+      }
+    },[videoCompare])
+    
+    const getIdFromUrl =(url,id)=>{
+      var videoid = url.match(
+        /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
+      );
+      if (videoid != null) {
+        return videoid[1]
+      } else {
+        console.log("The youtube url is not valid.");
+      }
+  }
     const onChangeHandler = (event) => {
         const url = event.target.value;
         const val = url.match(
             /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
           );
         setCompareVideo(val[1]);
-        selectVideoAnalysis([{src: compareVideo}, {src: libraryVideo}]);
+        selectVideoAnalysis([{src: val[1]}, {src: libraryVideo}]);
     };
     const handleChange = (event) => {
+      console.log("------------event----------------")
         const val = event.target.value;
+        console.log(val);
         setLibraryVideo(val);
-        selectVideoAnalysis([{src: compareVideo}, {src: libraryVideo}]);
+        selectVideoAnalysis([{src: compareVideo}, {src: val}]);
 
     };
   return (
@@ -73,8 +80,8 @@ function CompareLibrary(props) {
                   onChange={handleChange}
                 >
                     {
-                        list.map(x => (
-                            <MenuItem key={x.id} value={x.src}>{x.label}</MenuItem>
+                        videolist.map(x => (
+                            <MenuItem key={x.id} value={getIdFromUrl(x.src)}>{x.title}</MenuItem>
                         ))
                     }
                 </Select>
@@ -90,12 +97,18 @@ function CompareLibrary(props) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      selectVideoAnalysis: (outObj) => dispatch(selectVideoAnalysis(outObj))
+      selectVideoAnalysis: (outObj) => dispatch(selectVideoAnalysis(outObj)),
+      getCompareVideo:() =>dispatch(getCompareVideo())
     };
   };
   
   const mapStateToProps = (state) => {
-    return {videoAnalysis: state.videoAnalysis};
+    console.log(state);
+    const {videoCompare} = state;
+
+    return {videoAnalysis: state.videoAnalysis,
+            videoCompare
+    };
   };
   
   export default connect(mapStateToProps, mapDispatchToProps)(CompareLibrary);

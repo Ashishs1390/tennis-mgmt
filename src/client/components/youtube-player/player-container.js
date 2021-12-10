@@ -4,16 +4,15 @@ import { connect } from "react-redux";
 import {post} from "./../../api/axios.api";
 import "./player.scss";
 import { useLocation,useParams } from "react-router-dom";
-import { fetchVideo } from "./../../redux/index";
+import {fetchVideo}  from "./../../redux/index";
 
 function VideoPlayerContainer(props) {
+    console.log("------------VideoPlayerContainer------------")
     const {fetchVideo,videoInfo:{videoData},error, videoAnalysis, showPlayerVideo} = props;
-    const nameForm = useRef(null);
     const [startPlay, setStartPlay] = useState(false);
     const [startTime, setStartTime] = useState(0);
     const [mute, setMute] = useState(false);
     const [payBackSpeed, setPayBackSpeed] = useState(1);
-    let location  = useLocation();
     const {from} = useParams();
     const [frames,setFrame] = useState([
         {
@@ -145,10 +144,7 @@ function VideoPlayerContainer(props) {
                     return(
                         <li className="video-item" key = {ele.frameId + i}> 
                             <div>
-           {youtubeId[ele.frameId]}
-           {/* {ele.frameId} */}
-           {/* <YoutubeComponent isStart={startPlay} startTime={startTime} id={ele.src !== 0 ? youtubeId[ele.frameId] : ele.frameId} isMute={mute} playbackSpeed={payBackSpeed}/> */}
-
+                                {ele.src}
                                 <YoutubeComponent isStart={startPlay} startTime={startTime} id={ele.src !== 0 ? youtubeId[ele.frameId] : ele.frameId} isMute={mute} playbackSpeed={payBackSpeed}/>
                             </div>
                             <div>
@@ -203,6 +199,7 @@ const mapDispatchToProps = (dispatch) => {
   };
   
   const mapStateToProps = (state = {}) => {
+      
     return {
         videoInfo: state.videoInfo,
         videoAnalysis: state.videoAnalysis

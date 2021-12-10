@@ -3,6 +3,9 @@ import {
   FETCH_VIDEO_ANALYSIS_SUCCESS,
   FETCH_VIDEO_ANALYSIS_FAILURE,
   SELECT_VIDEO_FOR_ANALYSIS,
+
+  FETCH_VIDEO_COMPARE_SUCESS,
+  FETCH_VIDEO_COMPARE_FAILURE
 } from "./videoAnalysisActionsTypes";
 
 import { get } from '../../api/axios.api';
@@ -30,7 +33,6 @@ export const getVideoAnalysisFailure = (error) => {
 };
 
 export const selectVideoAnalysis = (data) => {
-    console.log(data);
     return {
       type: SELECT_VIDEO_FOR_ANALYSIS,
       payload: data,
@@ -83,8 +85,6 @@ export const fetchVideoFailure = (error) =>{
 export const fetchVideo = () =>{
     return async (dispatch) =>{
         let response = await get("/api/tennismgmt/videoanalysis/");
-        console.log("-------response----------")
-        console.log(response);
         if(response.error == false){
             dispatch(fetchVideoSuccess({...response.data.data}));
         }else{
@@ -92,4 +92,34 @@ export const fetchVideo = () =>{
 
         }
     }
+}
+
+export const fetchCompareVideoSuc =(data) =>{
+  return {
+    type:FETCH_VIDEO_COMPARE_SUCESS,
+    payload:data
+  }
+}
+
+export const fetchCompareVideoFail =(error) =>{
+  return {
+    type:FETCH_VIDEO_COMPARE_FAILURE,
+    payload:error
+  }
+}
+
+export const getCompareVideo = () =>{
+  return async (dispatch) =>{
+    console.log("-----------getCompareVideo-------------")
+    let response = await get("/api/tennismgmt/videolibrary/");
+    console.log("-------response----------")
+    console.log(response.data.data);
+    if(response.error == false){
+        dispatch(fetchCompareVideoSuc([...response.data.data]));
+    }else{
+        dispatch(fetchCompareVideoFail({errMsg:"Error in fetching videos"}));
+
+    }
+
+  }
 }

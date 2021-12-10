@@ -3,6 +3,10 @@ import {
     FETCH_VIDEO_ANALYSIS_SUCCESS,
     FETCH_VIDEO_ANALYSIS_FAILURE,
     SELECT_VIDEO_FOR_ANALYSIS,
+
+    FETCH_VIDEO_COMPARE_SUCESS,
+    FETCH_VIDEO_COMPARE_FAILURE
+
   } from "./videoAnalysisActionsTypes";
   
 import {FETCH_VIDEO_REQUEST,FETCH_VIDEO_SUCCESS,FETCH_VIDEO_FAILURE} from './videoAnalysisActionsTypes';
@@ -17,9 +21,7 @@ const initalVideoAnalysisState = {
 }
 
 export const reducer = (state = initalVideoAnalysisState, action)=>{
-    console.log("in reducer")
     switch(action.type){
-        
         case FETCH_VIDEO_ANALYSIS_REQUEST: 
             return {
                 ...state,
@@ -72,6 +74,35 @@ export const initalVideoReducer = (state = initalVideoState,action)=>{
                 error:{}
             }
         case FETCH_VIDEO_FAILURE:
+            return {
+                videoData:[],
+                error:{...action.payload}
+            } 
+       
+
+        default: return state;
+    }
+
+}
+
+
+
+const initalCompareState = {
+    videoData:[],
+    error:{}
+}
+
+
+export const initalCompareReducer = (state = initalCompareState,action)=>{
+    switch(action.type){
+        
+
+        case FETCH_VIDEO_COMPARE_SUCESS:
+            return {
+                videoCompare:action.payload,
+                error:{}
+            }
+        case FETCH_VIDEO_COMPARE_FAILURE:
             return {
                 videoData:[],
                 error:{...action.payload}

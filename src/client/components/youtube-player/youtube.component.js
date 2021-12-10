@@ -35,17 +35,10 @@ export const YoutubeComponent = (props) => {
     
 
     const onReady = (event) => {
-
         event.target.pauseVideo();
-        
 
       }
-    const onStateChange = (event) =>{
-        // console.log(event.target.playerInfo.currentTime)
-        // console.log(event.target.seekTo("3.12"))
-        const player = playerCtr.current.internalPlayer;
-        player.seekTo(80);
-    }
+
     const opts = {
         height: '300',
         width: '100%',
@@ -56,7 +49,7 @@ export const YoutubeComponent = (props) => {
       };
     return (
         <div className="video-player" style={{width: '100%', height: '100%'}}>
-         { props.id !== undefined &&  <YouTube videoId={props.id} opts={opts} onReady={onReady} onStateChange = {onStateChange} ref={playerCtr} />}
+         { props.id !== undefined &&  <YouTube videoId={props.id} opts={opts} onReady={onReady} ref={playerCtr} />}
         </div>
     )
 };
