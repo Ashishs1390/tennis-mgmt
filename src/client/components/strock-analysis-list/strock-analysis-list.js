@@ -27,6 +27,7 @@ import { SELECT_VIDEO_FOR_ANALYSIS } from "../../redux/videoanalysis/videoAnalys
 
 function AlignItemsList(props) {
   const [checkedVideo, setCheckedVideo] = React.useState([]);
+  const [disableChecked, setDisableChecked] = React.useState(false);
   const [age, setAge] = React.useState("");
   const { getVideosForAnalysis, selectVideoAnalysis, videoAnalysis = {email: '', frames: []}} = props;
   console.log("----------------selectVideoAnalysis-----------------")
@@ -56,13 +57,25 @@ function AlignItemsList(props) {
         alert('not allowed');
       } else {
         currentSelectedList.push(value);
+        setTimeout(() => {
+          if (currentSelectedList.length > 3) {
+            setDisableChecked(true);
+          } else {
+            setDisableChecked(false);
+          }
+        }, 10);
       }
     } else {
+      setDisableChecked(false);
       currentSelectedList.splice(currentIndex, 1);
     }
 
     setCheckedVideo(currentSelectedList);
     selectVideoAnalysis(currentSelectedList);
+  };
+
+  const isChecked = (i) => {
+    return checkedVideo.findIndex(x => x.id === i.id) === -1 ? true : false;
   };
 
   return (
@@ -155,6 +168,7 @@ function AlignItemsList(props) {
                     edge="end"
                     onChange={handleToggle(value)}
                     inputProps={{ "aria-labelledby": labelId }}
+                    disabled={isChecked(value) && disableChecked}
                   />
                 }
               >
