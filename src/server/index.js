@@ -3,7 +3,7 @@ const app = express();
 const path = require("path");
 const dotenv = require('dotenv');
 dotenv.config();
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 8000;
 console.log(process.env.PORT);
 
 require('./middlewares/appMiddlewares')(app);
