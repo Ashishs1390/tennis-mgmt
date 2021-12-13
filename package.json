@@ -60,6 +60,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.0",
     "styled-components": "^5.3.3",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "webpack": "^5.64.0"
   }
 }
