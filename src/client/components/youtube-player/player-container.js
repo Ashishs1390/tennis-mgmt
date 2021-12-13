@@ -33,6 +33,7 @@ function VideoPlayerContainer(props) {
         }
     ]);
     const [youtubeId,setYouTubeId] = useState({});
+    
 
     const [errMsg,setErrorMsg] = useState({})
     const playBackSpeeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
@@ -79,6 +80,11 @@ function VideoPlayerContainer(props) {
 
     }, [videoAnalysis.selectedVideos]);
 
+    useEffect(()=>{
+        console.log("================================")
+        console.log(youtubeId)
+    },[youtubeId])
+
     
     const updatePlayBackSpeed = (event) => {
         setStartPlay(true);
@@ -100,6 +106,24 @@ function VideoPlayerContainer(props) {
             console.log(err);        
         })
         if(returnedData){
+            setFrame([
+                {
+                    frameId:"frame1",
+                    src:""
+                },
+                {
+                    frameId:"frame2",
+                    src:""
+                },
+                {
+                    frameId:"frame3",
+                    src:""
+                },
+                {
+                    frameId:"frame4",
+                    src:""
+                }
+            ])
             returnedData = returnedData.data.data;
             returnedData = JSON.parse(JSON.stringify(returnedData))
             setYouTubeId({...returnedData});
@@ -109,11 +133,21 @@ function VideoPlayerContainer(props) {
     }
     const submitFrameInfo = () =>{
         const arr = [];
+        console.log("----------------------------")
+        console.log(frames);
+        console.log(youtubeId)
+
         frames.forEach((frame)=>{
-            if(frame.src !== ""){
-                const frameObj = getIdFromUrl(frame.src,frame.frameId);
-                arr.push(frameObj)
+            // console.log(youtubeId[yt])
+            console.log(frame.src);
+            console.log(!frame.src.includes(youtubeId[frame.frameId]))
+            if(!frame.src.includes(youtubeId[frame.frameId])){
+                if(frame.src !== ""){
+                    const frameObj = getIdFromUrl(frame.src,frame.frameId);
+                    arr.push(frameObj)
+                }         
             }
+            
         });
         const finalObj = arr.reduce((acc,cur)=>{
             if(acc){
