@@ -9,7 +9,8 @@
     "build": "webpack --mode production",
     "server": "nodemon src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "node src/server/index.js"
+    "start": "node src/server/index.js",
+    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -50,7 +51,6 @@
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
-    "os": "^0.1.2",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
