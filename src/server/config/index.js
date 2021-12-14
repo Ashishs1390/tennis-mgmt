@@ -5,12 +5,11 @@ const baseConfig = {
     isDev:env === 'development',
 
 }
-console.log("00000000")
+
 console.log(require('./dev'));
 let envConfig = {};
 
 switch (env){
-    case 'dev':
     case 'development':
         // console.log()
         envConfig = require('./dev');
