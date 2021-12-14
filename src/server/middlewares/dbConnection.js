@@ -1,8 +1,8 @@
 const config = require("./../config/index")
 console.log("-----db------")
-console.log(config);
+console.log(config.dbUrl);
 
-require('mongoose').connect(`mongodb://localhost/tennis_mgmt`).then(()=>{
+require('mongoose').connect(`${config.dbUrl}`).then(()=>{
     console.log("connected to mongoDB")
 }).catch((err)=>{
     console.log(err);

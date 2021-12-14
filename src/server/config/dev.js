@@ -1,5 +1,5 @@
  const config ={
-    dbUrl: `mongodb://localhost/tennis_mgmt`
+    dbUrl: `${process.env.MONGO_URI}`
 }
 
 module.exports = config
