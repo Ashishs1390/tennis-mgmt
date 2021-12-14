@@ -12,7 +12,6 @@ require('./middlewares/appMiddlewares')(app);
 const api = require('./routes.js');
 const db = require('./middlewares/dbConnection');
 app.use('/api/',api);
-app.use(express.json());
 app.get("/healthcheck",(req,res)=>{
     console.log("aaaa")
     res.status(200).send({msg:"healthcheck success",status:200});
