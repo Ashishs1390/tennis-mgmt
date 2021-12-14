@@ -3,18 +3,16 @@ const app = express();
 const path = require("path");
 const dotenv = require('dotenv');
 dotenv.config();
-var os = require("os");
-var hostname = os.hostname();
-const port = 8000;
+const port = process.env.PORT ||  8000;
 console.log(process.env.PORT);
 
 require('./middlewares/appMiddlewares')(app);
 const api = require('./routes.js');
 const db = require('./middlewares/dbConnection');
 app.use('/api/',api);
-app.get("/healthcheck",(req,res)=>{
+app.get("/healthcheck",(req,req)=>{
     console.log("aaaa")
-    res.status(200).send({msg:"healthcheck success",status:200});
+    res.status(200).send({msg:"user exist",status:200});
 })
 
 console.log(process.env.ONESERVER,"------------------")
@@ -29,5 +27,5 @@ if(process.env.ONESERVER === "true"){
     process.env.PORT = 8000;
 }
 
-app.listen(port, () => console.log(`Example app listening on port ${hostname}, ${port}!`));
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
