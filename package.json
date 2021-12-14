@@ -9,7 +9,7 @@
     "build": "webpack --mode production",
     "server": "nodemon src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "npm run build && node src/server/index.js"
+    "start": "node src/server/index.js"
   },
   "keywords": [],
   "author": "",
