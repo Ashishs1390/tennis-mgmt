@@ -20,7 +20,7 @@ if(process.env.ONESERVER === "true"){
     app.use("*",(req,res)=>{
         res.sendfile(path.join(__dirname,"../../dist/index.html"));
     });
-    // process.env.PORT = 8000;
+    process.env.PORT = 8000;
 }
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
