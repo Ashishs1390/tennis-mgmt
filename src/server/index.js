@@ -10,10 +10,10 @@ require('./middlewares/appMiddlewares')(app);
 const api = require('./routes.js');
 const db = require('./middlewares/dbConnection');
 app.use('/api/',api);
-app.get("/healthcheck",(req,res)=>{
-    console.log("aaaa")
-    res.status(200).send({msg:"user exist",status:200});
-})
+// app.get("/healthcheck",(req,res)=>{
+//     console.log("aaaa")
+//     res.status(200).send({msg:"user exist",status:200});
+// });
 
 console.log(process.env.ONESERVER,"------------------")
 if(process.env.ONESERVER === "true"){
