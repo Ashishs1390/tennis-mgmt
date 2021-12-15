@@ -29,6 +29,7 @@ const Input = (props) => {
             key="first_name"
             onChange={props.changed}
             value={props.value}
+            onKeyDown={props.onKeyDown}
           />
           {errorMessage && errorContainer()}
         </div>

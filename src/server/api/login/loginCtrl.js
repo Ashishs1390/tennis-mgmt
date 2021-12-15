@@ -13,7 +13,7 @@ router.route('/:role').post(async(req,res,next)=>{
     console.log(userDetails); 
 
     if(userDetails.length == 0){
-        res.status(404).send({msg:"user does not exist",status:404});
+        res.status(404).send({message:"user does not exist",status:404});
     }else{
         const passwordCheck = compareSync(password,userDetails[0].password);
         console.log(passwordCheck);

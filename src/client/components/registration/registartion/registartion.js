@@ -182,9 +182,6 @@ function PlayerRegistration(props) {
   }
 
 
-
-  console.log(bool);
-
   const onSubmit = () => {
       if(isdisable) {
         const registrationData = Object.entries(inputs.registrationForm).reduce((a,b)=>(Object.assign(a,{[b[0]]:b[1].value}),a), {})
@@ -196,6 +193,13 @@ function PlayerRegistration(props) {
   const emailValidate = () => {
     emailValidation({email: 'abcd@gmail.com'});
   }
+
+  const handelEnter = (event) => {
+    if (event.keyCode === 13 || event.key === "Enter") {
+      onSubmit();
+    }
+  };
+
 
   try {
 
@@ -231,6 +235,7 @@ function PlayerRegistration(props) {
               errorMessageFor={element.config.errorMessageFor}
               touched={element.config.touched}
               shouldValidate={element.config.validations}
+              onKeyDown={(e) => handelEnter(e)}
             />)
           })}
          <div className="fieldwrapper">
