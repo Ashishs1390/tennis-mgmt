@@ -24,6 +24,10 @@ const basicInformationSchema = new Schema({
     user_name:{
         type:String,
         required:true
+    },
+    current_level:{
+        type:String,
+        required:true
     }
 },
 {

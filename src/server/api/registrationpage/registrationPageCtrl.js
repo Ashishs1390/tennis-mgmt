@@ -7,7 +7,7 @@ router.route("/").get(async (req, res, next) => {
 
   const data = await basicInformation.find(
     { email: req.user[0].email },
-    { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, _id: 0 }
+    { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1,current_level:1, _id: 0 }
   );
 
   if(data.length ==0) {

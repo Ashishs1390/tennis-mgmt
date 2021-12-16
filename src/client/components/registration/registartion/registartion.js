@@ -134,6 +134,23 @@ function PlayerRegistration(props) {
         isValid: false,
         touched: false,
         isValidationProgress: false,
+      },
+      current_level:{
+        elementType:"select",
+        elementConfig:{
+          label:"Current Game Level"
+        },
+        value:"",
+        values:["boys under 12","boys under 14",
+        "boys under 16",
+        "boys under 18",
+        "girls under 12","girls under 14","girls under 16","girls under 18"
+      ],
+        validations:[{
+          name:'required',
+          value:true,
+          errorMessage:'Please enter the current level'
+        }]
       }
     }
   });
@@ -181,10 +198,6 @@ function PlayerRegistration(props) {
     bool = true;
   }
 
-
-
-  console.log(bool);
-
   const onSubmit = () => {
       if(isdisable) {
         const registrationData = Object.entries(inputs.registrationForm).reduce((a,b)=>(Object.assign(a,{[b[0]]:b[1].value}),a), {})
@@ -231,6 +244,7 @@ function PlayerRegistration(props) {
               errorMessageFor={element.config.errorMessageFor}
               touched={element.config.touched}
               shouldValidate={element.config.validations}
+              values = {element.config.hasOwnProperty('values')? element.config.values : []}
             />)
           })}
          <div className="fieldwrapper">
