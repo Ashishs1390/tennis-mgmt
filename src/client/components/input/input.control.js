@@ -32,6 +32,7 @@ const Input = (props) => {
             variant="outlined"
             onChange={props.changed}
             value={props.value}
+            onKeyDown={props.onKeyDown}
           />
           {errorMessage && errorContainer()}
         </div>

@@ -210,6 +210,13 @@ function PlayerRegistration(props) {
     emailValidation({email: 'abcd@gmail.com'});
   }
 
+  const handelEnter = (event) => {
+    if (event.keyCode === 13 || event.key === "Enter") {
+      onSubmit();
+    }
+  };
+
+
   try {
 
     const formElementsArray = [];
@@ -245,6 +252,7 @@ function PlayerRegistration(props) {
               touched={element.config.touched}
               shouldValidate={element.config.validations}
               values = {element.config.hasOwnProperty('values')? element.config.values : []}
+              onKeyDown={(e) => handelEnter(e)}
             />)
           })}
          <div className="fieldwrapper">
