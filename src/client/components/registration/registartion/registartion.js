@@ -7,6 +7,7 @@ import "./PlayerRegistation.scss";
 import { useParams } from "react-router-dom";
 import Input from "../../input/input.control";
 import checkValidity from "../../input/validations";
+import { get } from "../../../api/axios.api";
 
 function PlayerRegistration(props) {
   console.log(props);
@@ -139,6 +140,14 @@ function PlayerRegistration(props) {
   });
   const [isdisable,setDisable] = useState(0)
   let isValid = inputs.registrationForm.fromIsValid;
+
+  useEffect(() => {
+    get('/api/tennismgmt/list/agegrouplist').then((x) => {
+      console.log('^^^^:^^^^', x);
+    }).catch((err) => {
+      console.log('^^^^:^^^^', err);
+    });
+  }, []);
 
   console.log("----------inputs--------------")
   console.log(inputs.registrationForm.formIsValid);
