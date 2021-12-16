@@ -161,6 +161,10 @@ function PlayerRegistration(props) {
   useEffect(() => {
     get('/api/tennismgmt/list/agegrouplist').then((x) => {
       console.log('^^^^:^^^^', x);
+      if(x.data.data) {
+
+      }
+      setInputs({...inputs,  registrationForm: { ...inputs.registrationForm, current_level: {...inputs.registrationForm.current_level, values: x.data.data}}})
     }).catch((err) => {
       console.log('^^^^:^^^^', err);
     });
