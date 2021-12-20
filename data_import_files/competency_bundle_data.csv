@@ -1,0 +1,111 @@
+_id,cid,competency,competency_bundle,default_weight,u12boys_weight,u12girls_weight,u14boys_weight,u14girls_weight,u16boys_weight,u16girls_weight,u18boys_weight
+61bd99166e19169c42c39676,1,Developing Weapons,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c39679,2,Developing Game Styles,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c3967c,3,Movemenet & Footwork,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c3967f,4,Ball Control,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c39682,5,Reception Skills,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c39685,6,Forehand,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c39688,7,Backhand,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c3968b,8,1st Serve,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c3968e,9,2nd Serve,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c39691,10,Return of 1st Serve,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c39694,11,Return of 2nd Serve,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c39697,12,FH Volley,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c3969a,13,BH Volley,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c3969d,14,Overhead,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c396a0,15,FH Approach Shot,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c396a3,16,BH Approach Shot,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c396a6,17,Lobs,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c396a9,19,BH Slice,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c396ac,20,Speed of Ball,Technical,10,10,10,10,10,10,10,10
+61bd99166e19169c42c396af,21,Inside Out Forehand,Technical,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a586,22,"The desire to get better, to work hard/Attitude",Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a589,23,Enjoyment of training,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a58c,24,Concentrating Effectively,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a58f,25,Maintain positive attitude while competing/training,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a592,26,"Perseverance, determination",Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a595,27,Emotion Management,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a598,28,Self-Discipline,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a59b,29,Ability to rise to the occasion,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a59e,30,Self-Confidence,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a5a1,31,Visualization,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a5a4,32,Competition Readiness,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a5a7,33,Psychological analysis of match,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a5aa,34,Able to play longer points,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb2886e19169c42c3a5ad,35,Family Support,Mental-Emotional,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a854,36,Patterns,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a857,37,Placement,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a85a,38,Consistency,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a85d,39,Spins,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a860,40,Power,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a863,41,Depth,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a866,42,Shot Selection,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a869,43,Anticipation,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a86c,44,Decision Making,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a86f,45,Phases of Play,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a872,46,Zones of Play,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a875,47,Ability to combine shots to win points,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a878,48,"Ability to use the opponent's entire court",Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a87b,49,Neutralizing and defensive abilities,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a87e,50,Ability to combine shots to end points at the net,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a881,51,Attacking abilities from the backcourt,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a884,52,Takes initiative in points situation,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a887,53,Anticipation skills,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a88a,54,"Court sense, feel for the game",Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a88d,55,Anticipation skills,Tactical,10,10,10,10,10,10,10,10
+61bdb7076e19169c42c3a890,56,Use of Weapons,Tactical,10,10,10,10,10,10,10,10
+61c07e6d88a6d4e5e6f6a2ab,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2ac,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2ad,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2ae,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2af,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b0,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b1,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b2,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b3,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b4,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b5,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b6,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b7,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b8,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2b9,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2ba,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2bb,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2bc,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2bd,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2be,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2bf,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c0,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c1,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c2,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c3,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c4,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c5,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c6,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c7,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c8,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2c9,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2ca,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2cb,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2cc,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2cd,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2ce,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2cf,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d0,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d1,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d2,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d3,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d4,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d5,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d6,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d7,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d8,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2d9,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2da,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2db,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2dc,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2dd,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2de,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2df,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2e0,,,,,,,,,,,
+61c07e6d88a6d4e5e6f6a2e1,,,,,,,,,,,
