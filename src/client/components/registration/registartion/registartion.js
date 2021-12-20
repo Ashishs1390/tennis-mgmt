@@ -142,10 +142,7 @@ function PlayerRegistration(props) {
           label:"Current Game Level"
         },
         value:"",
-        values:["boys under 12","boys under 14",
-        "boys under 16",
-        "boys under 18",
-        "girls under 12","girls under 14","girls under 16","girls under 18"
+        values:[
       ],
         validations:[{
           name:'required',
@@ -160,17 +157,17 @@ function PlayerRegistration(props) {
 
   useEffect(() => {
     get('/api/tennismgmt/list/agegrouplist').then((x) => {
-      console.log('^^^^:^^^^', x);
+      console.log('^^^^:^^^^');
       if(x.data.data) {
-
+        // console.log(x.data.data.itn_level)
       }
-      setInputs({...inputs,  registrationForm: { ...inputs.registrationForm, current_level: {...inputs.registrationForm.current_level, values: x.data.data}}})
+      setInputs({...inputs,  registrationForm: { ...inputs.registrationForm, current_level: {...inputs.registrationForm.current_level, values: x.data.data.itn_level}}})
     }).catch((err) => {
       console.log('^^^^:^^^^', err);
     });
   }, []);
 
-  console.log("----------inputs--------------")
+  console.log("----------inputs---  -----------")
   console.log(inputs.registrationForm.formIsValid);
 
   console.log(error.status);

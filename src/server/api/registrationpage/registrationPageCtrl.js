@@ -2,6 +2,7 @@ const router = require("express").Router();
 const test = require("./../../models/testCollection");
 const { genSaltSync, hashSync } = require("bcrypt");
 const basicInformation = require("./../../models/basicInformation");
+const competancymetadata = require("./../../models/competancymetadata")
 
 router.route("/").get(async (req, res, next) => {
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userCompetancySchema = new Schema({
-    date:{
+    load_date:{
         type:String,
     },
     competency:{
@@ -28,11 +28,29 @@ const userCompetancySchema = new Schema({
     assigned_weight:{
         type:Number,
         required:true,
-    }
+    },
+    u12boys_weight:{
+        type:Number,
+    },
+    u12girls_weight:{
+        type:Number,
+    },
+    u14boys_weight:{
+        type:Number,
+    },
+    u14girls_weight:{
+        type:Number,
+    },
+    u16boys_weight:{
+        type:Number,
+    },
+    u18boys_weight:{
+        type:Number,
+    },
     
 
 },
 {
     collection:"users_competancy_list"
 });
-module.exports = mongoose.model('userCompetancySchema',userCompetancySchema)
+module.exports = mongoose.model('userCompetancySchema',userCompetancySchema);
