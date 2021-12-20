@@ -68,19 +68,14 @@ video history info
 https://youtu.be/mMfxI3r_LyA?t=84
 
 
-boys
-12
-14
-under 18
-under 16
-
-
-
-girls
-12
-14
-under 18
-under 16
+"u12boys", 
+"u14boys", 
+"u16boys", 
+"u18boys", 
+"u12girls", 
+"u14girls", 
+"u16girls", 
+"u18boys"
 
 
 
@@ -88,3 +83,39 @@ under 16
  
 
 
+
+
+db.getCollection('competency_bundle_metadata').aggregate([
+{ 
+    "$match":{
+        "competency_bundle" : {$in:["Technical","Tactical"]}
+    },
+},
+    {
+    "$group": {"competency_bundle":"$competency_bundle"}
+    }
+        
+    
+    ])
+
+
+    db.getCollection('competency_bundle_data').aggregate([
+{ 
+    "$match":{
+        "competency_bundle" : {$in:["Technical","Tactical"]},
+        "default_weight":{ $gt: 0},
+        "u12boys_weight":{ $gt: 0}
+    },
+},
+    {
+    "$group": {_id:{"competency_bundle":"$competency_bundle"},
+        "myCount": { "$sum": 1 },
+        "values":{"$push":{
+            "competency":"$competency",
+             "competency_bundle":"$competency_bundle",
+"default_weight":"$default_weight",
+"u12boys_weight":"$u12boys_weight",   
+   "u12girls_weight":"$u12girls_weight",
+   "u14boys_weight":"$u14boys_weight","u14girls_weight":"$u14girls_weight","u16boys_weight":"$u16boys_weight",     "u16girls_weight":"$u16girls_weight",     "u18boys_weight":"$u18boys_weight",            
+            }}} }
+    ])
