@@ -10,7 +10,7 @@
     "server": "nodemon src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "node src/server/index.js",
-    "heroku-postbuild":"NPM_CONFIG_PRODUCTION=false npm install && npm run build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +40,7 @@
     "@mui/icons-material": "^5.2.0",
     "@mui/material": "^5.1.0",
     "@mui/styled-engine-sc": "^5.1.0",
+    "@mui/styles": "^5.2.3",
     "axios": "^0.24.0",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^5.0.1",

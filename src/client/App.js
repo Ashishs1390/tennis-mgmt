@@ -10,6 +10,7 @@ import PlayerRegistration from './components/registration/registartion/registart
 import VideoPlayerContainer from './components/youtube-player/player-container';
 import StrockAnalysisList from './components/strock-analysis-list/strock-analysis-list';
 import CompareLibrary from './components/compare-library/compare-library';
+import CompetancyRating from './components/competancy_rating/competancy_rating';
 import Cookies from 'js-cookie';
 
 
@@ -33,6 +34,9 @@ function App() {
             <Route path="video/:from" element={isLoggedIn ? <VideoPlayerContainer/>:<Navigate to="/"></Navigate>}></Route>
             <Route path="strockanalysislist" element={isLoggedIn ?<StrockAnalysisList/> :<Navigate to="/"></Navigate>}></Route>
             <Route path="comparelibrary" element={isLoggedIn ?<CompareLibrary/> :<Navigate to="/"></Navigate>}></Route>
+            {/* <Route path="competancyrating" element={ isLoggedIn ? <CompetancyRating />:<Navigate to="/"></Navigate>}></Route> */}
+            <Route path="cc" element={ <CompetancyRating /> }></Route>
+            
             <Route path="*" element = {<PageNotFound/>}></Route>
 
          

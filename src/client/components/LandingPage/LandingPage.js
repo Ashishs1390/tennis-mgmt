@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react';
-import Login from './../login/Login';
+import Login from '../login/Login';
 import { connect } from "react-redux";
 import {useNavigate,Link} from "react-router-dom";
 import {fetchDetails } from "./../../redux/index";
