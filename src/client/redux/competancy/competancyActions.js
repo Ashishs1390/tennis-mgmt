@@ -18,7 +18,8 @@ export const fetchCompetancySuccess =(data) =>{
   export const getCompetancy = () =>{
     return async (dispatch) =>{
       console.log("-----------getCompetancy-------------")
-      let response = await get("/api/tennismgmt/competancy/",{"current_level":"u12boys"});
+      const current_level = localStorage.getItem('current_level');
+      let response = await get("/api/tennismgmt/competancy/",{"current_level":current_level});
       console.log("-------response----------")
       console.log(response.data.data);
       if(response.error == false){

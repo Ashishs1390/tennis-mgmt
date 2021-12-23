@@ -25,7 +25,10 @@ function Login(props) {
     axios
       .post(`/api/tennismgmt/login/${role}`, { ...fields })
       .then((response) => {
+        console.log("11111111111111111111")
+        console.log(response.data.current_level)
         onAuth(true);
+        localStorage.setItem('current_level', response.data.current_level);
         navigate("/landingpage");
         // handle success
       })
