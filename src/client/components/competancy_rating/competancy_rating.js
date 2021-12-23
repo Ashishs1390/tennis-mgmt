@@ -1,9 +1,13 @@
 import * as React from "react";
 import { useEffect } from "react";
-import Competancy from "./competancy";
+import ItnComprtancy from "./itn_competancy";
+
 function CompetancyRating(props) {
     return (
-        <Competancy />
+        [1, 2, 3].map((x) => (
+            <ItnComprtancy />
+          ))
+        
     );
 }
 

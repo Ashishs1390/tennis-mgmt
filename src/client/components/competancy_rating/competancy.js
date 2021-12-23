@@ -1,6 +1,5 @@
 import * as React from "react";
 import { makeStyles } from '@mui/styles';
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
@@ -14,15 +13,14 @@ const useStyles = makeStyles({
 export default function Competancy(props) {
     const classes = useStyles();
     return (
-        <>
-            <ListItem
+          <ListItem
                 alignItems="flex-start"
                 secondaryAction={
                   <Rating/>
                 }
               >
                 <ListItemText
-                   primary="Question 1:"
+                   primary={`Question ${props.questionNo}:`}
                   secondary={<p style={{ fontStyle: "italic", margin: 0 }}>
                     <Typography
                         sx={{ display: "inline" }}
@@ -44,7 +42,6 @@ export default function Competancy(props) {
 
                   <Divider variant="inset" component="li" />
                   
-              </ListItem>
-        </>
+          </ListItem>
     )
 }
