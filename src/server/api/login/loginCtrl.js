@@ -9,7 +9,7 @@ router.route('/:role').post(async(req,res,next)=>{
     console.log(req.body);
     const {email,password} = req.body;
     const {role} = req.params;
-    const userDetails = await basicInformation.find({email:email,role:role},{email:1,password:1,_id:0});
+    const userDetails = await basicInformation.find({email:email,role:role},{current_level:1,email:1,password:1,_id:0});
     console.log(userDetails); 
 
     if(userDetails.length == 0){
@@ -24,14 +24,16 @@ router.route('/:role').post(async(req,res,next)=>{
             });
             console.log(jsontoken)
             res.cookie('token', jsontoken);
+            // res.cookie('itn_level',)
             res.json({
                 message:"login successfully",
-                token:jsontoken
+                token:jsontoken,
+                current_level:userDetails[0].current_level 
             }); 
         }else{
             res.status(404).send({
                 message:"Invalid username or password",
-                status:404
+                status:404,
             });
         }
 

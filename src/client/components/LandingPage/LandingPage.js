@@ -7,9 +7,7 @@ import {fetchDetails } from "./../../redux/index";
 
 
 function LandingPage(props){
-
-
-
+console.log(props);
   useEffect(()=>{
     props.fetchDetails();
   },[])
@@ -42,7 +40,10 @@ function LandingPage(props){
 }
 const mapStateToProps = (state) => {
   console.log(state)
-return state;
+
+return {
+  userInfo:state.getData
+};
 };
 
 const mapDispatchToProps = (dispatch) => {
