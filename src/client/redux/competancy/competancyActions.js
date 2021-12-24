@@ -1,9 +1,16 @@
-import {FETCH_INITIAL_COMPETANCY_SUCESS,FETCH_INITIAL_COMPETANCY_FAILURE} from './competancyActionTypes'
+import {FETCH_INITIAL_COMPETANCY_SUCESS,FETCH_INITIAL_COMPETANCY_FAILURE, UPDATE_COMPETANCY_WEIGHT} from './competancyActionTypes'
 import { get } from '../../api/axios.api';
 
 export const fetchCompetancySuccess =(data) =>{
     return {
       type:FETCH_INITIAL_COMPETANCY_SUCESS,
+      payload:data
+    }
+  }
+
+  export const updateCompetancyWeight =(data) =>{
+    return {
+      type: UPDATE_COMPETANCY_WEIGHT,
       payload:data
     }
   }

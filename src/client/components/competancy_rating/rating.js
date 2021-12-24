@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import Button from '@mui/material/Button';
 import { makeStyles } from '@mui/styles';
 
@@ -11,40 +12,24 @@ const useStyles = makeStyles({
 
 export default function Rating(props) {
     const classes = useStyles();
+    const {updateRating, assigned_weight} = props;
+    const [currentWeight,  setCurrentWeight] = useState((+assigned_weight));
+    const updateWeight = (i) => {
+        setCurrentWeight(i);
+        setTimeout(() => {
+            updateRating(i);
+        }, 500);
+    };
     return (
-        <>
             <div>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    1
-                </Button>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    2
-                </Button>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    3
-                </Button>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    4
-                </Button>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    5
-                </Button>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    6
-                </Button>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    7
-                </Button>
-                <Button variant="contained" size="small" className={classes.root}>
-                    8
-                </Button>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    9
-                </Button>
-                <Button variant="outlined" size="small" className={classes.root}>
-                    10
-                </Button>
+                {
+                    new Array(10).fill(1).map((x ,i)=> {
+                        return (
+                        <Button key={i+1} variant={currentWeight === (i+1) ? "contained" : "outlined" } size="small" className={classes.root} onClick={() => {updateWeight(i+1)}}>
+                            {i + 1 }
+                        </Button>)
+                    })
+                }
             </div>
-        </>
     )
 }
