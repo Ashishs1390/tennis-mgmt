@@ -8,8 +8,9 @@ const useStyles = makeStyles({
   },
 });
 
-function ItnComprtancy() {
+function BundelCompetancy(props) {
   const classes = useStyles();
+  const {competency_bundle, values} = props;
   return (
     <div>
       <Typography
@@ -19,13 +20,13 @@ function ItnComprtancy() {
         color="text.primary"
         className={classes.title}
       >
-        Physical
+        {competency_bundle}
       </Typography>
-      {[1, 2, 3, 4, 5].map((x) => (
-        <Competancy questionNo={x} />
-      ))}
+      {(values && values.length > 0) ? [...values].map((x, i) => (
+        <Competancy key={x.competency} questionNo={i+1} {...x}/>
+      )) : <p> No data available</p>}
     </div>
   );
 }
 
-export default ItnComprtancy;
+export default BundelCompetancy;

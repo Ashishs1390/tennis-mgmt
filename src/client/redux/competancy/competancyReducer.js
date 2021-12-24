@@ -13,11 +13,13 @@ export const initalCompetnacyReducer = (state = initalCompetnacyState,action)=>{
 
         case FETCH_INITIAL_COMPETANCY_SUCESS:
             return {
+                ...state,
                 competancyData:action.payload,
                 competancyError:{}
             }
         case FETCH_INITIAL_COMPETANCY_FAILURE:
             return {
+                ...state,
                 competancyData:[],
                 competancyError:{...action.payload}
             } 

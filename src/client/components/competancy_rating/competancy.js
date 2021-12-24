@@ -28,7 +28,7 @@ export default function Competancy(props) {
                         variant="body2"
                         color="text.primary"
                       >
-                       Psychology analysis of the match 
+                       {props.competency} 
                       </Typography>
                        <Typography
                          sx={{ display: "inline" }}

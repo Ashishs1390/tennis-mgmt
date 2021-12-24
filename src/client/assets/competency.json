@@ -1,0 +1,184 @@
+{
+    "data": [{
+        "values": [
+        {
+            "competency": "Patterns",
+            "assigned_weight": 0
+        }, {
+            "competency": "Placement",
+            "assigned_weight": 0
+        }, {
+            "competency": "Consistency",
+            "assigned_weight": 0
+        }, {
+            "competency": "Spins",
+            "assigned_weight": 0
+        }, {
+            "competency": "Power",
+            "assigned_weight": 0
+        }, {
+            "competency": "Depth",
+            "assigned_weight": 0
+        }, {
+            "competency": "Shot Selection",
+            "assigned_weight": 0
+        }, {
+            "competency": "Anticipation",
+            "assigned_weight": 0
+        }, {
+            "competency": "Decision Making",
+            "assigned_weight": 0
+        }, {
+            "competency": "Phases of Play",
+            "assigned_weight": 0
+        }, {
+            "competency": "Zones of Play",
+            "assigned_weight": 0
+        }, {
+            "competency": "Ability to combine shots to win points",
+            "assigned_weight": 0
+        }, {
+            "competency": "Ability to use the opponent's entire court",
+            "assigned_weight": 0
+        }, {
+            "competency": "Neutralizing and defensive abilities",
+            "assigned_weight": 0
+        }, {
+            "competency": "Ability to combine shots to end points at the net",
+            "assigned_weight": 0
+        }, {
+            "competency": "Attacking abilities from the backcourt",
+            "assigned_weight": 0
+        }, {
+            "competency": "Takes initiative in points situation",
+            "assigned_weight": 0
+        }, {
+            "competency": "Anticipation skills",
+            "assigned_weight": 0
+        }, {
+            "competency": "Court sense, feel for the game",
+            "assigned_weight": 0
+        }, {
+            "competency": "Anticipation skills",
+            "assigned_weight": 0
+        }, {
+            "competency": "Use of Weapons",
+            "assigned_weight": 0
+        }],
+        "competency_bundle": "Tactical",
+        "load_date": "2021-12-23",
+        "itn_level": "u12boys"
+    }, {
+        "values": [{
+            "competency": "The desire to get better, to work hard/Attitude",
+            "assigned_weight": 0
+        }, {
+            "competency": "Enjoyment of training",
+            "assigned_weight": 0
+        }, {
+            "competency": "Concentrating Effectively",
+            "assigned_weight": 0
+        }, {
+            "competency": "Maintain positive attitude while competing/training",
+            "assigned_weight": 0
+        }, {
+            "competency": "Perseverance, determination",
+            "assigned_weight": 0
+        }, {
+            "competency": "Emotion Management",
+            "assigned_weight": 0
+        }, {
+            "competency": "Self-Discipline",
+            "assigned_weight": 0
+        }, {
+            "competency": "Ability to rise to the occasion",
+            "assigned_weight": 0
+        }, {
+            "competency": "Self-Confidence",
+            "assigned_weight": 0
+        }, {
+            "competency": "Visualization",
+            "assigned_weight": 0
+        }, {
+            "competency": "Competition Readiness",
+            "assigned_weight": 0
+        }, {
+            "competency": "Psychological analysis of match",
+            "assigned_weight": 0
+        }, {
+            "competency": "Able to play longer points",
+            "assigned_weight": 0
+        }, {
+            "competency": "Family Support",
+            "assigned_weight": 0
+        }],
+        "competency_bundle": "Mental-Emotional",
+        "load_date": "2021-12-23",
+        "itn_level": "u12boys"
+    }, {
+        "values": [{
+            "competency": "Developing Weapons",
+            "assigned_weight": 0
+        }, {
+            "competency": "Developing Game Styles",
+            "assigned_weight": 0
+        }, {
+            "competency": "Movemenet & Footwork",
+            "assigned_weight": 0
+        }, {
+            "competency": "Ball Control",
+            "assigned_weight": 0
+        }, {
+            "competency": "Reception Skills",
+            "assigned_weight": 0
+        }, {
+            "competency": "Forehand",
+            "assigned_weight": 0
+        }, {
+            "competency": "Backhand",
+            "assigned_weight": 0
+        }, {
+            "competency": "1st Serve",
+            "assigned_weight": 0
+        }, {
+            "competency": "2nd Serve",
+            "assigned_weight": 0
+        }, {
+            "competency": "Return of 1st Serve",
+            "assigned_weight": 0
+        }, {
+            "competency": "Return of 2nd Serve",
+            "assigned_weight": 0
+        }, {
+            "competency": "FH Volley",
+            "assigned_weight": 0
+        }, {
+            "competency": "BH Volley",
+            "assigned_weight": 0
+        }, {
+            "competency": "Overhead",
+            "assigned_weight": 0
+        }, {
+            "competency": "FH Approach Shot",
+            "assigned_weight": 0
+        }, {
+            "competency": "BH Approach Shot",
+            "assigned_weight": 0
+        }, {
+            "competency": "Lobs",
+            "assigned_weight": 0
+        }, {
+            "competency": "BH Slice",
+            "assigned_weight": 0
+        }, {
+            "competency": "Speed of Ball",
+            "assigned_weight": 0
+        }, {
+            "competency": "Inside Out Forehand",
+            "assigned_weight": 0
+        }],
+        "competency_bundle": "Technical",
+        "load_date": "2021-12-23",
+        "itn_level": "u12boys"
+    }]
+}
