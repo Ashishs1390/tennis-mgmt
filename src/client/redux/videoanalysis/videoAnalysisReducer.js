@@ -99,11 +99,13 @@ export const initalCompareReducer = (state = initalCompareState,action)=>{
 
         case FETCH_VIDEO_COMPARE_SUCESS:
             return {
+                ...state,
                 videoCompare:action.payload,
                 error:{}
             }
         case FETCH_VIDEO_COMPARE_FAILURE:
             return {
+                ...state,
                 videoData:[],
                 error:{...action.payload}
             } 
