@@ -12,15 +12,20 @@ const useStyles = makeStyles({
 
 export default function Competancy(props) {
     const classes = useStyles();
+    const {updateCompetancyRating, questionNo, competency} = props;
+    const updateRating = (i) => {
+      updateCompetancyRating(i);
+    }
+
     return (
           <ListItem
                 alignItems="flex-start"
                 secondaryAction={
-                  <Rating/>
+                  <Rating {...props} updateRating={updateRating}/>
                 }
               >
                 <ListItemText
-                   primary={`Question ${props.questionNo}:`}
+                   primary={`Question ${questionNo}:`}
                   secondary={<p style={{ fontStyle: "italic", margin: 0 }}>
                     <Typography
                         sx={{ display: "inline" }}
@@ -28,7 +33,7 @@ export default function Competancy(props) {
                         variant="body2"
                         color="text.primary"
                       >
-                       {props.competency} 
+                       {competency} 
                       </Typography>
                        <Typography
                          sx={{ display: "inline" }}
