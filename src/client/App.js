@@ -35,7 +35,7 @@ function App() {
             <Route path="strockanalysislist" element={isLoggedIn ?<StrockAnalysisList/> :<Navigate to="/"></Navigate>}></Route>
             <Route path="comparelibrary" element={isLoggedIn ?<CompareLibrary/> :<Navigate to="/"></Navigate>}></Route>
             <Route path="competancyrating" element={ isLoggedIn ? <CompetancyRating />:<Navigate to="/"></Navigate>}></Route>
-            <Route path="cc" element={ <CompetancyRating /> }></Route>
+            <Route path="cc" element={  isLoggedIn ?  <CompetancyRating />:<Navigate to="/"></Navigate>}></Route>
             
             <Route path="*" element = {<PageNotFound/>}></Route>
 
