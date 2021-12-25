@@ -1,28 +1,41 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import BundelCompetancy from "./bundel_competancy";
-import { getCompetancy, updateCompetancyWeight } from "./../../redux/index";
+import { getCompetancy, updateCompetancyWeight, saveCompetancy } from "./../../redux/index";
 import { connect } from "react-redux";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 function CompetancyRating(props) {
-  const { getCompetancy, updateCompetancyWeight } = props;
+  const { getCompetancy, updateCompetancyWeight, saveCompetancy } = props;
   const [competancyData, SetCompetancyData] = useState([]);
+  const [competancyDataHandel, SetCompetancyDataHandel] = useState([]);
   const updateBundelCompetancyRating = (i, j, weight) => {
-    updateCompetancyWeight(i, j, weight);
+    //updateCompetancyWeight(i, j, weight);
+    const data = competancyData;
+    data[i].values[j].assigned_weight = weight;
+    SetCompetancyData(data);
   };
   useEffect(() => {
     getCompetancy();
   }, []);
   useEffect(() => {
+    if (competancyDataHandel.length <= 0) {
+      SetCompetancyDataHandel(props.competancyData);
+    }
     SetCompetancyData(props.competancyData);
   }, [props.competancyData]);
   const onSumbit = () => {
     let flag = true;
     competancyData.forEach(x => {
-      flag = x.values.filter( y => x.assigned_weight === 0).length <= 0 && flag;
+      flag = x.values.filter( y => y.assigned_weight === 0).length <= 0 && flag;
     });
     if (flag) {
+      saveCompetancy(competancyData.map(x => {
+        return {
+          ...x,
+          assessment_date: new Date().toISOString()
+        }
+      }));
       alert('submit');
     } else {
       alert('error');
@@ -30,8 +43,8 @@ function CompetancyRating(props) {
   }
   return (
     <div>
-      {competancyData && competancyData.length > 0 ? (
-        [...competancyData].map((x, i) => (
+      {competancyDataHandel && competancyDataHandel.length > 0 ? (
+        [...competancyDataHandel].map((x, i) => (
           <BundelCompetancy
             {...x}
             key={x.competency_bundle}
@@ -70,6 +83,7 @@ const mapDispatchToProps = (dispatch) => {
     getCompetancy: () => dispatch(getCompetancy()),
     updateCompetancyWeight: (bundel, competancy, weight) =>
       dispatch(updateCompetancyWeight({ bundel, competancy, weight })),
+    saveCompetancy: (data) => dispatch(saveCompetancy({ data })),
   };
 };
 
