@@ -1,5 +1,5 @@
-import {FETCH_INITIAL_COMPETANCY_SUCESS,FETCH_INITIAL_COMPETANCY_FAILURE, UPDATE_COMPETANCY_WEIGHT} from './competancyActionTypes'
-import { get } from '../../api/axios.api';
+import {FETCH_INITIAL_COMPETANCY_SUCESS,FETCH_INITIAL_COMPETANCY_FAILURE, UPDATE_COMPETANCY_WEIGHT, SAVE_COMPETANCY_SUCESS, SAVE_COMPETANCY_FAILURE} from './competancyActionTypes'
+import { get, post } from '../../api/axios.api';
 
 export const fetchCompetancySuccess =(data) =>{
     return {
@@ -34,6 +34,36 @@ export const fetchCompetancySuccess =(data) =>{
       }else{
           dispatch(fetchCompetancyFailure({errMsg:"Error in fetching videos"}));
   
+      }
+  
+    }
+  }
+
+  export const saveCompetancySuccsess =(data) =>{
+    return {
+      type: SAVE_COMPETANCY_SUCESS,
+      payload:data
+    }
+  }
+
+  export const saveCompetancyFailure =(error) =>{
+    return {
+      type: SAVE_COMPETANCY_FAILURE,
+      payload:error
+    }
+  }
+
+  export const saveCompetancy = (data) =>{
+    return async (dispatch) =>{
+      console.log("-----------saveCompetancy-------------")
+      // const current_level = localStorage.getItem('current_level');
+      let response = await post("/api/tennismgmt/competancy/",{...data});
+      console.log("-------response----------")
+      console.log(response.data.data);
+      if(response.error == false){
+          dispatch(saveCompetancySuccsess([...response.data.data]));
+      }else{
+          dispatch(saveCompetancyFailure({errMsg:"Error in saving competency"}));
       }
   
     }

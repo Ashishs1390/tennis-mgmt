@@ -13,12 +13,10 @@ const useStyles = makeStyles({
 export default function Rating(props) {
     const classes = useStyles();
     const {updateRating, assigned_weight} = props;
-    const [currentWeight,  setCurrentWeight] = useState((+assigned_weight));
+    const [currentWeight,  setCurrentWeight] = useState(assigned_weight);
     const updateWeight = (i) => {
         setCurrentWeight(i);
-        setTimeout(() => {
-            updateRating(i);
-        }, 500);
+        updateRating(i);
     };
     return (
             <div>
