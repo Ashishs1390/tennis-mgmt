@@ -119,3 +119,13 @@ db.getCollection('competency_bundle_metadata').aggregate([
    "u14boys_weight":"$u14boys_weight","u14girls_weight":"$u14girls_weight","u16boys_weight":"$u16boys_weight",     "u16girls_weight":"$u16girls_weight",     "u18boys_weight":"$u18boys_weight",            
             }}} }
     ])
+
+
+
+
+how much history need to be saved 
+history delete
+
+data should be seggrated by itn_level or userlevel
+
+
