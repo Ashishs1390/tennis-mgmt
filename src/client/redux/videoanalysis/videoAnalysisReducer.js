@@ -29,7 +29,6 @@ export const reducer = (state = initalVideoAnalysisState, action)=>{
             }
 
         case FETCH_VIDEO_ANALYSIS_SUCCESS:
-            console.log('--->', action.payload);
             return {
                 ...state,
                 data: action.payload.frames,

@@ -80,8 +80,6 @@ export const validateEmailReducer = (state = initialValidationState,action)=>{
 }
 
 export const initalFetchReducer = (state = initalFetchState,action)=>{
-    console.log(initalFetchReducer)
-    console.log(action.payload)
     switch(action.type){
         
         case FETCH_BASICINFO_REQUEST: 
