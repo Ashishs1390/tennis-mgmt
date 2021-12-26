@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
-import { emailValidation,fetchDetails } from "./../../redux/index";
-import {put} from "./../../api/axios.api";
+import { emailValidation,fetchDetails } from "./../../../redux/index";
+import {put} from "./../../../api/axios.api";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import "./userprofile.scss";
 import TextField from '@mui/material/TextField';
 import { useParams } from "react-router-dom";
-import updateValue from "../../components/input/updateValue";
-import Input from "../input/input.control";
+import updateValue from "../../common/input/updateValue";
+import Input from "../../common/input/input.control";
 import {useNavigate,Link} from "react-router-dom";
 
-import checkValidity from "../input/validations";
+import checkValidity from "../../common/input/validations";
 import Cookies from 'js-cookie';
 
 

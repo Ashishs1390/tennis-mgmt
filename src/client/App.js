@@ -1,49 +1,74 @@
-import React,{useState} from "react";
-import {BrowserRouter,Routes,Route,Navigate} from "react-router-dom";
-import {Provider} from 'react-redux';
-import Login from "./components/login/Login";
-import store from './redux/store';
-import LandingPage from './components/LandingPage/LandingPage'
-import UserProfile from './components/UserProfile/UserProfile';
-// import PlayerRegistration from "./components/registration/PlayerRegistration/PlayerRegistration";
-import PlayerRegistration from './components/registration/registartion/registartion';
-import VideoPlayerContainer from './components/youtube-player/player-container';
-import StrockAnalysisList from './components/strock-analysis-list/strock-analysis-list';
-import CompareLibrary from './components/compare-library/compare-library';
-import CompetancyRating from './components/competancy_rating/competancy_rating';
-import Cookies from 'js-cookie';
-
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Provider } from "react-redux";
+import Login from "./components/global/login/Login";
+import store from "./redux/store";
+import LandingPage from "./components/player-coach/LandingPage/LandingPage";
+import UserProfile from "./components/player-coach/UserProfile/UserProfile";
+import PlayerRegistration from "./components/global/registration/registartion/registartion";
+import VideoPlayerContainer from "./components/player-coach/youtube-player/player-container";
+import StrockAnalysisList from "./components/player-coach/strock-analysis-list/strock-analysis-list";
+import CompareLibrary from "./components/player-coach/compare-library/compare-library";
+import CompetancyRating from "./components/player-coach/competancy_rating/competancy_rating";
+import Cookies from "js-cookie";
 
 function App() {
-
-  const [isLoggedIn,setISLoggedIn] = useState(Cookies.get("token") == null ? false:true)
-  console.log(isLoggedIn)
+  const [isLoggedIn, setISLoggedIn] = useState(
+    Cookies.get("token") == null ? false : true
+  );
+  console.log(isLoggedIn);
 
   return (
     <ErrorBoundary>
-    <Provider store = {store}>
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<Login onAuth = {setISLoggedIn}/>}> </Route>
-            <Route path="login" element={<Login onAuth = {setISLoggedIn}/>}> </Route>
-            <Route path="registration/:role" element = {<PlayerRegistration/>}></Route>
+      <Provider store={store}>
+        <div className="App">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Login onAuth={setISLoggedIn} />}>
+                {" "}
+              </Route>
+              <Route path="login" element={<Login onAuth={setISLoggedIn} />}>
+                {" "}
+              </Route>
+              <Route
+                path="registration/:role"
+                element={<PlayerRegistration />}
+              ></Route>
+              <Route
+                path="landingpage"
+                element={
+                  isLoggedIn ? <LandingPage /> : <Navigate to="/"></Navigate>
+                }
+              ></Route>
 
-            <Route path="landingpage" element={isLoggedIn ?<LandingPage/> :<Navigate to="/"></Navigate>}></Route>
-            <Route path="profilepage" element={isLoggedIn ?<UserProfile/> :<Navigate to="/"></Navigate>}></Route>
-            <Route path="video/:from" element={isLoggedIn ? <VideoPlayerContainer/>:<Navigate to="/"></Navigate>}></Route>
-            <Route path="strockanalysislist" element={isLoggedIn ?<StrockAnalysisList/> :<Navigate to="/"></Navigate>}></Route>
-            <Route path="comparelibrary" element={isLoggedIn ?<CompareLibrary/> :<Navigate to="/"></Navigate>}></Route>
-            <Route path="competancyrating" element={ isLoggedIn ? <CompetancyRating />:<Navigate to="/"></Navigate>}></Route>
-            <Route path="assessments" element={  isLoggedIn ?  <CompetancyRating />:<Navigate to="/"></Navigate>}></Route>
-            
-            <Route path="*" element = {<PageNotFound/>}></Route>
+              <Route path="/" element={<Login onAuth={setISLoggedIn} />}>
+                {" "}
+              </Route>
+              <Route path="login" element={<Login onAuth={setISLoggedIn} />}>
+                {" "}
+              </Route>
+              <Route
+                path="registration/:role"
+                element={<PlayerRegistration />}
+              ></Route>
+              <Route
+                path="user/:role"
+                element={
+                  isLoggedIn ? <LandingPage /> : <Navigate to="/"></Navigate>
+                }
+              >
+                <Route path="profilepage" element={<UserProfile />}></Route>
+                <Route path="video/:from" element={<VideoPlayerContainer />}></Route>
+                <Route path="strockanalysislist" element={<StrockAnalysisList />}></Route>
+                <Route path="comparelibrary" element={ <CompareLibrary /> }></Route>
+                <Route path="assessments" element={ <CompetancyRating /> }></Route>
+              </Route>
 
-         
-        </Routes>
-      </BrowserRouter>
-    </div>
-    </Provider>
+              <Route path="*" element={<PageNotFound />}></Route>
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </Provider>
     </ErrorBoundary>
   );
 }
@@ -57,13 +82,13 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    console.log(error)
+    console.log(error);
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
-    console.log(errorInfo)
+    console.log(errorInfo);
     // You can also log the error to an error reporting service
     // logErrorToMyService(error, errorInfo);
   }
@@ -74,15 +99,12 @@ class ErrorBoundary extends React.Component {
       return <h1>Something went wrong.</h1>;
     }
 
-    return this.props.children; 
+    return this.props.children;
   }
 }
 
-
-function PageNotFound(){
-  return <div>Page not found</div>
+function PageNotFound() {
+  return <div>Page not found</div>;
 }
 
-function PrivateRoute(){
-
-}
+function PrivateRoute() {}
