@@ -126,6 +126,27 @@ db.getCollection('competency_bundle_metadata').aggregate([
 how much history need to be saved 
 history delete
 
-data should be seggrated by itn_level or userlevel
+data will get used in someother page rather than pdp. yes/no
 
+data should be seggrated by itn_level or userlevel 
+
+in one day how many assessment.
+should i keep all the assessment data. or top 3 assessment data.
+
+assessment should be renewed when the user stop the assessment in between.
+
+
+
+
+    handling on weight change by admin.
+
+
+ assessment_date: 
+ "competency_bundle": "Tactical",
+        "load_date": "2021-12-20",
+        "itn_level": "u12boys",
+
+   "competency": "Use of Weapons",
+                "assigned_weight": 0,
+                "u12boys_weight": 10//sorting number
 
