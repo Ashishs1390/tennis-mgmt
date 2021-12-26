@@ -28,7 +28,6 @@ export const postDetailsSuccess = (data) =>{
 }
 
 const postUsersFailure = (error) =>{
-  console.log(error)
   return {
       type:POST_BASICINFO_FAILURE,
       payload:error
@@ -36,7 +35,6 @@ const postUsersFailure = (error) =>{
 }
 
 export const postDetails = (fields) => {
-  console.log(fields)
   return (dispatch) => {
     dispatch(postDetailsRequest);
     axios
@@ -74,7 +72,6 @@ export const emailValidationSuccess = (data) =>{
 }
 
 const emailValidationFailure = (error) =>{
-  console.log(error)
   return {
       type:EMAIL_VALIDATION_FAILURE,
       payload:error
@@ -82,7 +79,6 @@ const emailValidationFailure = (error) =>{
 }
 
 export const emailValidation = (fields) => {
-  console.log(fields)
   return (dispatch) => {
     dispatch(emailValidationRequest);
     axios
@@ -122,7 +118,6 @@ export const fetchDetailsSuccess = (data) =>{
 }
 
 const fetchUsersFailure = (error) =>{
-  console.log(error)
   return {
       type:FETCH_BASICINFO_FAILURE,
       payload:error
