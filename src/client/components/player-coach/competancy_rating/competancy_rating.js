@@ -5,12 +5,12 @@ import {
   getCompetancy,
   updateCompetancyWeight,
   saveCompetancy,
-} from "./../../redux/index";
+} from "./../../../redux/index";
 import { connect } from "react-redux";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Loading from "./../loading/loading";
+import Loading from "../../common/loading/loading";
 import './competancy.scss';
 
 function CompetancyRating(props) {

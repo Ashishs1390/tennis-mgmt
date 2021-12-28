@@ -9,8 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { connect } from "react-redux";
-import { selectVideoAnalysis } from "../../redux/videoanalysis/videoAnalysisActions";
-import {getCompareVideo} from "./../../redux/index"
+import { selectVideoAnalysis } from "../../../redux/videoanalysis/videoAnalysisActions";
+import {getCompareVideo} from "./../../../redux/index"
 import VideoPlayerContainer from '../youtube-player/player-container';
 function CompareLibrary(props) {
     const [compareVideo, setCompareVideo]  = useState('');

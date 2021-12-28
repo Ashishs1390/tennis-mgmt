@@ -29,7 +29,7 @@ function Login(props) {
         console.log(response.data.current_level)
         onAuth(true);
         localStorage.setItem('current_level', response.data.current_level);
-        navigate("/landingpage");
+        navigate(`/user/${role}`);
         // handle success
       })
       .catch((error) => {

@@ -1,10 +1,10 @@
 import React, { useState, useEffect,useRef } from "react";
 import YoutubeComponent from './youtube.component';
 import { connect } from "react-redux";
-import {post} from "./../../api/axios.api";
+import {post} from "./../../../api/axios.api";
 import "./player.scss";
 import { useLocation,useParams } from "react-router-dom";
-import {fetchVideo}  from "./../../redux/index";
+import {fetchVideo}  from "./../../../redux/index";
 
 function VideoPlayerContainer(props) {
     console.log("------------VideoPlayerContainer------------")

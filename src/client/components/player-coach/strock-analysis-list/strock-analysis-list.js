@@ -20,9 +20,9 @@ import Button from "@mui/material/Button";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { connect } from "react-redux";
-import { getVideosForAnalysis, selectVideoAnalysis } from "../../redux/videoanalysis/videoAnalysisActions";
+import { getVideosForAnalysis, selectVideoAnalysis } from "../../../redux/videoanalysis/videoAnalysisActions";
 import { useNavigate } from "react-router-dom";
-import { SELECT_VIDEO_FOR_ANALYSIS } from "../../redux/videoanalysis/videoAnalysisActionsTypes";
+import { SELECT_VIDEO_FOR_ANALYSIS } from "../../../redux/videoanalysis/videoAnalysisActionsTypes";
 
 
 function AlignItemsList(props) {

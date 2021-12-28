@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
-import { postDetails, emailValidation } from "./../../../redux/index";
+import { postDetails, emailValidation } from "./../../../../redux/index";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import "./PlayerRegistation.scss";
 import { useParams } from "react-router-dom";
-import Input from "../../input/input.control";
-import checkValidity from "../../input/validations";
-import { get } from "../../../api/axios.api";
+import Input from "../../../common/input/input.control";
+import checkValidity from "../../../common/input/validations";
+import { get } from "../../../../api/axios.api";
 
 function PlayerRegistration(props) {
   console.log(props);
