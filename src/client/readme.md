@@ -154,8 +154,8 @@ assessment should be renewed when the user stop the assessment in between.
 
 
 
-
-                Player - Parent - Coach
+<!-- 
+Player - Parent           - Coach
 
 
 Parent can see only his kids information.
@@ -163,4 +163,91 @@ Parent login will redirect to kids profile.
 Players can select a coach.
 
 Player can himself change a coach and admin.
-Coach cannot select new kids.
+Coach cannot select new kids. -->
+
+
+on assessment page we need coach information
+
+without coach assessment?
+
+
+
+
+admin
+
+
+
+
+1.>
+Remove user_comp_list. -> direct competancy bundle data. ->itn_level
+
+2.>
+user assessment history unlimited
+
+3.>
+one collection. - no performance
+
+4.>
+assessment data will get used in someother page rather than pdp. yes/no - mightbe
+
+5.>
+assessment should be renewed when the user stop the assessment in between. -> no need to save data.
+
+
+
+"email":""
+"competency_bundle": "Mental-Emotional",
+        "load_date": "2021-12-20",  X
+        "itn_level": "u12boys",
+
+        values;[
+        [
+          {
+            placement,
+            assessment_date,
+            "assigned_weight": 0,
+             "u12boys_sort_weight": 10 - sorting
+          },{
+
+             placement,
+            assessment_date,
+            "assigned_weight": 0,
+             "u12boys_sort_weight": 10 - sorting
+          }
+        ],
+
+
+        ]
+
+
+Finalize// json data strcture
+{
+    "email":"fdsf@sdfdsf.com",
+    "itn_level": "u12boys",
+    "competency_bundles": [{
+        "competency_bundles": "Mental-Emotional",
+        "sort_position": 10,
+        "competences": [
+            {
+                "competences": "placement",
+                "sort_position": 10,
+                "weights": [
+                    {
+                        "assigned_weight": 8,
+                        "assemnetDate": "10/10/2021"
+                    },
+                    {
+                        "assigned_weight": 9,
+                        "assemnetDate": "09/10/2021"
+                    }
+                ]
+            }
+        ] 
+    }]
+}
+
+
+<!-- 
+landing page -a api call  -->
+
+asessment      playerdeployment

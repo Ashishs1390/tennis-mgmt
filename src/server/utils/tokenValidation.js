@@ -24,7 +24,8 @@ function checkToken(req,res,next){
                 });
             }else{
                 req.user = decoded.result;
-                console.log(req.user);
+                // console.log("-------------")
+                // console.log(req.user);
 
                 next();
             }
