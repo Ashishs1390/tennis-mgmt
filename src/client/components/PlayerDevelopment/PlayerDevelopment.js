@@ -7,24 +7,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import "./PlayerDevelopment.scss";
+import PlayerDevelopmentListItem from "./PlayerDevelopmentListItem";
 
 import { getCompetancy } from "./../../redux/index";
 import { connect } from "react-redux";
 
-function LinearProgressWithLabel(props) {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Box sx={{ width: "100%", mr: 1 }}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(
-          props.value
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+
 
 function PlayerDevelopment(props) {
   console.log(props);
@@ -63,14 +51,7 @@ function PlayerDevelopment(props) {
                   <List className = "SubCompetancyList">
                     {item.values.map((val, index) => {
                       return (
-                        <ListItem className="CompetancyListItem" key={val.competency+index}>
-                          <div>
-                            {val.competency}
-                            <Box sx={{ width: "100%" }}>
-                              <LinearProgressWithLabel value={parseInt(`${val.assigned_weight}0`)} />
-                            </Box>
-                          </div>
-                        </ListItem>
+                        <PlayerDevelopmentListItem val = {val} index = {index}></PlayerDevelopmentListItem>
                       );
                     })}
                   </List>
@@ -95,3 +76,4 @@ const mapStateToProps = (state) => {
 
 // export default PlayerDevelopment;
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerDevelopment);
+// https://github.com/mui-org/material-ui/issues/12858

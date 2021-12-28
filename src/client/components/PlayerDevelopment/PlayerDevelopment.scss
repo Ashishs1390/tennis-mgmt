@@ -1,5 +1,4 @@
 .CompetancyListItem{
-    // display: blo;
     flex-direction: column !important;
     flex-wrap: nowrap !important;
     align-items: stretch !important;
@@ -8,3 +7,9 @@
 .SubCompetancyList, .CompetancyBundleLabel{
     flex: 0 0 100%;
 }
+
+.red{
+    color: red !important;
+    background-color: red !important;
+}
+

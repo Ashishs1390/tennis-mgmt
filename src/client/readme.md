@@ -126,6 +126,8 @@ db.getCollection('competency_bundle_metadata').aggregate([
 how much history need to be saved 
 history delete
 
+--- all assessment
+
 data will get used in someother page rather than pdp. yes/no
 
 data should be seggrated by itn_level or userlevel 
@@ -150,3 +152,15 @@ assessment should be renewed when the user stop the assessment in between.
                 "assigned_weight": 0,
                 "u12boys_weight": 10//sorting number
 
+
+
+
+                Player - Parent - Coach
+
+
+Parent can see only his kids information.
+Parent login will redirect to kids profile.
+Players can select a coach.
+
+Player can himself change a coach and admin.
+Coach cannot select new kids.
