@@ -41,7 +41,7 @@ const Input = (props) => {
         inputElement = <div className={inputClasses.join(' ')}>
         {/* <InputLabel id="demo-simple-select-helper-label">Age</InputLabel> */}
         <Select
-          value={age}
+          value={props.value}
           onChange={props.changed}
           displayEmpty
         >

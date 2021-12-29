@@ -240,7 +240,6 @@ console.log(updatedData)
           <p>
             Registration Page <b>{bool}</b>
           </p>
-          <button onClick={emailValidate}>Call API</button>
           <Box
             className="fieldbox"
             component="form"

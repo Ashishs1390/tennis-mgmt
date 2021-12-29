@@ -42,7 +42,7 @@ export const postDetails = (fields) => {
       .then( (response)=> {
         console.log("sucess")
         // handle success
-        dispatch(postDetailsSuccess([...response.data.a]));
+        dispatch(postDetailsSuccess([...response.data]));
 
       })
       .catch( (error) =>{

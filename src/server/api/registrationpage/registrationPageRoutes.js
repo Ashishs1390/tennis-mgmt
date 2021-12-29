@@ -110,10 +110,10 @@ router.route('/:role').post(async(req,res,next)=>{
             // const insertIntoUserCollection = await userCompetancySchema.insertMany([...addOtherInfo]).catch((err)=>{
             //     console.log(err);
             // })
-            console.log(insertIntoUserCollection)
+            // console.log(insertIntoUserCollection)
             output.status = 200;
             output.msg = "Data inserted successfully..!!!";
-            respArr.push(output);
+            respArr.push(output._doc);
             res.status(200).send(respArr)
         }).catch((err)=>{
             console.log(err);

@@ -8,11 +8,14 @@ import { useParams } from "react-router-dom";
 import Input from "../../../common/input/input.control";
 import checkValidity from "../../../common/input/validations";
 import { get } from "../../../../api/axios.api";
+import { useNavigate, Link, Outlet } from "react-router-dom";
+
 
 function PlayerRegistration(props) {
+  const navigate = useNavigate();
   console.log(props);
   const {
-    data: { data, error },
+    registration: { data, error },
     postDetails,
     emailValidation
   } = props;
@@ -167,6 +170,12 @@ function PlayerRegistration(props) {
     });
   }, []);
 
+  useEffect(() => {
+    if(data.length > 0) {
+      navigate(`./../../user/${role}`); 
+    }
+  }, [data]);
+
   console.log("----------inputs---  -----------")
   console.log(inputs.registrationForm.formIsValid);
 
@@ -243,7 +252,6 @@ function PlayerRegistration(props) {
         <p>
           Registration Page <b>{bool}</b>
         </p>
-        <button onClick={emailValidate}>Call API</button>
         <Box
           className="fieldbox"
           component="form"

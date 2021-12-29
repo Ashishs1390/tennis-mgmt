@@ -7,7 +7,7 @@ import {initalCompetnacyReducer} from './competancy/competancyReducer'
 import {initalVideoReducer,initalCompareReducer} from './videoanalysis/videoAnalysisReducer'
 
 const rootReducer = combineReducers({
-    data:reducer,
+    registration:reducer,
     getData:initalFetchReducer,
     emailValidation: validateEmailReducer,
     videoAnalysis: videoAnalysisReducer,

@@ -36,11 +36,13 @@ export const reducer = (state = initialState,action)=>{
 
         case POST_BASICINFO_SUCCESS:
             return {
+                ...state,
                 data:action.payload,
                 error:{}
             }
         case POST_BASICINFO_FAILURE:
             return {
+                ...state,
                 data:[],
                 error:{...action.payload}
             } 
@@ -66,11 +68,13 @@ export const validateEmailReducer = (state = initialValidationState,action)=>{
 
         case EMAIL_VALIDATION_SUCCESS:
             return {
+                ...state,
                 data:action.payload,
                 error:{}
             }
         case EMAIL_VALIDATION_FAILURE:
             return {
+                ...state,
                 data:false,
                 error:{...action.payload}
             } 
@@ -89,11 +93,13 @@ export const initalFetchReducer = (state = initalFetchState,action)=>{
 
         case FETCH_BASICINFO_SUCCESS:
             return {
+                ...state,
                 data:action.payload,
                 error:{}
             }
         case FETCH_BASICINFO_FAILURE:
             return {
+                ...state,
                 data:[],
                 error:{...action.payload}
             } 
