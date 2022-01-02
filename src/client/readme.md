@@ -224,9 +224,12 @@ Finalize// json data strcture
 {
     "email":"fdsf@sdfdsf.com",
     "itn_level": "u12boys",
-    "competency_bundles": [{
+
+
+
+    "competency_bundles": [
+      {
         "competency_bundles": "Mental-Emotional",
-        "sort_position": 10,
         "competences": [
             {
                 "competences": "placement",
@@ -251,3 +254,95 @@ Finalize// json data strcture
 landing page -a api call  -->
 
 asessment      playerdeployment
+
+
+
+db.getCollection('users_competancy_list').find({})
+db.getCollection('users_competancy_list').aggregate([
+{
+        "$match":{
+            "email" : "degeadavid2@gmail.com",
+            "current_level" : "u12boys",
+            
+            }
+        },
+   {         
+        "$group":{
+                "_id":{
+                    "competency_bundle":"$competency_bundle",
+                    "assessment_date":"$assessment_date"
+                    },
+                    "data":{"$push":{
+                            "competency_bundle":"$competency_bundle",
+                          "assessment_date":"$assessment_date",
+                        "values":"$values"
+                        }}
+                    
+        }
+},{
+    
+    ""
+    
+}
+
+])
+
+
+db.getCollection('users_competancy_list').aggregate(
+[
+{
+        "$match":{
+            "email" : "degeadavid2@gmail.com",
+            "current_level" : "u12boys"
+            
+            }
+},
+{         
+        "$unwind":"$values"
+},{
+         "$group":{
+             "_id":{
+                 "competency_bundle" : "$competency_bundle",
+                 "current_level" : "$current_level",
+                 "values":"$values",
+                 "assessment_date":"$assessment_date"
+                 }
+                 
+             }
+},
+{
+    "$project":{
+        "_id":0,
+            "competency_bundle":"$_id.competency_bundle",
+        "current_level" : "$_id.current_level",
+                         "values":"$_id.values",
+        "assessment_date":"$assessment_date"
+                
+        }
+    
+    },
+    
+    {
+        "$group":{
+                "_id":{
+                    "competency_bundle":"$competency_bundle"
+                    },
+                "info":{"$push":{
+                    "values":"$values",
+                    "assessment_date":"$assessment_date"
+                    
+                    }}
+            
+        }
+    },{    
+    
+        
+        "$project":{
+            "_id":0,
+            "competency_bundle":"$_id.competency_bundle",
+            "info":"$info"
+            
+        }
+    }
+
+])

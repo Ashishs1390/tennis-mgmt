@@ -10,6 +10,7 @@ import VideoPlayerContainer from "./components/player-coach/youtube-player/playe
 import StrockAnalysisList from "./components/player-coach/strock-analysis-list/strock-analysis-list";
 import CompareLibrary from "./components/player-coach/compare-library/compare-library";
 import CompetancyRating from "./components/player-coach/competancy_rating/competancy_rating";
+import PlayerDevelopment from "./components/PlayerDevelopment/PlayerDevelopment";
 import Cookies from "js-cookie";
 
 function App() {
@@ -62,6 +63,8 @@ function App() {
                 <Route path="strockanalysislist" element={<StrockAnalysisList />}></Route>
                 <Route path="comparelibrary" element={ <CompareLibrary /> }></Route>
                 <Route path="assessments" element={ <CompetancyRating /> }></Route>
+                <Route path="playerdevelopment" element={ <PlayerDevelopment /> }></Route>
+                
               </Route>
 
               <Route path="*" element={<PageNotFound />}></Route>
