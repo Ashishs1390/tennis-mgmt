@@ -4,80 +4,7 @@ const competancymetadata = require("./../../models/competancymetadata");
 const competancyBundleSchema = require("./../../models/competencybundledata");
 
 router.route("/").get(async (req, res, next) => {
-  try {
-    let { current_level } = req.query;
-    current_level = current_level;
-    console.log(current_level);
-    const userEmail = req.user[0].email;
-    const itnWeights = `${current_level}_weight`;
-    const match = {
-      [itnWeights]: { $gte: 0 },
-    };
-    const group = {
-      _id: {
-        competency_bundle: "$competency_bundle",
-      },
-      values: {
-        $push: {
-          competency: "$competency",
-          assigned_weight: "$assigned_weight",
-          [itnWeights]: `$${itnWeights}`,
-        },
-      },
-    };
-    const project = {
-      _id: 0,
-      competency_bundle: "$_id.competency_bundle",
-
-      values: "$values",
-    };
-    let compentancyData = await competancyBundleSchema
-      .aggregate([
-        { $match: { ...match } },
-        { $group: { ...group } },
-        { $project: { ...project } },
-      ])
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(compentancyData);
-    if (compentancyData.length !== 0) {
-      compentancyData = JSON.parse(JSON.stringify(compentancyData));
-      let metaObj = await competancymetadata
-        .find({}, { _id: 0 })
-        .catch((err) => {
-          console.log(err);
-          res.status(504).send({
-            status: 504,
-            errMsg: "metadata for competancy collection is not ready",
-          });
-        });
-      metaObj = JSON.parse(JSON.stringify(metaObj));
-      const { itn_competancy_mapping } = metaObj[0];
-      const sortingArr = itn_competancy_mapping[current_level];
-      compentancyData = compentancyData
-        .map((item) => {
-          item.values.sort(
-            (a, b) => parseInt(b[itnWeights]) - parseInt(a[itnWeights])
-          );
-          var n = sortingArr.indexOf(item.competency_bundle);
-          return [n, item];
-        })
-        .sort()
-        .map(function (j) {
-          return j[1];
-        });
-
-      res.send([...compentancyData]);
-    } else {
-      res.status(404).send({
-        message: "no data",
-        status: 404,
-      });
-    }
-  } catch (err) {
-    console.log(err);
-  }
+  getCompetency(req, res);
 });
 
 router.route("/").post(async (req, res, next) => {
@@ -305,6 +232,96 @@ router.route("/assessment").get(async (req, res, next) => {
 });
 
 router.route("/latestassessment").get(async (req, res, next) => {
+});
+
+async function getCompetency(req, res) {
+  const { email } = req.user[0];
+  const competancyData = await getAllDates(email);
+  if (competancyData && competancyData.length > 0) {
+    return await getCompetencyLatest(req, res);
+  } else {
+    return await getCompetencyNew(req, res);
+  }
+}
+
+async function getCompetencyNew(req, res) {
+  try {
+    let { current_level } = req.query;
+    current_level = current_level;
+    console.log(current_level);
+    const userEmail = req.user[0].email;
+    const itnWeights = `${current_level}_weight`;
+    const match = {
+      [itnWeights]: { $gte: 0 },
+    };
+    const group = {
+      _id: {
+        competency_bundle: "$competency_bundle",
+      },
+      values: {
+        $push: {
+          competency: "$competency",
+          assigned_weight: "$assigned_weight",
+          [itnWeights]: `$${itnWeights}`,
+        },
+      },
+    };
+    const project = {
+      _id: 0,
+      competency_bundle: "$_id.competency_bundle",
+
+      values: "$values",
+    };
+    let compentancyData = await competancyBundleSchema
+      .aggregate([
+        { $match: { ...match } },
+        { $group: { ...group } },
+        { $project: { ...project } },
+      ])
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log(compentancyData);
+    if (compentancyData.length !== 0) {
+      compentancyData = JSON.parse(JSON.stringify(compentancyData));
+      let metaObj = await competancymetadata
+        .find({}, { _id: 0 })
+        .catch((err) => {
+          console.log(err);
+          res.status(504).send({
+            status: 504,
+            errMsg: "metadata for competancy collection is not ready",
+          });
+        });
+      metaObj = JSON.parse(JSON.stringify(metaObj));
+      const { itn_competancy_mapping } = metaObj[0];
+      const sortingArr = itn_competancy_mapping[current_level];
+      compentancyData = compentancyData
+        .map((item) => {
+          item.values.sort(
+            (a, b) => parseInt(b[itnWeights]) - parseInt(a[itnWeights])
+          );
+          var n = sortingArr.indexOf(item.competency_bundle);
+          return [n, item];
+        })
+        .sort()
+        .map(function (j) {
+          return j[1];
+        });
+
+      res.send([...compentancyData]);
+    } else {
+      res.status(404).send({
+        message: "no data",
+        status: 404,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function getCompetencyLatest(req, res) {
   try {
     const { email, current_level } = req.user[0];
     let assessmentDates = await getAllDates(email);
@@ -347,6 +364,6 @@ router.route("/latestassessment").get(async (req, res, next) => {
   } catch (err) {
     console.log(err);
   }
-});
+}
 
 module.exports = router;

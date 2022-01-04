@@ -72,7 +72,7 @@ export const saveCompetancy = (data) => {
     // const current_level = localStorage.getItem('current_level');
     let response = await post("/api/tennismgmt/competancy/", { ...data });
     if (response.error == false) {
-      dispatch(saveCompetancySuccsess([...response.data.data]));
+      dispatch(saveCompetancySuccsess([]));
     } else {
       dispatch(saveCompetancyFailure({ errMsg: "Error in saving competency" }));
     }
