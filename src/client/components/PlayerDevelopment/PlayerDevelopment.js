@@ -8,50 +8,110 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import "./PlayerDevelopment.scss";
 import PlayerDevelopmentListItem from "./PlayerDevelopmentListItem";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
-import { getCompetancy } from "./../../redux/index";
+import { getPersonalDevPageInfo } from "./../../redux/index";
 import { connect } from "react-redux";
-
-
 
 function PlayerDevelopment(props) {
   console.log(props);
-  const [progress, setProgress] = React.useState(0);
   const [compData, setCompetancyData] = useState([]);
-  const { getCompetancy, competancyData } = props;
+  const [datesArr, setDatesArr] = useState([]);
+  const [maxDate, setMaxDate] = useState("");
+  const [displayRowArr, setDisplayRow] = useState([]);
+  const {
+    getPersonalDevPageInfo,
+    pdpData: { progressBarData, assessmentDates },
+  } = props;
+  console.log("---progressBarData--");
+  console.log(progressBarData);
   useEffect(() => {
-    setProgress((prevProgress) => prevProgress + 20);
+    getPersonalDevPageInfo();
   }, []);
 
   useEffect(() => {
-    getCompetancy();
-  }, []);
-
-  useEffect(() => {
-    console.log("-------------competancyData------------------");
-    if (competancyData.length != 0) {
-      console.log(competancyData);
-      setCompetancyData([...competancyData]);
+    if (
+      progressBarData &&
+      assessmentDates &&
+      progressBarData.length != 0 &&
+      assessmentDates.length != 0
+    ) {
+      //     console.log(progressBarData);
+      setCompetancyData([...progressBarData]);
+      setDatesArr([...assessmentDates]);
+      let getMaxDate = new Date(
+        Math.max(...assessmentDates.map((e) => new Date(e)))
+      );
+      getMaxDate = getMaxDate.toISOString();
+      setMaxDate(getMaxDate);
+      setDisplayRow([getMaxDate]);
     }
-  }, [competancyData]);
+  }, [progressBarData]);
+
+  const handleCheckBoxChange = (event, date) => {
+    console.log(event.target.value);
+    console.log(date);
+    if (!displayRowArr.includes(date)) {
+      setDisplayRow([...displayRowArr, date]);
+    } else {
+      const index = displayRowArr.indexOf(date);
+      displayRowArr.splice(index, 1);
+      setDisplayRow([...displayRowArr]);
+    }
+  };
 
   return (
+    // <div>"test"</div>
     <div className="PlayerAssessmentPage">
       <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
         player development plans -skill view
       </Typography>
-      <p></p>
+      <div>
+        <FormGroup>
+          {datesArr.map((date, i) => {
+            return date == maxDate ? (
+              <FormControlLabel
+                control={<Checkbox defaultChecked />}
+                label={date}
+                onChange={(ev) => {
+                  handleCheckBoxChange(ev, date);
+                }}
+              />
+            ) : (
+              <FormControlLabel
+                control={<Checkbox />}
+                label={date}
+                onChange={(ev) => {
+                  handleCheckBoxChange(ev, date);
+                }}
+              />
+            );
+          })}
+        </FormGroup>
+      </div>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={12}>
           <List className="MainCompetancyList">
             {compData.map((item, index) => {
               return (
-                <ListItem className="CompetancyListItem" key={item.competency_bundle}>
-                  <ListItemText className="CompetancyBundleLabel">{item.competency_bundle}</ListItemText>
-                  <List className = "SubCompetancyList">
-                    {item.values.map((val, index) => {
+                <ListItem
+                  className="CompetancyListItem"
+                  key={item.competency_bundle}
+                >
+                  <ListItemText className="CompetancyBundleLabel">
+                    {item.competency_bundle}
+                  </ListItemText>
+                  <List className="SubCompetancyList">
+                    {item.competencies.map((val, index) => {
                       return (
-                        <PlayerDevelopmentListItem val = {val} index = {index}></PlayerDevelopmentListItem>
+                        <PlayerDevelopmentListItem
+                          val={val}
+                          index={index}
+                          maxDate={maxDate}
+                          displayRowArr={displayRowArr}
+                        ></PlayerDevelopmentListItem>
                       );
                     })}
                   </List>
@@ -66,12 +126,15 @@ function PlayerDevelopment(props) {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCompetancy: () => dispatch(getCompetancy()),
+    getPersonalDevPageInfo: () => dispatch(getPersonalDevPageInfo()),
   };
 };
 
 const mapStateToProps = (state) => {
-  return { competancyData: state.competancy.competancyData };
+  console.log("-------state-------");
+  console.log(state);
+  return { pdpData: state.personalDevelopment.pdpData };
+  // return { competancyData: state.competancy.competancyData };
 };
 
 // export default PlayerDevelopment;

@@ -5,6 +5,8 @@ import {
   SAVE_COMPETANCY_SUCESS,
   SAVE_COMPETANCY_FAILURE,
   LOADING_COMPETANCY,
+  FETCH_PERSONALDEV_COMP_SUCCESS,
+  FETCH_PERSONALDEV_COMP_FAILURE,
 } from "./competancyActionTypes";
 import { get, post } from "../../api/axios.api";
 
@@ -60,22 +62,46 @@ export const saveCompetancyFailure = (error) => {
 
 export const loadingCompetancy = () => {
   return {
-    type: LOADING_COMPETANCY
+    type: LOADING_COMPETANCY,
   };
 };
 
 export const saveCompetancy = (data) => {
   return async (dispatch) => {
     dispatch(loadingCompetancy());
-    console.log("-----------saveCompetancy-------------");
     // const current_level = localStorage.getItem('current_level');
     let response = await post("/api/tennismgmt/competancy/", { ...data });
-    console.log("-------response----------");
-    console.log(response.data.data);
     if (response.error == false) {
       dispatch(saveCompetancySuccsess([...response.data.data]));
     } else {
       dispatch(saveCompetancyFailure({ errMsg: "Error in saving competency" }));
+    }
+  };
+};
+
+export const fetchPersonalDevComp = (data) => {
+  return {
+    type: FETCH_PERSONALDEV_COMP_SUCCESS,
+    payload: data,
+  };
+};
+
+export const fetchPersnalDevError = () => {
+  return {
+    type: FETCH_PERSONALDEV_COMP_FAILURE,
+    payload: error,
+  };
+};
+
+export const getPersonalDevPageInfo = () => {
+  return async (dispatch) => {
+    let response = await get("/api/tennismgmt/competancy/assessment");
+    if (response.error == false) {
+      console.log("---------getPersonalDevPageInfo---------");
+      console.log(response);
+      dispatch(fetchPersonalDevComp({ ...response.data.data }));
+    } else {
+      dispatch(fetchPersnalDevError({ errMsg: "not able to list competancy" }));
     }
   };
 };

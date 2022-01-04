@@ -5,6 +5,8 @@ import {
   SAVE_COMPETANCY_SUCESS,
   SAVE_COMPETANCY_FAILURE,
   LOADING_COMPETANCY,
+  FETCH_PERSONALDEV_COMP_SUCCESS,
+  FETCH_PERSONALDEV_COMP_FAILURE,
 } from "./competancyActionTypes";
 
 const initalCompetnacyState = {
@@ -19,10 +21,10 @@ export const initalCompetnacyReducer = (
 ) => {
   switch (action.type) {
     case LOADING_COMPETANCY: {
-        return {
-            ...state,
-            loading: true,
-        }
+      return {
+        ...state,
+        loading: true,
+      };
     }
     case FETCH_INITIAL_COMPETANCY_SUCESS:
       return {
@@ -62,6 +64,33 @@ export const initalCompetnacyReducer = (
         competancyError: { ...action.payload },
         loading: false,
       };
+    default:
+      return state;
+  }
+};
+
+const initalPDPState = {
+  pdpData: {},
+  pdpError: {},
+};
+
+export const initalPDPReducer = (state = initalPDPState, action) => {
+  console.log("------action----------");
+  console.log(action);
+  switch (action.type) {
+    case FETCH_PERSONALDEV_COMP_SUCCESS:
+      return {
+        ...state,
+        pdpData: action.payload,
+        pdpError: {},
+      };
+    case FETCH_PERSONALDEV_COMP_FAILURE:
+      return {
+        ...state,
+        pdpData: {},
+        pdpError: { ...action.payload },
+      };
+
     default:
       return state;
   }
