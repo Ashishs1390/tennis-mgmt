@@ -73,7 +73,7 @@ export const saveCompetancy = (data) => {
     console.log("-------response----------");
     console.log(response.data.data);
     if (response.error == false) {
-      dispatch(saveCompetancySuccsess([...response.data.data]));
+      dispatch(saveCompetancySuccsess([]));
     } else {
       dispatch(saveCompetancyFailure({ errMsg: "Error in saving competency" }));
     }
