@@ -59,12 +59,26 @@ function App() {
                 }
               >
                 <Route path="profilepage" element={<UserProfile />}></Route>
-                <Route path="video/:from" element={<VideoPlayerContainer />}></Route>
-                <Route path="strockanalysislist" element={<StrockAnalysisList />}></Route>
-                <Route path="comparelibrary" element={ <CompareLibrary /> }></Route>
-                <Route path="assessments" element={ <CompetancyRating /> }></Route>
-                <Route path="playerdevelopment" element={ <PlayerDevelopment /> }></Route>
-                
+                <Route
+                  path="video/:from"
+                  element={<VideoPlayerContainer />}
+                ></Route>
+                <Route
+                  path="strockanalysislist"
+                  element={<StrockAnalysisList />}
+                ></Route>
+                <Route
+                  path="comparelibrary"
+                  element={<CompareLibrary />}
+                ></Route>
+                <Route
+                  path="assessments"
+                  element={<CompetancyRating />}
+                ></Route>
+                <Route
+                  path="playerdevelopment"
+                  element={<PlayerDevelopment />}
+                ></Route>
               </Route>
 
               <Route path="*" element={<PageNotFound />}></Route>

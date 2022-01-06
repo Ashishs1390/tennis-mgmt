@@ -73,7 +73,7 @@ function PlayerDevelopment(props) {
           {datesArr.map((date, i) => {
             return date == maxDate ? (
               <FormControlLabel
-                control={<Checkbox defaultChecked disabled />}
+                control={<Checkbox defaultChecked disabled/>}
                 label={date}
                 onChange={(ev) => {
                   handleCheckBoxChange(ev, date);

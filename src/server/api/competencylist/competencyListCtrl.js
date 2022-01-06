@@ -190,14 +190,16 @@ router.route("/assessment").get(async (req, res, next) => {
     }, []);
     assessmentData = assessmentData
       .map((item) => {
-        item.competencies.sort((a, b) => {
-          if (a[itnWeights] == b[itnWeights]) {
-            return ("" + a["competency"]).localeCompare(b["competency"]);
-          } else {
-            return b[itnWeights] - parseInt(a[itnWeights]);
-          }
+        console.log("----------assessmentData------------");
+        console.log(item.competencies);
+          item.competencies.sort((a, b) => {
+              console.log(a[itnWeights]);
+           var x = a[itnWeights];
+           var y = b[itnWeights];
+           return x < y ? -1 : x > y ? 1 : 0;
         });
         item.competencies.forEach((i, index) => {
+          //   console.log(i);
           i.weights.sort((a, b) => {
             return b.assessment_date < a.assessment_date
               ? -1
@@ -231,8 +233,7 @@ router.route("/assessment").get(async (req, res, next) => {
   }
 });
 
-router.route("/latestassessment").get(async (req, res, next) => {
-});
+router.route("/latestassessment").get(async (req, res, next) => {});
 
 async function getCompetency(req, res) {
   const { email } = req.user[0];
@@ -252,7 +253,7 @@ async function getCompetencyNew(req, res) {
     const userEmail = req.user[0].email;
     const itnWeights = `${current_level}_weight`;
     const match = {
-      [itnWeights]: { $gte: 0 },
+      [itnWeights]: { $gt: 0 },
     };
     const group = {
       _id: {
@@ -272,6 +273,13 @@ async function getCompetencyNew(req, res) {
 
       values: "$values",
     };
+      console.log(
+        JSON.stringify([
+          { $match: { ...match } },
+          { $group: { ...group } },
+          { $project: { ...project } },
+        ])
+      );
     let compentancyData = await competancyBundleSchema
       .aggregate([
         { $match: { ...match } },
@@ -283,6 +291,7 @@ async function getCompetencyNew(req, res) {
       });
     console.log(compentancyData);
     if (compentancyData.length !== 0) {
+      console.log("------------------compentancyData----------------------");
       compentancyData = JSON.parse(JSON.stringify(compentancyData));
       let metaObj = await competancymetadata
         .find({}, { _id: 0 })
@@ -298,13 +307,21 @@ async function getCompetencyNew(req, res) {
       const sortingArr = itn_competancy_mapping[current_level];
       compentancyData = compentancyData
         .map((item) => {
+          console.log("----------compentancyData---------------");
+          console.log(item.values);
           item.values.sort(
-            (a, b) => parseInt(b[itnWeights]) - parseInt(a[itnWeights])
+              (a, b) => {
+                   var x = a[itnWeights];
+                   var y = b[itnWeights];
+                  return x < y ? -1 : x > y ? 1 : 0;
+              }
           );
           var n = sortingArr.indexOf(item.competency_bundle);
           return [n, item];
         })
-        .sort()
+          .sort((a,b) => {
+              return a[0] - b[0];
+        })
         .map(function (j) {
           return j[1];
         });
@@ -322,6 +339,7 @@ async function getCompetencyNew(req, res) {
 }
 
 async function getCompetencyLatest(req, res) {
+  console.log("------------getCompetencyLatest---------------");
   try {
     const { email, current_level } = req.user[0];
     let assessmentDates = await getAllDates(email);
