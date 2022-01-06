@@ -134,9 +134,6 @@ const mapStateToProps = (state) => {
   console.log("-------state-------");
   console.log(state);
   return { pdpData: state.personalDevelopment.pdpData };
-  // return { competancyData: state.competancy.competancyData };
 };
 
-// export default PlayerDevelopment;
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerDevelopment);
-// https://github.com/mui-org/material-ui/issues/12858

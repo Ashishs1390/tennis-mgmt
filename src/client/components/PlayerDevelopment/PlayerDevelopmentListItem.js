@@ -11,7 +11,7 @@ import "./PlayerDevelopment.scss";
 
 const useStyles = makeStyles({
   rootYellow: {
-    // height: "40px",
+    height: "7px",
     "&.MuiLinearProgress-colorPrimary:not(.MuiLinearProgress-buffer)": {
       backgroundColor: "#f6ce95",
     },
@@ -19,7 +19,7 @@ const useStyles = makeStyles({
       backgroundColor: "#f6ce95",
     },
     "& .MuiLinearProgress-barColorPrimary": {
-      backgroundColor: "#f0ad4e",
+      backgroundColor: "#f3a73c",
     },
     "& .MuiLinearProgress-dashedColorPrimary": {
       backgroundImage:
@@ -27,35 +27,35 @@ const useStyles = makeStyles({
     },
   },
   rootRed: {
-    // height: "40px",
+    height: "7px",
     "&.MuiLinearProgress-colorPrimary:not(.MuiLinearProgress-buffer)": {
-      backgroundColor: "#563434",
+      backgroundColor: "#eb9a9e",
     },
     "& .MuiLinearProgress-colorPrimary": {
-      backgroundColor: "#563434",
+      backgroundColor: "#eb9a9e",
     },
     "& .MuiLinearProgress-barColorPrimary": {
-      backgroundColor: "#b14c4c",
+      backgroundColor: "#ea3943",
     },
     "& .MuiLinearProgress-dashedColorPrimary": {
       backgroundImage:
-        "radial-gradient(#563434 0%, #563434 16%, transparent 42%)",
+        "radial-gradient(#eb9a9e 0%, #eb9a9e 16%, transparent 42%)",
     },
   },
   rootGreen: {
-    // height: "40px",
+    height: "7px",
     "&.MuiLinearProgress-colorPrimary:not(.MuiLinearProgress-buffer)": {
-      backgroundColor: "#ADFF2F",
+      backgroundColor: "#96e596",
     },
     "& .MuiLinearProgress-colorPrimary": {
-      backgroundColor: "#ADFF2F",
+      backgroundColor: "#96e596",
     },
     "& .MuiLinearProgress-barColorPrimary": {
-      backgroundColor: "#228B22",
+      backgroundColor: "#0ec30e",
     },
     "& .MuiLinearProgress-dashedColorPrimary": {
       backgroundImage:
-        "radial-gradient(#ADFF2F 0%, #ADFF2F 16%, transparent 42%)",
+        "radial-gradient(#96e596 0%, #96e596 16%, transparent 42%)",
     },
   },
 });
@@ -91,7 +91,8 @@ function PlayerDevelopmentListItem(props) {
     <ListItem className="CompetancyListItem" key={val.competency + index}>
       <div>
         {/* <div className={`${classes.foo} ${classes.bar}`} >aaaa</div> */}
-        {val.competency}
+        <p className="displaycomp">{val.competency}</p>
+
         {val.weights.map((weight, index) => {
           return (
             <Box
@@ -102,16 +103,17 @@ function PlayerDevelopmentListItem(props) {
                   : "pbHide"
               }
             >
+              <p className="displaydate">{weight.assessment_date}</p>
               <LinearProgressWithLabel
                 colors="success"
-                value={parseInt(`${weight.assigned_weight}0`)}
                 classes={
-                  weight.assigned_weight >= 4
+                  weight.assigned_weight <= 4
                     ? { root: classes.rootRed }
-                    : (weight.assigned_weight >= 6 || weight.assigned_weight <= 8)
+                    : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
                     ? { root: classes.rootYellow }
                     : { root: classes.rootGreen }
                 }
+                value={parseInt(`${weight.assigned_weight}0`)}
               />
             </Box>
           );
