@@ -7,7 +7,6 @@ import { useLocation,useParams } from "react-router-dom";
 import {fetchVideo}  from "./../../../redux/index";
 
 function VideoPlayerContainer(props) {
-    console.log("------------VideoPlayerContainer------------")
     const {fetchVideo,videoInfo:{videoData},error, videoAnalysis, showPlayerVideo} = props;
     const [startPlay, setStartPlay] = useState(false);
     const [startTime, setStartTime] = useState(0);
@@ -81,8 +80,7 @@ function VideoPlayerContainer(props) {
     }, [videoAnalysis.selectedVideos]);
 
     useEffect(()=>{
-        console.log("================================")
-        console.log(youtubeId)
+       
     },[youtubeId])
 
     

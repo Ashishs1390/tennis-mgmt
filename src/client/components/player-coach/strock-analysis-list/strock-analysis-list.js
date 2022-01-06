@@ -30,8 +30,6 @@ function AlignItemsList(props) {
   const [disableChecked, setDisableChecked] = React.useState(false);
   const [age, setAge] = React.useState("");
   const { getVideosForAnalysis, selectVideoAnalysis, videoAnalysis = {email: '', frames: []}} = props;
-  console.log("----------------selectVideoAnalysis-----------------")
-  console.log(selectVideoAnalysis)
   
   const navigate = useNavigate();
   useEffect(()=>{
@@ -45,11 +43,10 @@ function AlignItemsList(props) {
   };
 
   const selectVideoForAnalysis = () => {
-    navigate("/video/strokeanalysis");
+    navigate("../video/strockanalysislist");
   } 
 
   const handleToggle = (value) => () => {
-    console.log(value);
     const currentIndex = checkedVideo.findIndex(x => x.id === value.id);
     const currentSelectedList = [...checkedVideo];
     if(currentIndex === -1) {

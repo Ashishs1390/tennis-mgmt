@@ -47,9 +47,7 @@ function CompareLibrary(props) {
         selectVideoAnalysis([{src: val[1]}, {src: libraryVideo}]);
     };
     const handleChange = (event) => {
-      console.log("------------event----------------")
         const val = event.target.value;
-        console.log(val);
         setLibraryVideo(val);
         selectVideoAnalysis([{src: compareVideo}, {src: val}]);
 
@@ -103,7 +101,6 @@ const mapDispatchToProps = (dispatch) => {
   };
   
   const mapStateToProps = (state) => {
-    console.log(state);
     const {videoCompare} = state;
 
     return {videoAnalysis: state.videoAnalysis,

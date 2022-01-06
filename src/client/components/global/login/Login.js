@@ -25,8 +25,6 @@ function Login(props) {
     axios
       .post(`/api/tennismgmt/login/${role}`, { ...fields })
       .then((response) => {
-        console.log("11111111111111111111")
-        console.log(response.data.current_level)
         onAuth(true);
         localStorage.setItem('current_level', response.data.current_level);
         navigate(`/user/${role}`);
@@ -137,10 +135,10 @@ function Login(props) {
       <div className="registrationlinks">
         <nav>
           <p>
-            <Link to="registration/player">Player registration link</Link>
+            <Link to="../registration/player">Player registration link</Link>
           </p>
           <p>
-            <Link to="registration/coach">Coach registration link</Link>
+            <Link to="../registration/coach">Coach registration link</Link>
           </p>
         </nav>
       </div>

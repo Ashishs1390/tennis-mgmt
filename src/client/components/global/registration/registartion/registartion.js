@@ -13,7 +13,6 @@ import { useNavigate, Link, Outlet } from "react-router-dom";
 
 function PlayerRegistration(props) {
   const navigate = useNavigate();
-  console.log(props);
   const {
     registration: { data, error },
     postDetails,
@@ -160,11 +159,10 @@ function PlayerRegistration(props) {
 
   useEffect(() => {
     get('/api/tennismgmt/list/agegrouplist').then((x) => {
-      console.log('^^^^:^^^^');
       if(x.data.data) {
         // console.log(x.data.data.itn_level)
       }
-      setInputs({...inputs,  registrationForm: { ...inputs.registrationForm, current_level: {...inputs.registrationForm.current_level, values: x.data.data.itn_level}}})
+      setInputs({...inputs,  registrationForm: { ...inputs.registrationForm, current_level: {...inputs.registrationForm.current_level, values: x.data.data.itn_level, display: x.data.data.itn_level_mapping}}})
     }).catch((err) => {
       console.log('^^^^:^^^^', err);
     });
@@ -176,16 +174,11 @@ function PlayerRegistration(props) {
     }
   }, [data]);
 
-  console.log("----------inputs---  -----------")
-  console.log(inputs.registrationForm.formIsValid);
 
-  console.log(error.status);
-  console.log(error.status == 200);
   let bool = false;
 
   const params = useParams();
   const { role } = params;
-  console.log(role);
   // const [bool,setBool] = useState((error.status == 200) ? true : false);
 
   const onChangeHandler = useCallback(({ target: { name, value } }) =>
@@ -245,7 +238,7 @@ function PlayerRegistration(props) {
         config: inputs.registrationForm[key]
       });
     }
-    console.log(formElementsArray);
+  
    
     return (
       <div className="registationform">
@@ -270,6 +263,7 @@ function PlayerRegistration(props) {
               touched={element.config.touched}
               shouldValidate={element.config.validations}
               values = {element.config.hasOwnProperty('values')? element.config.values : []}
+              display = {element.config.hasOwnProperty('display')? element.config.display : {}}
               onKeyDown={(e) => handelEnter(e)}
             />)
           })}

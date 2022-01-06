@@ -17,7 +17,7 @@ function App() {
   const [isLoggedIn, setISLoggedIn] = useState(
     Cookies.get("token") == null ? false : true
   );
-  console.log(isLoggedIn);
+
 
   return (
     <ErrorBoundary>
@@ -25,24 +25,7 @@ function App() {
         <div className="App">
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Login onAuth={setISLoggedIn} />}>
-                {" "}
-              </Route>
-              <Route path="login" element={<Login onAuth={setISLoggedIn} />}>
-                {" "}
-              </Route>
-              <Route
-                path="registration/:role"
-                element={<PlayerRegistration />}
-              ></Route>
-              <Route
-                path="landingpage"
-                element={
-                  isLoggedIn ? <LandingPage /> : <Navigate to="/"></Navigate>
-                }
-              ></Route>
-
-              <Route path="/" element={<Login onAuth={setISLoggedIn} />}>
+              <Route path="/" element={<Navigate to="login"></Navigate>}>
                 {" "}
               </Route>
               <Route path="login" element={<Login onAuth={setISLoggedIn} />}>
