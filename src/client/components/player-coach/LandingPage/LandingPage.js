@@ -15,7 +15,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 function LandingPage(props) {
   const navigate = useNavigate();
-  console.log(props);
   useEffect(() => {
     props.fetchDetails();
   }, []);
@@ -105,7 +104,6 @@ function LandingPage(props) {
   );
 }
 const mapStateToProps = (state) => {
-  console.log(state);
 
   return {
     userInfo: state.getData,

@@ -31,7 +31,6 @@ const failure = (error) => (
 
 // get<T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
 const get = async (url, config = {}) => {
-    console.log(url);
     try {
         const response = await axios.get(url,defaultConfig(config));
         return success(response);
@@ -56,10 +55,8 @@ const post = async (url, data, config = {}) => {
 
 //  put<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: D, config?: AxiosRequestConfig<D>): Promise<R>;
 const put = async (url, data, config) => {
-    console.log("------put-------")
     try {
         const response = await axios.put(url,{...data},defaultConfig(config));
-        console.log("============sucess")
         return success(response);
     } catch(error) {
         console.log("error==================")

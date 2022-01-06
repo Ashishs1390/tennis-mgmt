@@ -51,7 +51,7 @@ const Input = (props) => {
             {
             props.values.map((value)=>{
               return (
-                <MenuItem key = {value} value={value}>{value}</MenuItem>
+                <MenuItem key = {value} value={value}>{props.display ? props.display[value] : value}</MenuItem>
               )
             })
             }

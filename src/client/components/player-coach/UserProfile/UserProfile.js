@@ -19,9 +19,7 @@ import Cookies from 'js-cookie';
 
 
 function UserProfile(props){
-    console.log(props);
     const {
-      data: { data, error },
       getData,
       emailValidation,
       fetchDetails
@@ -113,22 +111,16 @@ function UserProfile(props){
     const [errorMsg,setError] = useState(0);
     let isValid = inputs.registrationForm.fromIsValid;
   
-    console.log("----------inputs--------------")
-    console.log(inputs.registrationForm.formIsValid);
   
-    console.log(error.status);
-    console.log(error.status == 200);
     let bool = false;
   
     const params = useParams();
     const { role } = params;
-    console.log(role);
     const updateUserInfo = async (obj) =>{
         const data = await put('api/tennismgmt/registration/authed/',{...obj}).catch((err)=>{
             console.log(err)
         })
-        console.log("----------------data------------------------")
-        console.log(data);
+       
         if(data.error){
             setError(1)
         }else{
@@ -143,20 +135,17 @@ function UserProfile(props){
     }
 
     useEffect(()=>{
-      console.log("=================ca;;ed")
         fetchDetails();
     },[])
 
     // let obj = {}
     useEffect(()=>{
-      console.log("-------------------------------------------------------")
       if(getData.data.length != 0){
         const obj = {
           first_name:getData.data.first_name,
           last_name:getData.data.last_name,
           email:getData.data.email
         }
-        console.log(obj)
         updateValue(obj, setInputs, inputs, 'registrationForm')
       }
     },[getData])
@@ -167,7 +156,6 @@ function UserProfile(props){
     );
   
     const inputChangeHandler = (event, inputIdentifier) => {
-      console.log(event.target.value)
       let obj = {};
       obj[inputIdentifier] = event.target.value;
       setupDatedData(old =>  ({...old,...obj}));
@@ -192,17 +180,13 @@ function UserProfile(props){
   
   
   
-    if (error.status !== 200) {
+    if (getData.error.status !== 200) {
       bool = true;
     }
   
   
-  
-    console.log(bool);
-  
     const onSubmit = () => {
       let putObj = {}
-console.log(updatedData)
       if (isdisable) {
         //   const registrationData = Object.entries(inputs.registrationForm).reduce((a,b)=>(Object.assign(a,{[b[0]]:b[1].value}),a), {})
         //   const outObj = { ...registrationData, role: role };
@@ -213,7 +197,6 @@ console.log(updatedData)
           putObj[data] = updatedData[data]
         }
       }
-      console.log(putObj);
       updateUserInfo(putObj)
 
     };
@@ -247,8 +230,6 @@ console.log(updatedData)
             autoComplete="off"
           >
             {formElementsArray.map((element) => {
-              console.log("-------element----------");
-              console.log(element);
               // element.config.value = getData.data[element.id];
               element.config.elementConfig = {
                 defaultValue: getData.data[element.id],
@@ -315,8 +296,6 @@ const mapDispatchToProps = (dispatch) => {
   };
   
   const mapStateToProps = (state) => {
-      console.log("p---------");
-      console.log(state)
     return state;
   };
   

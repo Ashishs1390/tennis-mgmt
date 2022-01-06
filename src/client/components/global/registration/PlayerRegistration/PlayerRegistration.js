@@ -7,11 +7,9 @@ import Button from '@mui/material/Button';
 import "./PlayerRegistation.scss"
 
 function PlayerRegistration(props) {
-    console.log(props);
     const {data:{data,error},fetchDetails} = props;
     const [inputs,setInputs] = useState({});
-    console.log(error.status)
-    console.log(error.status == 200)
+  
     let bool = false;
     // const [bool,setBool] = useState((error.status == 200) ? true : false);
 
@@ -24,7 +22,6 @@ function PlayerRegistration(props) {
     }
    
    
-  console.log(bool)
 
     const onSubmit = () =>{
         const outObj = {...inputs,role:"player"}
