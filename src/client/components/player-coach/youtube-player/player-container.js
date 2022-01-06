@@ -68,7 +68,7 @@ function VideoPlayerContainer(props) {
 
     useEffect(() => {
         
-        if(from == "strokeanalysis" || showPlayerVideo){
+        if(from == "strockanalysislist" || showPlayerVideo){
             let framesData = [...videoAnalysis.selectedVideos];
             framesData = framesData.map(x => {
                 return {frameId: x.src, src: 0};
