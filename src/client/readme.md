@@ -346,3 +346,127 @@ db.getCollection('users_competancy_list').aggregate(
     }
 
 ])
+
+
+sas1234frj
+
+sending emails
+
+user is a member tennis ims
+or he is new user
+
+
+coach can add a player
+
+
+
+
+player who has an account 
+
+
+coach -> login
+
+add player scrren where he need to add email address of player
+
+
+2 login for player - parent and player
+
+
+      parent
+        |
+player1  player2
+
+
+
+
+1.> coach Id in player registration page.
+2.> parent login he sees the list of children -> redirect to children on click
+3.> add child button
+
+
+coach can add the player with email
+add player 
+  email address
+
+
+      "_id" : ObjectId("61d5d8e849baa93d01f5cd5c"),
+    "first_name" : "ashish",
+    "last_name" : "sharma",
+    "email" : "ashish@gmail.com",
+    "password" : "$2b$10$yxh2MlA49Orp/D4yTvmFOefACWj/3g/BdU5LzNLSxvHOwSd/tYluu",
+    "role" : "player",
+    "user_name" : "ashish@gmail.com",
+    "current_level" : "u12boys",
+    "temp_password" : "12345",
+    "__v" : 0
+
+
+
+
+
+child1 -> redirect to child one home page.
+
+---------------------children---------------------------
+"first_name" : "Ashish",
+"last_name" : "Sharma",
+"email" : "ashishhsharma1990@gmail.com",
+"password" : "India",
+"role" : "player",
+parents_email:["",""] || "";
+coach_email: "",
+current_level
+
+
+-----------------parent---========
+
+"first_name" : "Ashish",
+"last_name" : "Sharma",
+"email" : "ashishhsharma1990@gmail.com",
+"role" : "parent",
+"children_email":[]
+
+-----------------------------
+
+
+"first_name" : "Ashish",
+"last_name" : "Sharma",
+"email" : "ashishhsharma1990@gmail.com",
+"role" : "coach",
+"players_email":[]
+
+
+no current_level on jwt token-----
+
+Asdfkgr456Edlflg,
+<!-- dsadsfsfsdfdfs,
+sfsdfsdfsdfsdf, -->
+
+role jwt token
+
+<!-- parentemail: -->
+jwt token
+children_email,
+role,
+
+//email,role
+role in localstorage
+
+
+    "email" : "degeadavid2@gmail.com",
+    "assessment_date" : "2021-12-29T18:02:46.113Z",
+    "current_level" : "u12boys",
+    "competency_bundle" : "Tactical",
+    "parent_email:"",
+    "role":"",
+    "coach_email":""
+
+
+    email == children_email && role =="player"
+    email == player_email  && role == "parent"
+    email == player_email  && role == "coach"
+
+
+
+
+
+

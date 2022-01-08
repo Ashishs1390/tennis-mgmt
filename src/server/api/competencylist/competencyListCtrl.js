@@ -13,7 +13,7 @@ router.route("/").post(async (req, res, next) => {
       user,
       body: { data },
     } = req;
-    const { current_level, email } = req.user[0];
+    const { current_level, email } = req.user[0];// jwt token
 
     data.forEach((element) => {
       element.current_level = current_level;
