@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import { post } from "../../../api/axios.api";
 
 function LandingPage(props) {
   const navigate = useNavigate();
@@ -38,7 +39,15 @@ function LandingPage(props) {
     navigate(link);
     setMenuOpen(false);
   };
-  
+
+  const logout = async () => {
+    const result = await post('/api/tennismgmt/user/logout');
+    if (!result.error) {
+      navigate('/');
+    } else {
+      alert('Some thing went wrong while logout, please try again');
+    }
+  }
 
   return (
     <div>
@@ -58,7 +67,7 @@ function LandingPage(props) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Tennis management
             </Typography>
-            <Button color="inherit">Logout</Button>
+            <Button color="inherit" onClick={logout}>Logout</Button>
           </Toolbar>
         </AppBar>
       </Box>

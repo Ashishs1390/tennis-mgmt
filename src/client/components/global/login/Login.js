@@ -132,16 +132,6 @@ function Login(props) {
           </div>
         </Box>
       </form>
-      <div className="registrationlinks">
-        <nav>
-          <p>
-            <Link to="../registration/player">Player registration link</Link>
-          </p>
-          <p>
-            <Link to="../registration/coach">Coach registration link</Link>
-          </p>
-        </nav>
-      </div>
       {!(
         errmsg &&
         Object.keys(errmsg).length === 0 &&
@@ -151,6 +141,20 @@ function Login(props) {
           <p>{errmsg.message}</p>
         </div>
       )}
+      <div className="registrationlinks">
+        <nav>
+          <p>
+            <Link to="../registration/player">Player registration link</Link>
+          </p>
+          <p>
+            <Link to="../registration/coach">Coach registration link</Link>
+          </p>
+          <p>
+            <Link to="../registration/parent">Parent registration link</Link>
+          </p>
+        </nav>
+      </div>
+      
     </div>
   );
 }
