@@ -23,7 +23,7 @@ function Login(props) {
   );
   const loginCall = (fields, role) => {
     axios
-      .post(`/api/tennismgmt/login/${role}`, { ...fields })
+      .post(`/api/tennismgmt/login`, { ...fields })
       .then((response) => {
         onAuth(true);
         localStorage.setItem('current_level', response.data.current_level);
@@ -63,30 +63,7 @@ function Login(props) {
           handelEnter(e);
         }}
       >
-        <FormControl component="fieldset" className="fieldbox">
-          <div className="radiowrapper">
-            <FormLabel FormLabel component="legend">
-              Select login type
-            </FormLabel>
-            <RadioGroup row aria-label="role" name="row-radio-buttons-group">
-              <FormControlLabel
-                checked={role === "player"}
-                value="player"
-                control={<Radio />}
-                onClick={() => setRole("player")}
-                label="Player"
-              />
-              <FormControlLabel
-                checked={role === "coach"}
-                value="coach"
-                control={<Radio />}
-                onClick={() => setRole("coach")}
-                label="Coach"
-              />
-            </RadioGroup>
-          </div>
-        </FormControl>
-
+  
         <Box
           component="form"
           noValidate

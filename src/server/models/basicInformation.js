@@ -27,11 +27,9 @@ const basicInformationSchema = new Schema({
     },
     current_level:{
         type:String,
-        required:true
     },
     temp_password:{
         type:String,
-        required:true
     }
 },
 {

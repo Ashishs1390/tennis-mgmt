@@ -248,41 +248,9 @@ function PlayerRegistration(props) {
         (a, b) => (Object.assign(a, { [b[0]]: b[1].value }), a),
         {}
       );
-      let emailUpdate = {
-        email: '',
-        parent_email: '',
-        coach_email:''
-      };
-      switch (role) {
-        case 'player':
-          emailUpdate = {
-            email: registrationData.email,
-            parent_email: '',
-            coach_email:''
-          };
-          break;
-        case 'coach':
-          emailUpdate = {
-            email: '',
-            parent_email: '',
-            coach_email: registrationData.email
-          };
-          break;
-        case 'parent':
-          emailUpdate = {
-            email: '',
-            parent_email: registrationData.email,
-            coach_email: ''
-          };
-          break;
-      }
-      const outObj = { ...registrationData, role: role, ...emailUpdate };
+      const outObj = { ...registrationData, role: role };
       postDetails(outObj);
     }
-  };
-
-  const emailValidate = () => {
-    emailValidation({ email: "abcd@gmail.com" });
   };
 
   const handelEnter = (event) => {
