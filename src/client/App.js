@@ -11,6 +11,7 @@ import StrockAnalysisList from "./components/player-coach/strock-analysis-list/s
 import CompareLibrary from "./components/player-coach/compare-library/compare-library";
 import CompetancyRating from "./components/player-coach/competancy_rating/competancy_rating";
 import PlayerDevelopment from "./components/PlayerDevelopment/PlayerDevelopment";
+import LinkPlayer from "./components/player-coach/link-player/link-player";
 import Cookies from "js-cookie";
 
 function App() {
@@ -34,6 +35,10 @@ function App() {
               <Route
                 path="registration/:role"
                 element={<PlayerRegistration />}
+              ></Route>
+              <Route
+                path="link/player"
+                element={<LinkPlayer />}
               ></Route>
               <Route
                 path="user/:role"
