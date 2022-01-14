@@ -75,7 +75,6 @@ const initalPDPState = {
 };
 
 export const initalPDPReducer = (state = initalPDPState, action) => {
-  console.log("------action----------");
   console.log(action);
   switch (action.type) {
     case FETCH_PERSONALDEV_COMP_SUCCESS:

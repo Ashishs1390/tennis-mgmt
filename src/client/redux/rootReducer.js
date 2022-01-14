@@ -15,6 +15,7 @@ import {
   initalVideoReducer,
   initalCompareReducer,
 } from "./videoanalysis/videoAnalysisReducer";
+import { linkPlayerReducer } from "./link-player/linkPlayerReducer";
 
 const rootReducer = combineReducers({
   registration: reducer,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   videoCompare: initalCompareReducer,
   competancy: initalCompetnacyReducer,
   personalDevelopment: initalPDPReducer,
+  linkPlayerReducer: linkPlayerReducer,
 });
 
 export default rootReducer;

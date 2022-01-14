@@ -10,3 +10,4 @@ export {
   getPersonalDevPageInfo,
 } from "./competancy/competancyActions";
 export * from "./basicInfo/basicInfoActions";
+export { getSearchedPlayerByEmail, fetchLinkedPlayerList, addPlayerToList } from "./link-player/linkPlayerAction";

@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Login from "../../global/login/Login";
 import { connect } from "react-redux";
 import { useNavigate, Link, Outlet } from "react-router-dom";
-import { fetchDetails } from "./../../../redux/index";
+import {
+  getSearchedPlayerByEmail,
+  fetchLinkedPlayerList,
+  addPlayerToList,
+  updateConnectedChildren,
+} from "./../../../redux/index";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -18,8 +24,9 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListSubheader from '@mui/material/ListSubheader';
+import ListSubheader from "@mui/material/ListSubheader";
 import Avatar from "@mui/material/Avatar";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -27,12 +34,79 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 import "./link-player.scss";
 
-function LinkPlayer(props) {
-  const [checked, setChecked] = useState(0);
+// function DisablingControl(props) {
+//     const disabled = props.disabled;
+//     delete props.disabled;
+//     return (<>
+//      {
+//          disabled ? (
+//             <Button
+//               {...props}
+//               disabled={true}
+//             >
+//               { props.loadingSearchedPlayer ?  <CircularProgress color="inherit" /> : 'Search'}
+//             </Button>
+//          ) : (
+//             <Button
+//               {...props}
+//             >
+//               { props.loadingSearchedPlayer ?  <CircularProgress color="inherit" /> : 'Search'}
+//             </Button>
+//          )
+//      }
+//     </>);
+// }
 
-  const handleToggle = (value) => () => {
-    setChecked(value);
+function LinkPlayer(props) {
+  const [searchEmail, setSearchEmail] = useState("");
+  const [emailChecked, setEmailChecked] = useState("");
+  const [sentForAdd, setSentForAdd] = useState(false);
+  const [validEmail, SetValidEmail] = useState(null);
+  const [alreadyAddedEmail, setAlreadyAddedEmail] = useState(false);
+  const regEmail =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const txtCntrl = useRef();
+  const navigate = useNavigate();
+  useEffect(() => {
+    props.fetchLinkedPlayerList();
+  }, []);
+
+  useEffect(() => {
+    if (props.searchedPlayer === '' && sentForAdd) {
+        setSentForAdd(false);
+        setTimeout(() => {
+            setSearchEmail('');
+            txtCntrl.current.childNodes[1].children[0].value = '';
+            SetValidEmail(null);
+        }, 10);
+    }
+  }, [props.searchedPlayer]);
+
+  const handleToggle = (value) => {
+    setEmailChecked(value);
   };
+
+  const validateAndSubmit = (value, submit = true) => {
+    const isValid = regEmail.test(value.trim());
+    const isAlreadyAddedEmail = props.searchedPlayerList.indexOf(value.trim()) >= 0;
+    value.trim() && setAlreadyAddedEmail(isAlreadyAddedEmail);
+    SetValidEmail(isValid);
+    if (isValid && submit && !isAlreadyAddedEmail) {
+      props.getSearchedPlayerByEmail(value);
+    } else if (value.trim() === "") {
+      SetValidEmail(null);
+    }
+  };
+
+  const addSelectedEmailToList = () => {
+    props.addPlayerToList({
+        player_email: props.searchedPlayer,
+        parent_email: props.basicInfo.role === 'parent' ? props.basicInfo.email : '',
+        coach_email: props.basicInfo.role === 'couch' ? props.basicInfo.email : '',
+    });
+    setSentForAdd(true);
+  }
+
   return (
     <div>
       <Box sx={{ flexGrow: 1 }}>
@@ -71,20 +145,75 @@ function LinkPlayer(props) {
                 required
                 id="outlined-required"
                 label="Player email"
-                defaultValue=""
-                fullWidth="true"
+                defaultValue={searchEmail}
+                fullWidth={true}
+                ref={txtCntrl}
+                onChange={(e) => {
+                  setSearchEmail(e.target.value);
+                }}
+                onBlur={(e) => {
+                  validateAndSubmit(e.target.value, false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.keyCode === 13 || e.key === "Enter") {
+                    validateAndSubmit(e.target.value, true);
+                  }
+                }}
               />
             </Box>
+            {validEmail === false && (
+              <Typography
+                className="alert-email"
+                variant="p"
+                component="div"
+                align="left"
+              >
+                Please enter valid email id.
+              </Typography>
+            )}
+            {alreadyAddedEmail && (
+              <Typography
+                className="alert-email"
+                variant="p"
+                component="div"
+                align="left"
+              >
+                Email id already added in your list.
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={10} md={2}>
-            <Button
-              variant="contained"
-              onClick={() => {
-                console.log(props);
-              }}
-            >
-              Search
-            </Button>
+            {(searchEmail.trim() === "" ||
+            props.searchedPlayer !== searchEmail ||
+            props.loadingSearchedPlayer) && !props.loadingAddPlayer ? (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  validateAndSubmit(searchEmail, true);
+                }}
+                inputprops={{ disabled: props.loadingSearchedPlayer }}
+              >
+                {props.loadingSearchedPlayer ? (
+                  <>
+                    {"Searching..."}
+                    <CircularProgress color="inherit" />
+                  </>
+                ) : (
+                  "Search"
+                )}
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={() => {addSelectedEmailToList()}}>
+                {props.loadingAddPlayer ? (
+                  <>
+                    {"Adding..."}
+                    <CircularProgress color="inherit" />
+                  </>
+                ) : (
+                  "Add"
+                )}
+              </Button>
+            )}
           </Grid>
         </Grid>
       </Box>
@@ -92,67 +221,113 @@ function LinkPlayer(props) {
         <Grid container spacing={2}>
           <Grid item xs={10} md={2}></Grid>
           <Grid item xs={10} md={6}>
-            <RadioGroup
-              aria-label="gender"
-              defaultValue="0"
-              name="radio-buttons-group"
-            >
-            <List
-              dense
-              sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-              subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                    Select player for assessment
-                </ListSubheader>
-              }
-            >
-              {['poo.baa@gmail.com', 'goo.uaa@gmail.com', 'voo.haa@gmail.com', 'koo.jaa@gmail.com'].map((value, i) => {
-                const labelId = `checkbox-list-secondary-label-${i}`;
-                return (
-                  <ListItem
-                    key={value}
-                    secondaryAction={
-                      <FormControlLabel value={value} onChange={handleToggle(value)} inputProps={{ "aria-labelledby": labelId }} control={<Radio />} label="" />
-                    }
-                    disablePadding
-                  >
-                    <ListItemButton>
-                      <ListItemAvatar>
-                        <Avatar
-                          alt={`S`}
-                          src={``}
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        id={labelId}
-                        primary={`${value}`}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
-            </List>
-            </RadioGroup>
+            {!props.loadingSearchedPlayerList ? (
+              <RadioGroup
+                aria-label="gender"
+                defaultValue="0"
+                name="radio-buttons-group"
+              >
+                <List
+                  dense
+                  sx={{
+                    width: "100%",
+                    maxWidth: 360,
+                    bgcolor: "background.paper",
+                  }}
+                  subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                      Select player for assessment.
+                    </ListSubheader>
+                  }
+                >
+                  {props.searchedPlayerList &&
+                    [...props.searchedPlayerList].map((value, i) => {
+                      const labelId = `checkbox-list-secondary-label-${i}`;
+                      return (
+                        <ListItem
+                          key={value}
+                          secondaryAction={
+                            <FormControlLabel
+                              value={value}
+                              onChange={handleToggle.bind(this, value)}
+                              inputprops={{ "aria-labelledby": labelId }}
+                              control={<Radio />}
+                              label=""
+                            />
+                          }
+                          disablePadding
+                        >
+                          <ListItemButton>
+                            <ListItemAvatar>
+                              <Avatar alt={`S`} src={``} />
+                            </ListItemAvatar>
+                            <ListItemText id={labelId} primary={`${value}`} />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                </List>
+              </RadioGroup>
+            ) : (
+              <>
+                <Typography
+                  className="alert-email"
+                  variant="p"
+                  component="span"
+                  align="left"
+                >
+                  Loading player list...
+                </Typography>
+                <CircularProgress color="inherit" />
+              </>
+            )}
           </Grid>
         </Grid>
       </Box>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={10} md={6}></Grid>
-          <Grid item xs={10} md={2}>
-          <Button
-              variant="contained"
-              onClick={() => {
-                console.log(props);
-              }}
-            >
-              Continue
-            </Button>
+      {
+          !props.loadingSearchedPlayerList && <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={10} md={6}></Grid>
+            <Grid item xs={10} md={2}>
+              <Button
+                variant="contained"
+                onClick={(e) => {
+                    updateConnectedChildren(emailChecked);
+                    navigate('../login');
+                }}
+              >
+                Continue
+              </Button>
+            </Grid>
           </Grid>
-        </Grid> 
-      </Box>
+        </Box>
+      }
     </div>
   );
 }
 
-export default LinkPlayer;
+// export default LinkPlayer;
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getSearchedPlayerByEmail: (email) =>
+      dispatch(getSearchedPlayerByEmail(email)),
+    fetchLinkedPlayerList: () => dispatch(fetchLinkedPlayerList()),
+    addPlayerToList: (details) => dispatch(addPlayerToList(details)),
+    updateConnectedChildren: (email) => dispatch(updateConnectedChildren(email)),
+  };
+};
+
+const mapStateToProps = (state) => {
+  const stateData = state.linkPlayerReducer;
+  return {
+    loadingSearchedPlayer: stateData.loadingSearchedPlayer,
+    searchedPlayerList: stateData.searchedPlayerList,
+    searchedPlayer: stateData.searchedPlayer,
+    loadingSearchedPlayerList: stateData.loadingSearchedPlayerList,
+    loadingAddPlayer: stateData.loadingAddPlayer,
+    basicInfo: getData.data,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LinkPlayer);

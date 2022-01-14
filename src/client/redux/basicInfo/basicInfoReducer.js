@@ -9,9 +9,9 @@ import {
 
     FETCH_BASICINFO_REQUEST,
     FETCH_BASICINFO_SUCCESS,
-    FETCH_BASICINFO_FAILURE
+    FETCH_BASICINFO_FAILURE,
 
-
+    UPDATE_BASI_ONFO_PLAYER
 } from "./basicInfoTypes";
 
 const initialState = {
@@ -26,7 +26,6 @@ const initalFetchState = {
 }
 
 export const reducer = (state = initialState,action)=>{
-    console.log("in reducer")
     switch(action.type){
         
         case POST_BASICINFO_REQUEST: 
@@ -46,7 +45,13 @@ export const reducer = (state = initialState,action)=>{
                 data:[],
                 error:{...action.payload}
             } 
-       
+        case UPDATE_BASI_ONFO_PLAYER: {
+            return {
+                ...state,
+                data: {...state.getData.data, player: action.payload},
+                error:{}
+            }
+        }
 
         default: return state;
     }

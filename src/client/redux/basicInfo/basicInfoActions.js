@@ -9,8 +9,8 @@ import { POST_BASICINFO_REQUEST,
   EMAIL_VALIDATION_FAILURE,
   FETCH_BASICINFO_REQUEST,
   FETCH_BASICINFO_SUCCESS,
-  FETCH_BASICINFO_FAILURE
-
+  FETCH_BASICINFO_FAILURE,
+  UPDATE_BASI_ONFO_PLAYER
 } from "./basicInfoTypes";
 
 export const postDetailsRequest = () => {
@@ -31,6 +31,13 @@ const postUsersFailure = (error) =>{
   return {
       type:POST_BASICINFO_FAILURE,
       payload:error
+  }
+}
+
+export const updateConnectedChildren = (playerEmail) =>{
+  return {
+      type:UPDATE_BASI_ONFO_PLAYER,
+      payload: playerEmail,
   }
 }
 
