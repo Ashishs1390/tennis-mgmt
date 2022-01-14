@@ -15,7 +15,7 @@ import {
 } from "./basicInfoTypes";
 
 const initialState = {
-    data:[],  
+    data:{},  
     error:{status:200}
     
 }
@@ -36,7 +36,7 @@ export const reducer = (state = initialState,action)=>{
         case POST_BASICINFO_SUCCESS:
             return {
                 ...state,
-                data:action.payload,
+                data: action.payload,
                 error:{}
             }
         case POST_BASICINFO_FAILURE:

@@ -326,7 +326,7 @@ const mapStateToProps = (state) => {
     searchedPlayer: stateData.searchedPlayer,
     loadingSearchedPlayerList: stateData.loadingSearchedPlayerList,
     loadingAddPlayer: stateData.loadingAddPlayer,
-    basicInfo: getData.data,
+    basicInfo: stateData.getData ? stateData.getData.data : {},
   };
 };
 
