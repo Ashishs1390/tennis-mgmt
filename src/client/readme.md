@@ -467,6 +467,28 @@ role in localstorage
 
 
 
+parent assessment
+
+
+http://localhost:3000/user/parent/assessments
+
+
+player_email,
+parent_email,
+
+
+put:
+get:
+
+query: 
+tennismgmt/link/?parent_email = "" || coach_email = ""&
+for in 
+body
+{
+    player_email
+}
+
+
 
 
 

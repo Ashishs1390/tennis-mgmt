@@ -8,4 +8,7 @@ router.use('/tennismgmt/videoanalysis', checkToken, require('./api/videoanalysis
 router.use('/tennismgmt/videolibrary', checkToken, require("./api/videoanalysispage/videolibrary"));
 router.use('/tennismgmt/list/agegrouplist', require("./api/list_collection/list_collection"));
 router.use('/tennismgmt/competancy', checkToken, require("./api/competencylist/competencyListCtrl"));
+router.use('/tennismgmt/linktoplayer', checkToken, require("./api/linktoplayer/linkToPlayerCtrl"));
+
+
 module.exports = router;
