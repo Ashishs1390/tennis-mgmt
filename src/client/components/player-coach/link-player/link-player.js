@@ -111,14 +111,11 @@ function LinkPlayer(props) {
   const addSelectedEmailToList = () => {
     const reqObj = {
       player_email: props.searchedPlayer,
-      parent_email:
-        props.basicInfo.role === "parent"
-          ? props.basicInfo.email
-          : "parent@gmail.com",
-      coach_email:
-        props.basicInfo.role === "couch" ? props.basicInfo.email : "",
     };
-    delete reqObj.coach_email;
+    let localStore = localStorage.getItem("localStore");
+    localStore = JSON.parse(localStore);
+    const role = localStore.role;
+    reqObj[`${role}_email`] = localStore.email;
     props.addPlayerToList(reqObj);
     setSentForAdd(true);
   };
@@ -134,14 +131,14 @@ function LinkPlayer(props) {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Tennis management
             </Typography>
-            <Button color="inherit" onClick={() => {}}>
+            <Button color="inherit" onClick={() => { }}>
               Logout
             </Button>
           </Toolbar>

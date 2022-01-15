@@ -34,7 +34,9 @@ export const fetchCompetancyFailure = (error) => {
 export const getCompetancy = () => {
   return async (dispatch) => {
     dispatch(loadingCompetancy());
-    const current_level = localStorage.getItem("current_level");
+    let localStore = localStorage.getItem("localStore");
+    localStore = JSON.parse(localStore);
+    const current_level = localStore.current_level;
     let response = await get("/api/tennismgmt/competancy/", {
       params: { current_level: current_level },
     });

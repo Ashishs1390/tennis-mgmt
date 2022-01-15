@@ -6,9 +6,7 @@ const baseConfig = {
 
 }
 
-console.log(require('./dev'));
 let envConfig = {};
-
 switch (env){
     case 'development':
         envConfig = require('./dev');
