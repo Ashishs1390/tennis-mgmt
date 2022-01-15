@@ -65,11 +65,17 @@ function LinkPlayer(props) {
   const [sentForAdd, setSentForAdd] = useState(false);
   const [validEmail, SetValidEmail] = useState(null);
   const [alreadyAddedEmail, setAlreadyAddedEmail] = useState(false);
+  const [role, setRole] = useState("");
   const regEmail =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const txtCntrl = useRef();
   const navigate = useNavigate();
   useEffect(() => {
+    setTimeout(()=>{
+      let localStore = localStorage.getItem("localStore");
+      localStore = JSON.parse(localStore);
+      setRole(localStore.role);
+    }, 100);
     props.fetchLinkedPlayerList();
   }, []);
 
@@ -114,19 +120,15 @@ function LinkPlayer(props) {
     const reqObj = {
       player_email: props.searchedPlayer,
     };
-    let localStore = localStorage.getItem("localStore");
-    localStore = JSON.parse(localStore);
-    const role = localStore.role;
     reqObj[`${role}_email`] = localStore.email;
     props.addPlayerToList(reqObj);
     setSentForAdd(true);
   };
 
   const getPlayerItnLevel = () => {
-    const role = localStore.role;
-    get('api/tennismgmt/linktoplayer/itn_level', {params: { email: emailChecked}}).then(x=>{
+    get('/api/tennismgmt/linktoplayer/itn_level', {params: { email: emailChecked}}).then(x=>{
       updateConnectedChildren(emailChecked);
-      localStorage.setItem('', x.response.data.current_level);
+      localStorage.setItem('current_level', x.data.data.current_level);
       navigate(`../user/${role}`);
     }).catch(err => {
       console.log(err);
