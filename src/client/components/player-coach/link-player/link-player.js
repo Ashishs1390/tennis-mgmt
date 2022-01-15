@@ -72,11 +72,11 @@ function LinkPlayer(props) {
   }, []);
 
   useEffect(() => {
-    if (props.searchedPlayer === '' && sentForAdd) {
+    if (props.searchedPlayer === "" && sentForAdd) {
       setSentForAdd(false);
       setTimeout(() => {
-        setSearchEmail('');
-        txtCntrl.current.childNodes[1].children[0].value = '';
+        setSearchEmail("");
+        txtCntrl.current.childNodes[1].children[0].value = "";
         SetValidEmail(null);
       }, 10);
     }
@@ -88,9 +88,19 @@ function LinkPlayer(props) {
 
   const validateAndSubmit = (value, submit = true) => {
     const isValid = regEmail.test(value.trim());
-    const isAlreadyAddedEmail = props.searchedPlayerList.indexOf(value.trim()) >= 0;
-    value.trim() && setAlreadyAddedEmail(isAlreadyAddedEmail);
     SetValidEmail(isValid);
+    if(isValid && props.searchedPlayer === value) {
+      addSelectedEmailToList();
+      return false;
+    }
+    const isSearchError = props.errorSearh && props.errorSearh.split(' ')[props.errorSearh.split(' ').length - 1]
+    if (isValid && value && value === isSearchError) {
+       return false;
+    }
+    
+    const isAlreadyAddedEmail =
+      props.searchedPlayerList.indexOf(value.trim()) >= 0;
+    value.trim() && setAlreadyAddedEmail(isAlreadyAddedEmail);
     if (isValid && submit && !isAlreadyAddedEmail) {
       props.getSearchedPlayerByEmail(value);
     } else if (value.trim() === "") {
@@ -108,7 +118,7 @@ function LinkPlayer(props) {
     reqObj[`${role}_email`] = localStore.email;
     props.addPlayerToList(reqObj);
     setSentForAdd(true);
-  }
+  };
 
   return (
     <div>
@@ -184,11 +194,24 @@ function LinkPlayer(props) {
                 Email id already added in your list.
               </Typography>
             )}
+            {
+              validEmail && props.errorSearh && (
+                <Typography
+                className="alert-email"
+                variant="p"
+                component="div"
+                align="left"
+              >
+                {props.errorSearh}
+              </Typography>
+              )
+            }
           </Grid>
           <Grid item xs={10} md={2}>
-            {(searchEmail.trim() === "" ||
+            {(searchEmail.trim() === "" || props.errorSearh ||
               props.searchedPlayer !== searchEmail ||
-              props.loadingSearchedPlayer) && !props.loadingAddPlayer ? (
+              props.loadingSearchedPlayer) &&
+            !props.loadingAddPlayer ? (
               <Button
                 variant="contained"
                 onClick={() => {
@@ -206,7 +229,12 @@ function LinkPlayer(props) {
                 )}
               </Button>
             ) : (
-              <Button variant="contained" onClick={() => { addSelectedEmailToList() }}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  addSelectedEmailToList();
+                }}
+              >
                 {props.loadingAddPlayer ? (
                   <>
                     {"Adding..."}
@@ -287,8 +315,10 @@ function LinkPlayer(props) {
           </Grid>
         </Grid>
       </Box>
-      {
-        !props.loadingSearchedPlayerList && <Box sx={{ flexGrow: 1 }}>
+      {!props.loadingSearchedPlayerList &&
+      props.searchedPlayerList &&
+      props.searchedPlayerList.length > 0 ? (
+        <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid item xs={10} md={6}></Grid>
             <Grid item xs={10} md={2}>
@@ -296,7 +326,7 @@ function LinkPlayer(props) {
                 variant="contained"
                 onClick={(e) => {
                   updateConnectedChildren(emailChecked);
-                  navigate('../login');
+                  navigate("../login");
                 }}
               >
                 Continue
@@ -304,7 +334,25 @@ function LinkPlayer(props) {
             </Grid>
           </Grid>
         </Box>
-      }
+      ) : (
+        !props.loadingSearchedPlayerList && (
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={10} md={2}></Grid>
+              <Grid item xs={10} md={4}>
+                <Typography
+                  variant="p"
+                  gutterBottom
+                  component="div"
+                  align="left"
+                >
+                  No player link added...!
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+        )
+      )}
     </div>
   );
 }
@@ -317,7 +365,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(getSearchedPlayerByEmail(email)),
     fetchLinkedPlayerList: () => dispatch(fetchLinkedPlayerList()),
     addPlayerToList: (details) => dispatch(addPlayerToList(details)),
-    updateConnectedChildren: (email) => dispatch(updateConnectedChildren(email)),
+    updateConnectedChildren: (email) =>
+      dispatch(updateConnectedChildren(email)),
   };
 };
 
@@ -326,6 +375,7 @@ const mapStateToProps = (state) => {
   return {
     loadingSearchedPlayer: stateData.loadingSearchedPlayer,
     searchedPlayerList: stateData.searchedPlayerList,
+    errorSearh: stateData.errorSearh,
     searchedPlayer: stateData.searchedPlayer,
     loadingSearchedPlayerList: stateData.loadingSearchedPlayerList,
     loadingAddPlayer: stateData.loadingAddPlayer,
