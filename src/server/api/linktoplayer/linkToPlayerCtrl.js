@@ -117,5 +117,29 @@ router.route('/').get(async (req, res, next) => {
     }
     
 })
+router.route('/itn_level').get(async (req, res, next) => {
+    try {
+        
+    
+        const { email } = req.query;
+        let itn_level = await basicInformation.find({ email: email }, { current_level: 1, _id: 0 })
+        console.log(itn_level);
+        if (itn_level.length !== 0) {
+            res.status(200).send(itn_level[0])
+        } else {
+            res.status(404).send({
+                errMsg: "No player found",
+                status: 404
+            })
+        }
+    } catch (err) {
+        res.status(504).send({
+            errMsg: "Internal server error",
+            status: 504
+        })   
+    }
+    
+})
+
 
 module.exports = router;
