@@ -36,8 +36,7 @@ const get = async (url, config = {}) => {
         return success(response);
     } catch(error) {
         console.log("-------error------------")
-
-        return failure(error);
+        throw (error);
     }
 }
 

@@ -10,7 +10,7 @@ import {
   FETCH_PLAYER_EMAIL_LIST_FAILURE,
 } from "./linkPlayerActionsTypes";
 
-import { get, post } from "../../api/axios.api";
+import { get, post,put } from "../../api/axios.api";
 
 export const searchedEmail = (searchEmail) => {
   return {
@@ -34,11 +34,9 @@ export const searchedEmailFailure = () => {
 export const getSearchedPlayerByEmail = (searchEmail) => {
   return (dispatch) => {
     dispatch(searchedEmail(searchEmail));
-    get(`/api/tennismgmt/linkplayer`,{params: {email: searchEmail}})
+    get(`/api/tennismgmt/linktoplayer`, { params: { email: searchEmail } })
       .then((response) => {
-        setTimeout(() => {
-          dispatch(searchedEmailSuccess());
-        }, 1000)
+        dispatch(searchedEmailSuccess(response.data.data));
       })
       .catch((error) => {
         console.log('Error:-', error);
@@ -70,17 +68,13 @@ export const fetchPlayerListFailure = () => {
 export const fetchLinkedPlayerList = (searchEmail) => {
   return (dispatch) => {
     dispatch(fetchPlayerList(searchEmail));
-    get(`/api/tennismgmt/linkplayer`)
+    get(`/api/tennismgmt/linktoplayer`)
       .then((response) => {
-        setTimeout(() => {
-          dispatch(fetchPlayerListSuccess([
-            'poo.baa@gmail.com', 'goo.uaa@gmail.com', 'voo.haa@gmail.com', 'koo.jaa@gmail.com'
-        ]));
-        }, 1000)
+        dispatch(fetchPlayerListSuccess(response.data.data));
       })
       .catch((error) => {
         console.log('Error:-', error);
-        dispatch(fetchPlayerListFailure(error.response.data));
+        dispatch(fetchPlayerListFailure(error.response.errMsg));
       });
   };
 };
@@ -92,9 +86,10 @@ export const addPlayer = () => {
   };
 };
 
-export const addedPlayerSuccess = () => {
+export const addedPlayerSuccess = (payload) => {
   return {
     type: SELECTED_PLAYER_LINK_SUCCESS,
+    payload
   };
 };
 
@@ -107,15 +102,13 @@ export const addPlayerFailure = () => {
 export const addPlayerToList = (details) => {
   return (dispatch) => {
     dispatch(addPlayer());
-    post(`/api/tennismgmt/linkplayer`,{...details})
+    put(`/api/tennismgmt/linktoplayer`, { ...details })
       .then((response) => {
-        setTimeout(() => {
-          dispatch(addedPlayerSuccess());
-        }, 1000)
+          dispatch(addedPlayerSuccess(response.data.data[0]));
       })
       .catch((error) => {
         console.log('Error:-', error);
-        dispatch(addPlayerFailure(error.response.data));
+        dispatch(addPlayerFailure(error.response.data.errMsg));
       });
   };
 };

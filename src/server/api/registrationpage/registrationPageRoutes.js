@@ -19,8 +19,6 @@ router.route('/emailvalidation').get(async(req,res,next)=>{
 });
 
 router.route('/:role').post(async(req,res,next)=>{
-    console.log("----------in post-----------------")
-
     const salt = genSaltSync(10);
     const {body,params} = req;
     const current_level = body.current_level;
@@ -35,7 +33,6 @@ router.route('/:role').post(async(req,res,next)=>{
 
     if(email.length == 0){
         basicInformation.create(saveObj).then(async(output)=>{
-            console.log(competancyBundleArr)
             // const insertIntoUserCollection = await userCompetancySchema.insertMany([...addOtherInfo]).catch((err)=>{
             //     console.log(err);
             // })

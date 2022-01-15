@@ -11,7 +11,6 @@ let envConfig = {};
 
 switch (env){
     case 'development':
-        // console.log()
         envConfig = require('./dev');
         break;
     default:

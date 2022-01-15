@@ -60,7 +60,6 @@ const getAllDates = async (email) => {
       },
     },
   ]);
-  console.log(assessmentDates);
   assessmentDates = assessmentDates.reduce((acc, curr) => {
     if (acc) {
       acc.push(curr.assessment_date);
@@ -72,15 +71,11 @@ const getAllDates = async (email) => {
 
 router.route("/assessment").get(async (req, res, next) => {
   try {
-    console.log(req.user);
     const { email, current_level } = req.user[0];
     let resObj = {};
 
     const itnWeights = `${current_level}_weight`;
-    // let assessmentDates = await userCompetancySchema.distinct("assessment_date");
-    // console.log(assessmentDates)
     let assessmentDates = await getAllDates(email);
-    console.log(assessmentDates);
     let assessmentData = await userCompetancySchema.aggregate([
       {
         $match: {

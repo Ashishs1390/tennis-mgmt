@@ -4,7 +4,6 @@ const path = require("path");
 const dotenv = require('dotenv');
 dotenv.config();
 const port = process.env.PORT ||  8000;
-console.log(process.env.PORT);
 
 require('./middlewares/appMiddlewares')(app);
 const api = require('./routes.js');
@@ -15,7 +14,6 @@ app.use('/api/',api);
 //     res.status(200).send({msg:"user exist",status:200});
 // });
 
-console.log(process.env.ONESERVER,"------------------")
 if(process.env.ONESERVER === "true"){
     app.use(
         express.static(path.join(__dirname, "../../dist"),{maxage:"2h"})

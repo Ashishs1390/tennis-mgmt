@@ -59,14 +59,7 @@ router.route('/').put(async (req, res, next) => {
             })
 
         }
-        console.log("----------------updatedInfo--------updatedPlayerInfo----------------------")
-        console.log(updatedInfo);
-        console.log(updatedPlayerInfo);
-        res.status(200).send({
-            msg: "emails updated successfully",
-            children_email: updatedInfo.children_email,
-            status: 200
-        });
+        res.status(200).send([player_email]);
     }
     catch (err) {
         console.log(err);
@@ -82,10 +75,11 @@ const getChildrenList = async(email) => {
     })
     console.log(childList[0]);
     childList = JSON.parse(JSON.stringify(childList))
-    childlist = childList[0]
+    childlist = childList[0];
+
 
     if (childList.length !== 0) {
-        return (childList[0])
+        return (childList[0].children_email)
     }
 }
 const getSearchedChild = async ({email }) => {
@@ -102,14 +96,21 @@ router.route('/').get(async (req, res, next) => {
 
         if (req.query && Object.keys(req.query).length === 0
             && Object.getPrototypeOf(req.query) === Object.prototype) {
-            console.log("0000")
             const resp = await getChildrenList(email);
             res.status(200).send(resp)
 
         } else {
             const resp = await getSearchedChild(req.query);
             console.log(resp)
-            res.status(200).send(resp)
+            if (resp.length != 0) {
+                res.status(200).send(resp)
+            } else {
+                res.status(404).json({
+                    errMsg: "No player found",
+                    status: 404
+                })
+            }
+
         }
     } catch (err) {
         console.log(err);

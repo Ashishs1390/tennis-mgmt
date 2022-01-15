@@ -34,9 +34,6 @@ router.route("/").put(async (req, res, next) => {
             res.status(404).send({ msg: "user exist", status: 403 });
         }
     }
-
-    console.log("---------userObj----------")
-    console.log(userObj)
     const updatedData = await basicInformation.updateOne(
         { email: req.user[0].email }, {
             $set: {

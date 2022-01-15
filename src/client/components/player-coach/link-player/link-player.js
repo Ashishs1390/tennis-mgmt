@@ -99,11 +99,13 @@ function LinkPlayer(props) {
   };
 
   const addSelectedEmailToList = () => {
-    props.addPlayerToList({
-        player_email: props.searchedPlayer,
-        parent_email: props.basicInfo.role === 'parent' ? props.basicInfo.email : '',
-        coach_email: props.basicInfo.role === 'couch' ? props.basicInfo.email : '',
-    });
+    const reqObj = {
+      player_email: props.searchedPlayer,
+      parent_email: props.basicInfo.role === 'parent' ? props.basicInfo.email : 'p@gmail.com',
+      coach_email: props.basicInfo.role === 'couch' ? props.basicInfo.email : '',
+    };
+    delete reqObj.coach_email;
+    props.addPlayerToList(reqObj);
     setSentForAdd(true);
   }
 

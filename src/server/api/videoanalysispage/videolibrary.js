@@ -11,7 +11,6 @@ router.route('/').get(async(req,res,next)=>{
 
     if(libData && libData.length >0){
         libData = JSON.parse(JSON.stringify(libData));
-        console.log(libData)
         res.send(libData)
     }
 

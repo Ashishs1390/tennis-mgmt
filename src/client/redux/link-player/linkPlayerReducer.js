@@ -51,7 +51,8 @@ export const linkPlayerReducer = (state = initalVideoAnalysisState, action)=>{
                 ...state,
                 loadingAddPlayer: false,
                 searchedPlayer: '',
-                errorAddPlayer: null
+                errorAddPlayer: null,
+                searchedPlayerList: [...state.searchedPlayerList,action.payload]
             };
         case SELECTED_PLAYER_LINK_FAILURE: 
             return {
