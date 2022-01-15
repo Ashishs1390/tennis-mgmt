@@ -4,6 +4,7 @@ const competancymetadata = require("./../../models/competancymetadata");
 const competancyBundleSchema = require("./../../models/competencybundledata");
 
 router.route("/").get(async (req, res, next) => {
+  console.log("-----------get-----------")
   getCompetency(req, res);
 });
 

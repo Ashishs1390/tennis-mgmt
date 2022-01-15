@@ -35,6 +35,7 @@ function Login(props) {
 
         onAuth(true);
         localStorage.setItem('localStore', JSON.stringify(localStore));
+        localStorage.setItem('current_level', response.data.role);
         if (response.data.role == "player") {
           navigate(`/user/${response.data.role}`);
         } else {

@@ -117,6 +117,8 @@ function LinkPlayer(props) {
   };
 
   const addSelectedEmailToList = () => {
+    let localStore = localStorage.getItem("localStore");
+    localStore = JSON.parse(localStore);
     const reqObj = {
       player_email: props.searchedPlayer,
     };
@@ -128,6 +130,8 @@ function LinkPlayer(props) {
   const getPlayerItnLevel = () => {
     get('/api/tennismgmt/linktoplayer/itn_level', {params: { email: emailChecked}}).then(x=>{
       updateConnectedChildren(emailChecked);
+      console.log("----------getPlayerItnLevel-----------")
+      console.log(x);
       localStorage.setItem('current_level', x.data.data.current_level);
       navigate(`../user/${role}`);
     }).catch(err => {
