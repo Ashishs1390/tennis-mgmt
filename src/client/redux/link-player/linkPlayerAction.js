@@ -25,9 +25,10 @@ export const searchedEmailSuccess = () => {
   };
 };
 
-export const searchedEmailFailure = () => {
+export const searchedEmailFailure = (payload) => {
   return {
     type: SEARCH_PLAYER_EMAIL_FAILURE,
+    payload
   };
 };
 
@@ -40,7 +41,7 @@ export const getSearchedPlayerByEmail = (searchEmail) => {
       })
       .catch((error) => {
         console.log('Error:-', error);
-        dispatch(searchedEmailFailure(error.response.data));
+        dispatch(searchedEmailFailure(error.response.data.errMsg + " with email " +searchEmail));
       });
   };
 };
