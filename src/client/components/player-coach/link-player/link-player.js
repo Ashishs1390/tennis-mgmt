@@ -73,12 +73,12 @@ function LinkPlayer(props) {
 
   useEffect(() => {
     if (props.searchedPlayer === '' && sentForAdd) {
-        setSentForAdd(false);
-        setTimeout(() => {
-            setSearchEmail('');
-            txtCntrl.current.childNodes[1].children[0].value = '';
-            SetValidEmail(null);
-        }, 10);
+      setSentForAdd(false);
+      setTimeout(() => {
+        setSearchEmail('');
+        txtCntrl.current.childNodes[1].children[0].value = '';
+        SetValidEmail(null);
+      }, 10);
     }
   }, [props.searchedPlayer]);
 
@@ -101,10 +101,11 @@ function LinkPlayer(props) {
   const addSelectedEmailToList = () => {
     const reqObj = {
       player_email: props.searchedPlayer,
-      parent_email: props.basicInfo.role === 'parent' ? props.basicInfo.email : 'p@gmail.com',
-      coach_email: props.basicInfo.role === 'couch' ? props.basicInfo.email : '',
     };
-    delete reqObj.coach_email;
+    let localStore = localStorage.getItem("localStore");
+    localStore = JSON.parse(localStore);
+    const role = localStore.role;
+    reqObj[`${role}_email`] = localStore.email;
     props.addPlayerToList(reqObj);
     setSentForAdd(true);
   }
@@ -120,14 +121,14 @@ function LinkPlayer(props) {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
-              onClick={() => {}}
+              onClick={() => { }}
             >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Tennis management
             </Typography>
-            <Button color="inherit" onClick={() => {}}>
+            <Button color="inherit" onClick={() => { }}>
               Logout
             </Button>
           </Toolbar>
@@ -186,8 +187,8 @@ function LinkPlayer(props) {
           </Grid>
           <Grid item xs={10} md={2}>
             {(searchEmail.trim() === "" ||
-            props.searchedPlayer !== searchEmail ||
-            props.loadingSearchedPlayer) && !props.loadingAddPlayer ? (
+              props.searchedPlayer !== searchEmail ||
+              props.loadingSearchedPlayer) && !props.loadingAddPlayer ? (
               <Button
                 variant="contained"
                 onClick={() => {
@@ -205,7 +206,7 @@ function LinkPlayer(props) {
                 )}
               </Button>
             ) : (
-              <Button variant="contained" onClick={() => {addSelectedEmailToList()}}>
+              <Button variant="contained" onClick={() => { addSelectedEmailToList() }}>
                 {props.loadingAddPlayer ? (
                   <>
                     {"Adding..."}
@@ -287,15 +288,15 @@ function LinkPlayer(props) {
         </Grid>
       </Box>
       {
-          !props.loadingSearchedPlayerList && <Box sx={{ flexGrow: 1 }}>
+        !props.loadingSearchedPlayerList && <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid item xs={10} md={6}></Grid>
             <Grid item xs={10} md={2}>
               <Button
                 variant="contained"
                 onClick={(e) => {
-                    updateConnectedChildren(emailChecked);
-                    navigate('../login');
+                  updateConnectedChildren(emailChecked);
+                  navigate('../login');
                 }}
               >
                 Continue

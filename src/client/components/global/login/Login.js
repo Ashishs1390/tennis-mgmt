@@ -22,11 +22,19 @@ function Login(props) {
     setInputs((state) => ({ ...state, [name]: value }), [])
   );
   const loginCall = (fields, role) => {
+    const localStore = {};
     axios
       .post(`/api/tennismgmt/login`, { ...fields })
       .then((response) => {
+        console.log(response);
+        localStore.current_level = response.data.current_level;
+        localStore.email = response.data.email;
+        localStore.first_name = response.data.first_name;
+        localStore.last_name = response.data.last_name;
+        localStore.role = response.data.role;
+
         onAuth(true);
-        localStorage.setItem('current_level', response.data.current_level);
+        localStorage.setItem('localStore', JSON.stringify(localStore));
         navigate(`/user/${role}`);
         // handle success
       })
@@ -36,10 +44,6 @@ function Login(props) {
         setErrmsg({ ...error.response.data });
       });
   };
-
-  useEffect(() => {
-    console.log(errmsg);
-  }, [errmsg]);
 
   const onSumbit = () => {
     loginCall(inputs, role);

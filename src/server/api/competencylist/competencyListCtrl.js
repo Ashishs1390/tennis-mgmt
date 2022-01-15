@@ -185,10 +185,7 @@ router.route("/assessment").get(async (req, res, next) => {
     }, []);
     assessmentData = assessmentData
       .map((item) => {
-        console.log("----------assessmentData------------");
-        console.log(item.competencies);
           item.competencies.sort((a, b) => {
-              console.log(a[itnWeights]);
            var x = a[itnWeights];
            var y = b[itnWeights];
            return x < y ? -1 : x > y ? 1 : 0;

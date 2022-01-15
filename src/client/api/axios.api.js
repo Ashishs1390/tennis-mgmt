@@ -35,7 +35,6 @@ const get = async (url, config = {}) => {
         const response = await axios.get(url,defaultConfig(config));
         return success(response);
     } catch(error) {
-        console.log("-------error------------")
         throw (error);
     }
 }
