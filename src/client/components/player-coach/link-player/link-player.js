@@ -32,6 +32,8 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
+import { get } from "../../../api/axios.api";
+
 import "./link-player.scss";
 
 // function DisablingControl(props) {
@@ -118,6 +120,17 @@ function LinkPlayer(props) {
     reqObj[`${role}_email`] = localStore.email;
     props.addPlayerToList(reqObj);
     setSentForAdd(true);
+  };
+
+  const getPlayerItnLevel = () => {
+    const role = localStore.role;
+    get('api/tennismgmt/linktoplayer/itn_level', {params: { email: emailChecked}}).then(x=>{
+      updateConnectedChildren(emailChecked);
+      localStorage.setItem('', x.response.data.current_level);
+      navigate(`../user/${role}`);
+    }).catch(err => {
+      console.log(err);
+    })
   };
 
   return (
@@ -325,8 +338,7 @@ function LinkPlayer(props) {
               <Button
                 variant="contained"
                 onClick={(e) => {
-                  updateConnectedChildren(emailChecked);
-                  navigate("../user/parent");
+                  getPlayerItnLevel()
                 }}
               >
                 Continue

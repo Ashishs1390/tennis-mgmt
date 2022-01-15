@@ -126,7 +126,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchDetails: () =>
-      dispatch(fetchDetails({ type: "FETCH_BASICINFO_REQUEST" })),
+      dispatch(fetchDetails()),
   };
 };
 
