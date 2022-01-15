@@ -329,7 +329,7 @@ function LinkPlayer(props) {
                 variant="contained"
                 onClick={(e) => {
                   updateConnectedChildren(emailChecked);
-                  navigate("../login");
+                  navigate("../user/parent");
                 }}
               >
                 Continue
