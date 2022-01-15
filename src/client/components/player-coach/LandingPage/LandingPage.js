@@ -15,6 +15,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { post } from "../../../api/axios.api";
 
 function LandingPage(props) {
+  const localStore = localStorage.getItem("localStore");
+  const role = localStore.role;
   const navigate = useNavigate();
   useEffect(() => {
     props.fetchDetails();
@@ -65,7 +67,7 @@ function LandingPage(props) {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Tennis management
+              Tennis management
             </Typography>
             <Button color="inherit" onClick={logout}>Logout</Button>
           </Toolbar>
@@ -77,35 +79,37 @@ function LandingPage(props) {
             updateNav('./profilepage');
           }}
         >
-         Profile Page
+          Profile Page
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            updateNav('./video/analysis');
-          }}
-        >
-          Video Page
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            updateNav('./strockanalysislist');
-          }}
-        >
-          Strock Analysis List Page
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            updateNav('./comparelibrary');
-          }}
-        >
-          Compare Library
-        </MenuItem>
-        <MenuItem
+        {role === "player" && (<>
+          <MenuItem
+            onClick={() => {
+              updateNav('./video/analysis');
+            }}
+          >
+            Video Page
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              updateNav('./strockanalysislist');
+            }}
+          >
+            Strock Analysis List Page
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              updateNav('./comparelibrary');
+            }}
+          >
+            Compare Library
+          </MenuItem>
+        </>)
+        } <MenuItem
           onClick={() => {
             updateNav('./assessments');
           }}
         >
-         Assessments
+          Assessments
         </MenuItem>
       </Drawer>
       <Outlet></Outlet>

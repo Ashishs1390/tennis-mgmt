@@ -35,8 +35,11 @@ function Login(props) {
 
         onAuth(true);
         localStorage.setItem('localStore', JSON.stringify(localStore));
-        navigate(`/user/${role}`);
-        // handle success
+        if (response.data.role == "player") {
+          navigate(`/user/${response.data.role}`);
+        } else {
+          navigate(`/link/player`);
+        }
       })
       .catch((error) => {
         console.log("-------error--------");
