@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useNavigate, Link, Outlet } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -11,11 +12,13 @@ import PlayerDevelopmentListItem from "./PlayerDevelopmentListItem";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import MenuItem from "@mui/material/MenuItem";
 
 import { getPersonalDevPageInfo } from "./../../redux/index";
 import { connect } from "react-redux";
 
 function PlayerDevelopment(props) {
+  const navigate = useNavigate();
   console.log(props);
   const [compData, setCompetancyData] = useState([]);
   const [datesArr, setDatesArr] = useState([]);
@@ -30,6 +33,11 @@ function PlayerDevelopment(props) {
   useEffect(() => {
     getPersonalDevPageInfo();
   }, []);
+
+  const updateNav = (link) => {
+    navigate(link);
+    setMenuOpen(false);
+  };
 
   useEffect(() => {
     if (
@@ -65,6 +73,15 @@ function PlayerDevelopment(props) {
   return (
     // <div>"test"</div>
     <div className="PlayerAssessmentPage">
+      <div className= "NewAssessment">
+        <MenuItem
+          onClick={() => {
+            updateNav('../assessments');
+          }}
+        >
+          Assessments
+        </MenuItem>
+      </div>
       <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
         player development plans -skill view
       </Typography>
