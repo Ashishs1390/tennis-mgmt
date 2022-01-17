@@ -16,7 +16,13 @@ import { post } from "../../../api/axios.api";
 
 function LandingPage(props) {
   const localStore = localStorage.getItem("localStore");
-  const role = localStore.role;
+  const [role, setRole] = useState("");
+  useEffect(() => {
+    console.log("----------localStore--------------")
+    console.log(localStore);
+    const role = JSON.parse(localStore).role;
+    setRole(role);
+  }, [localStore]);
   const navigate = useNavigate();
   useEffect(() => {
     props.fetchDetails();
@@ -46,6 +52,7 @@ function LandingPage(props) {
     const result = await post('/api/tennismgmt/user/logout');
     if (!result.error) {
       navigate('/');
+      localStorage.clear();
     } else {
       alert('Some thing went wrong while logout, please try again');
     }
@@ -110,6 +117,13 @@ function LandingPage(props) {
           }}
         >
           Assessments
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            updateNav('./playerdevelopment');
+          }}
+          >
+          Player Development
         </MenuItem>
       </Drawer>
       <Outlet></Outlet>

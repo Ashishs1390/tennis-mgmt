@@ -14,8 +14,8 @@ router.route("/").post(async (req, res, next) => {
       user,
       body: { data },
     } = req;
-    const { current_level, email } = req.user[0];// jwt token
-
+    const { email } = req.user[0];// jwt token
+    const { current_level } = req.params;
     data.forEach((element) => {
       element.current_level = current_level;
       element.email = email;
@@ -72,7 +72,8 @@ const getAllDates = async (email) => {
 
 router.route("/assessment").get(async (req, res, next) => {
   try {
-    const { email, current_level } = req.user[0];
+    const { email } = req.user[0]; //jwt token
+    const { current_level } = req.query;
     let resObj = {};
 
     const itnWeights = `${current_level}_weight`;
@@ -334,7 +335,7 @@ async function getCompetencyNew(req, res) {
 async function getCompetencyLatest(req, res) {
   console.log("------------getCompetencyLatest---------------");
   try {
-    const { email, current_level } = req.user[0];
+    const { email } = req.user[0];
     let assessmentDates = await getAllDates(email);
     let maxDate = new Date(
       Math.max(...assessmentDates.map((e) => new Date(e)))
