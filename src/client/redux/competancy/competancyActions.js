@@ -92,7 +92,7 @@ export const fetchPersnalDevError = () => {
   };
 };
 
-export const getPersonalDevPageInfo = () => {
+export const getPersonalDevPageInfo = (current_level) => {
   return async (dispatch) => {
     let response = await get("/api/tennismgmt/competancy/assessment",{
       params: { current_level: current_level },

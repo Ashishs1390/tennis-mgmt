@@ -456,7 +456,7 @@ role in localstorage
     "assessment_date" : "2021-12-29T18:02:46.113Z",
     "current_level" : "u12boys",
     "competency_bundle" : "Tactical",
-    "parent_email:"",
+    " _email:"",
     "role":"",
     "coach_email":""
 
@@ -487,6 +487,22 @@ body
 {
     player_email
 }
+
+
+parent -> p@gmail.com
+child > degeadavid@gmail.com
+role -> parent
+itn_level -> u12boys
+
+
+for get and put in every api request api will get child_email and itn_level in query parms.
+post -> itn_level will be available in payload.
+
+
+submit data for parent and coach assessment
+
+
+
 
 
 

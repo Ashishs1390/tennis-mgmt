@@ -71,10 +71,12 @@ const getAllDates = async (email) => {
 };
 
 router.route("/assessment").get(async (req, res, next) => {
+  console.log("----------------")
   try {
     const { email } = req.user[0]; //jwt token
     const { current_level } = req.query;
     let resObj = {};
+    console.log(current_level)
 
     const itnWeights = `${current_level}_weight`;
     let assessmentDates = await getAllDates(email);
@@ -131,6 +133,7 @@ router.route("/assessment").get(async (req, res, next) => {
       },
     ]);
     assessmentData = JSON.parse(JSON.stringify(assessmentData));
+    console.log(assessmentData);
     assessmentData = assessmentData.reduce((acc, items) => {
       let { competency_bundle, info } = items;
       const competencyGroup = info.reduce(
@@ -215,6 +218,8 @@ router.route("/assessment").get(async (req, res, next) => {
       progressBarData: assessmentData,
       assessmentDates,
     };
+
+    console.log(resObj);
 
     res.status(200).send(resObj);
   } catch (err) {

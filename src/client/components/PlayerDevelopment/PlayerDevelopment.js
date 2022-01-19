@@ -30,8 +30,10 @@ function PlayerDevelopment(props) {
   } = props;
   console.log("---progressBarData--");
   console.log(progressBarData);
+
   useEffect(() => {
-    getPersonalDevPageInfo();
+    const current_level = localStorage.getItem("current_level");
+    getPersonalDevPageInfo(current_level);
   }, []);
 
   const updateNav = (link) => {
@@ -143,7 +145,7 @@ function PlayerDevelopment(props) {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPersonalDevPageInfo: () => dispatch(getPersonalDevPageInfo()),
+    getPersonalDevPageInfo: (current_level) => dispatch(getPersonalDevPageInfo(current_level)),
   };
 };
 
