@@ -11,7 +11,10 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Loading from "../../common/loading/loading";
-import './competancy.scss';
+import TextField from "@mui/material/TextField";
+import { getDateYYYYMMDD } from "../../../util/util";
+
+import "./competancy.scss";
 
 function CompetancyRating(props) {
   const { getCompetancy, updateCompetancyWeight, saveCompetancy, loading } =
@@ -33,6 +36,10 @@ function CompetancyRating(props) {
     }
     SetCompetancyData(props.competancyData);
   }, [props.competancyData]);
+  const [assDate, setAssDate] = useState(getDateYYYYMMDD(new Date()));
+  const setDate = (selectedDate) => {
+    getDateYYYYMMDD(selectedDate);
+  };
   const onSumbit = () => {
     let flag = true;
     competancyData.forEach((x) => {
@@ -44,7 +51,7 @@ function CompetancyRating(props) {
         competancyData.map((x) => {
           return {
             ...x,
-            assessment_date: new Date().toISOString(),
+            assessment_date: assDate,
           };
         })
       );
@@ -52,6 +59,7 @@ function CompetancyRating(props) {
       alert("error");
     }
   };
+  
   return (
     <div id="CompetancyDetails">
       <Typography
@@ -184,6 +192,30 @@ function CompetancyRating(props) {
                     color="text.primary"
                   >
                     1 year
+                  </Typography>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Typography
+                    sx={{ display: "block" }}
+                    component="p"
+                    variant="h6"
+                    align="right"
+                    color="text.primary"
+                  >
+                    Assessment Date:
+                  </Typography>
+                </td>
+                <td>
+                  <Typography
+                    sx={{ display: "block" }}
+                    component="p"
+                    variant="h6"
+                    align="left"
+                    color="text.primary"
+                  >
+                   <input type="date" defaultValue={assDate} id="AssessmentDate" name="assessmentDate" onChange={(e)=>{setDate(e.target.value)}}></input>
                   </Typography>
                 </td>
               </tr>

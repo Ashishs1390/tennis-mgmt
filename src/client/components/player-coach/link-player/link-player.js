@@ -130,8 +130,7 @@ function LinkPlayer(props) {
   const getPlayerItnLevel = () => {
     get('/api/tennismgmt/linktoplayer/itn_level', {params: { email: emailChecked}}).then(x=>{
       updateConnectedChildren(emailChecked);
-      console.log("----------getPlayerItnLevel-----------")
-      console.log(x);
+      localStorage.setItem('child_email', emailChecked);
       localStorage.setItem('current_level', x.data.data.current_level);
       navigate(`../user/${role}`);
     }).catch(err => {
