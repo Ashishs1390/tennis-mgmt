@@ -78,10 +78,6 @@ function LinearProgressWithLabel(props) {
 function PlayerDevelopmentListItem(props) {
   const { val, index, maxDate, displayRowArr } = props;
 
-  console.log("-----------maxDate------------");
-  console.log(val);
-  console.log(maxDate);
-  console.log(displayRowArr);
   const propsStyle = {
     backgroundColor: "black",
     color: "red",
@@ -103,7 +99,7 @@ function PlayerDevelopmentListItem(props) {
                   : "pbHide"
               }
             >
-              <p className="displaydate">{weight.assessment_date}</p>
+              <p className="displaydate">{`${weight.assessment_date},${weight.role }`}</p>
               <LinearProgressWithLabel
                 colors="success"
                 classes={

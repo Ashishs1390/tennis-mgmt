@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const basicInformation = require("./../../models/basicInformation");
+const { sign } = require("jsonwebtoken");
 
 router.route('/').put(async (req, res, next) => {
     try {
@@ -69,7 +70,7 @@ router.route('/').put(async (req, res, next) => {
         })
     }
 });
-const getChildrenList = async(email) => {
+const getChildrenList = async (email) => {
     let childList = await basicInformation.find({ email: email }, { children_email: 1, _id: 0 }).catch((err) => {
         console.log(err);
     })
@@ -82,8 +83,8 @@ const getChildrenList = async(email) => {
         return (childList[0].children_email)
     }
 }
-const getSearchedChild = async ({email }) => {
-    let output = await basicInformation.find({ email: email }, { email:1,_id:0})
+const getSearchedChild = async ({ email }) => {
+    let output = await basicInformation.find({ email: email }, { email: 1, _id: 0 })
     return output;
 }
 
@@ -115,13 +116,26 @@ router.route('/').get(async (req, res, next) => {
     } catch (err) {
         console.log(err);
     }
-    
+
 })
 router.route('/itn_level').get(async (req, res, next) => {
     try {
-        
-    
+        console.log(req.user[0].email)
+        res.cookie("token", "");
         const { email } = req.query;
+        let userDetails = await basicInformation.find(
+            { email: req.user[0].email },
+            { current_level: 1, email: 1, _id: 0, role: 1, first_name: 1, last_name: 1 }
+        );
+        userDetails = JSON.parse(JSON.stringify(userDetails))
+        console.log(userDetails)
+        userDetails[0].selected_child = email;
+        console.log(userDetails)
+        const jsontoken = sign({ result: userDetails }, "Asdfkgr456Edlflg", {
+            expiresIn: "24h",
+        });
+        res.cookie("token", jsontoken);
+
         let itn_level = await basicInformation.find({ email: email }, { current_level: 1, _id: 0 })
         console.log(itn_level);
         if (itn_level.length !== 0) {
@@ -133,12 +147,13 @@ router.route('/itn_level').get(async (req, res, next) => {
             })
         }
     } catch (err) {
+        console.log(err)
         res.status(504).send({
             errMsg: "Internal server error",
             status: 504
-        })   
+        })
     }
-    
+
 })
 
 

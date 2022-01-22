@@ -51,7 +51,8 @@ function CompetancyRating(props) {
         competancyData.map((x) => {
           return {
             ...x,
-            assessment_date: assDate,
+            // assessment_date: assDate,
+            assessment_date: new Date().toISOString(),
           };
         })
       );

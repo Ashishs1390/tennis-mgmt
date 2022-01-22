@@ -8,18 +8,41 @@ router.route("/").get(async (req, res, next) => {
   getCompetency(req, res);
 });
 
+function addProperties(data) {
+  return data.forEach((element) => {
+    element.current_level = current_level;
+    element.email = email;
+  });
+}
+
 router.route("/").post(async (req, res, next) => {
   try {
     const {
       user,
       body: { data },
     } = req;
-    const { email } = req.user[0];// jwt token
-    const { current_level } = req.params;
-    data.forEach((element) => {
-      element.current_level = current_level;
-      element.email = email;
-    });
+    const { email, selected_child, role } = req.user[0];// jwt token
+    console.log("---------------------email----------------------------")
+    console.log(email)
+    let { current_level } = req.params;
+    current_level = current_level || "u12boys";
+    if (role == "parent" || role == "coach") {
+      // data = addProperties(data)
+      data.forEach((element) => {
+        element.current_level = current_level;
+        element[`${role}_email`] = email;
+        element.email = selected_child;
+        element.role = role;
+      });
+    } else {
+      data.forEach((element) => {
+        element.current_level = current_level;
+        element.email = email;
+        element.role = role;
+      });
+      // data = addProperties(data)
+    }
+    console.log(data);
     const insertIntoUserCollection = await userCompetancySchema.insertMany([
       ...data,
     ]);
@@ -35,11 +58,21 @@ router.route("/").post(async (req, res, next) => {
     });
   }
 });
-const getAllDates = async (email) => {
+const getAllDates = async (email, selected_child, role) => {
+  let filterObj = {};
+
+  filterObj = {
+    // [`${role}_email`]: email,
+    email: role == "player" ? email : selected_child,
+    role: role
+  }
+
+
+
   let assessmentDates = await userCompetancySchema.aggregate([
     {
       $match: {
-        email: email,
+        ...filterObj
       },
     },
     {
@@ -70,21 +103,78 @@ const getAllDates = async (email) => {
   return assessmentDates;
 };
 
-router.route("/assessment").get(async (req, res, next) => {
-  console.log("----------------")
-  try {
-    const { email } = req.user[0]; //jwt token
-    const { current_level } = req.query;
-    let resObj = {};
-    console.log(current_level)
+const getDates = async (email, selected_child, role) => {
+  let filterObj = {};
 
+  filterObj = {
+    email: role == "player" ? email : selected_child,
+  }
+  let assessmentDates = await userCompetancySchema.aggregate([
+    {
+      $match: {
+        ...filterObj
+      },
+    },
+    {
+      $group: {
+        _id: {
+          assessment_date: "$assessment_date",
+        },
+        role: {
+          "$first": "$role"
+        }
+
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        assessment_date: "$_id.assessment_date",
+        role: "$role"
+
+      },
+    },
+    {
+      $sort: {
+        assessment_date: -1,
+      },
+    },
+  ]);
+
+  assessmentDates = JSON.parse(JSON.stringify(assessmentDates))
+  return assessmentDates;
+
+}
+
+router.route("/assessment").get(async (req, res, next) => {
+  try {
+    const { email, selected_child, role } = req.user[0]; //jwt token
+    const { current_level } = req.query;
+    let filterObj = {};
+    if (role == "parent" || role == "coach") {
+      filterObj = {
+        // [`${role}_email`]: email,
+        email: selected_child,
+        current_level: current_level,
+      }
+    } else {
+      filterObj = {
+        email: email,
+        current_level: current_level,
+      }
+    }
+
+
+    let resObj = {};
     const itnWeights = `${current_level}_weight`;
-    let assessmentDates = await getAllDates(email);
-    let assessmentData = await userCompetancySchema.aggregate([
+    let gd = await getDates(email, selected_child, role);
+    let assessmentDates = await getAllDates(email, selected_child, role);
+    console.log(JSON.stringify([
       {
         $match: {
-          email: email,
-          current_level: current_level,
+          ...filterObj
+          // email: email,
+          // current_level: current_level,
         },
       },
       {
@@ -97,6 +187,7 @@ router.route("/assessment").get(async (req, res, next) => {
             current_level: "$current_level",
             values: "$values",
             assessment_date: "$assessment_date",
+            role: "$role"
           },
         },
       },
@@ -107,6 +198,7 @@ router.route("/assessment").get(async (req, res, next) => {
           current_level: "$_id.current_level",
           values: "$_id.values",
           assessment_date: "$_id.assessment_date",
+          role: "$_id.role"
         },
       },
 
@@ -118,7 +210,62 @@ router.route("/assessment").get(async (req, res, next) => {
           info: {
             $push: {
               values: "$values",
+              role: "$role",
+              assessment_date: "$assessment_date",
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          competency_bundle: "$_id.competency_bundle",
+          info: "$info",
+        },
+      },
+    ]))
+    let assessmentData = await userCompetancySchema.aggregate([
+      {
+        $match: {
+          ...filterObj
+          // email: email,
+          // current_level: current_level,
+        },
+      },
+      {
+        $unwind: "$values",
+      },
+      {
+        $group: {
+          _id: {
+            competency_bundle: "$competency_bundle",
+            current_level: "$current_level",
+            values: "$values",
+            assessment_date: "$assessment_date",
+            role: "$role"
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          competency_bundle: "$_id.competency_bundle",
+          current_level: "$_id.current_level",
+          values: "$_id.values",
+          assessment_date: "$_id.assessment_date",
+          role: "$_id.role"
+        },
+      },
 
+      {
+        $group: {
+          _id: {
+            competency_bundle: "$competency_bundle",
+          },
+          info: {
+            $push: {
+              values: "$values",
+              role: "$role",
               assessment_date: "$assessment_date",
             },
           },
@@ -133,12 +280,12 @@ router.route("/assessment").get(async (req, res, next) => {
       },
     ]);
     assessmentData = JSON.parse(JSON.stringify(assessmentData));
-    console.log(assessmentData);
     assessmentData = assessmentData.reduce((acc, items) => {
       let { competency_bundle, info } = items;
       const competencyGroup = info.reduce(
         (acc, curr) => {
-          let { assessment_date, values } = curr;
+          // console.log(curr)
+          let { assessment_date, role, values } = curr;
           const key = values.competency;
           if (!acc["competencies"][key]) {
             acc["competencies"][key] = {
@@ -146,6 +293,7 @@ router.route("/assessment").get(async (req, res, next) => {
             };
           }
           values.assessment_date = assessment_date;
+          values.role = role;
           acc["competencies"][key]["competency"] = values.competency;
           acc["competencies"][key]["u12boys_weight"] = values.u12boys_weight;
           acc["competencies"][key]["weights"].push(values);
@@ -190,10 +338,10 @@ router.route("/assessment").get(async (req, res, next) => {
     }, []);
     assessmentData = assessmentData
       .map((item) => {
-          item.competencies.sort((a, b) => {
-           var x = a[itnWeights];
-           var y = b[itnWeights];
-           return x < y ? -1 : x > y ? 1 : 0;
+        item.competencies.sort((a, b) => {
+          var x = a[itnWeights];
+          var y = b[itnWeights];
+          return x < y ? -1 : x > y ? 1 : 0;
         });
         item.competencies.forEach((i, index) => {
           //   console.log(i);
@@ -201,8 +349,8 @@ router.route("/assessment").get(async (req, res, next) => {
             return b.assessment_date < a.assessment_date
               ? -1
               : b.assessment_date > a.assessment_date
-              ? 1
-              : 0;
+                ? 1
+                : 0;
           });
         });
         var n = sortingArr.indexOf(item.competency_bundle);
@@ -217,9 +365,9 @@ router.route("/assessment").get(async (req, res, next) => {
     resObj = {
       progressBarData: assessmentData,
       assessmentDates,
+      assessmentTestDates:gd
     };
 
-    console.log(resObj);
 
     res.status(200).send(resObj);
   } catch (err) {
@@ -232,11 +380,11 @@ router.route("/assessment").get(async (req, res, next) => {
   }
 });
 
-router.route("/latestassessment").get(async (req, res, next) => {});
+router.route("/latestassessment").get(async (req, res, next) => { });
 
 async function getCompetency(req, res) {
-  const { email } = req.user[0];
-  const competancyData = await getAllDates(email);
+  const { email, selected_child, role } = req.user[0];
+  const competancyData = await getAllDates(email, selected_child, role);
   if (competancyData && competancyData.length > 0) {
     return await getCompetencyLatest(req, res);
   } else {
@@ -248,7 +396,6 @@ async function getCompetencyNew(req, res) {
   try {
     let { current_level } = req.query;
     current_level = current_level;
-    console.log(current_level);
     const userEmail = req.user[0].email;
     const itnWeights = `${current_level}_weight`;
     const match = {
@@ -272,13 +419,7 @@ async function getCompetencyNew(req, res) {
 
       values: "$values",
     };
-      console.log(
-        JSON.stringify([
-          { $match: { ...match } },
-          { $group: { ...group } },
-          { $project: { ...project } },
-        ])
-      );
+
     let compentancyData = await competancyBundleSchema
       .aggregate([
         { $match: { ...match } },
@@ -288,9 +429,7 @@ async function getCompetencyNew(req, res) {
       .catch((err) => {
         console.log(err);
       });
-    console.log(compentancyData);
     if (compentancyData.length !== 0) {
-      console.log("------------------compentancyData----------------------");
       compentancyData = JSON.parse(JSON.stringify(compentancyData));
       let metaObj = await competancymetadata
         .find({}, { _id: 0 })
@@ -306,26 +445,24 @@ async function getCompetencyNew(req, res) {
       const sortingArr = itn_competancy_mapping[current_level];
       compentancyData = compentancyData
         .map((item) => {
-          console.log("----------compentancyData---------------");
-          console.log(item.values);
           item.values.sort(
-              (a, b) => {
-                   var x = a[itnWeights];
-                   var y = b[itnWeights];
-                  return x < y ? -1 : x > y ? 1 : 0;
-              }
+            (a, b) => {
+              var x = a[itnWeights];
+              var y = b[itnWeights];
+              return x < y ? -1 : x > y ? 1 : 0;
+            }
           );
           var n = sortingArr.indexOf(item.competency_bundle);
           return [n, item];
         })
-          .sort((a,b) => {
-              return a[0] - b[0];
+        .sort((a, b) => {
+          return a[0] - b[0];
         })
         .map(function (j) {
           return j[1];
         });
 
-      res.send([...compentancyData]);
+      res.status(200).send([...compentancyData]);
     } else {
       res.status(404).send({
         message: "no data",
@@ -338,20 +475,52 @@ async function getCompetencyNew(req, res) {
 }
 
 async function getCompetencyLatest(req, res) {
-  console.log("------------getCompetencyLatest---------------");
   try {
-    const { email } = req.user[0];
-    let assessmentDates = await getAllDates(email);
+    const { email, selected_child, role } = req.user[0];
+    let assessmentDates = await getAllDates(email, selected_child, role);
     let maxDate = new Date(
       Math.max(...assessmentDates.map((e) => new Date(e)))
     );
     maxDate = maxDate.toISOString();
+    let filterObj = {};
+    filterObj = {
+      // [`${role}_email`]: email,
+      email: role == "player" ? email : selected_child,
+      role: role,
+      assessment_date: maxDate
+    }
 
+    // console.log(JSON.stringify([
+    //   {
+    //     $match: {
+    //       ...filterObj
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: {
+    //         email: "$email",
+    //         assessment_date: "$assessment_date",
+    //       },
+    //       compentancyArr: {
+    //         $push: {
+    //           competency_bundle: "$competency_bundle",
+    //           values: "$values",
+    //         },
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $project: {
+    //       _id: 0,
+    //       compentancyArr: 1,
+    //     },
+    //   },
+    // ]))
     let assessmentDataLatest = await userCompetancySchema.aggregate([
       {
         $match: {
-          email: email,
-          assessment_date: maxDate,
+          ...filterObj
         },
       },
       {
@@ -376,8 +545,14 @@ async function getCompetencyLatest(req, res) {
       },
     ]);
 
-    // console.log(assessmentDataLatest);
-    res.send([...assessmentDataLatest[0].compentancyArr]);
+    if (assessmentDataLatest.length !== 0) {
+      res.status(200).send([...assessmentDataLatest[0].compentancyArr]);
+
+    } else {
+      res.status(404).send({
+        message
+      });
+    }
   } catch (err) {
     console.log(err);
   }

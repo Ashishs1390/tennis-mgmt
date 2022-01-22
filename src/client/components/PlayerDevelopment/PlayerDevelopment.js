@@ -16,7 +16,8 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { getPersonalDevPageInfo } from "./../../redux/index";
 import { connect } from "react-redux";
-
+import { sliderClasses } from "@mui/material";
+const rolesArr = ["coach", "parent"];
 function PlayerDevelopment(props) {
   const navigate = useNavigate();
   console.log(props);
@@ -24,9 +25,10 @@ function PlayerDevelopment(props) {
   const [datesArr, setDatesArr] = useState([]);
   const [maxDate, setMaxDate] = useState("");
   const [displayRowArr, setDisplayRow] = useState([]);
+  const [selectedRoles, setSelectedRole] = useState([]);
   const {
     getPersonalDevPageInfo,
-    pdpData: { progressBarData, assessmentDates },
+    pdpData: { progressBarData, assessmentDates, assessmentTestDates },
   } = props;
   console.log("---progressBarData--");
   console.log(progressBarData);
@@ -36,6 +38,16 @@ function PlayerDevelopment(props) {
     getPersonalDevPageInfo(current_level);
   }, []);
 
+  const handleRoleChange = (ev, role) => {
+    const selectedRoleIndex = selectedRoles.indexOf(role);
+    if (selectedRoleIndex >= 0 ) {
+      selectedRoles.splice(selectedRoleIndex, 1);
+    } else {
+      setSelectedRole([...selectedRoles, role]);
+    }
+ 
+  }
+
   const updateNav = (link) => {
     navigate(link);
     setMenuOpen(false);
@@ -44,16 +56,18 @@ function PlayerDevelopment(props) {
   useEffect(() => {
     if (
       progressBarData &&
-      assessmentDates &&
+      assessmentTestDates &&
       progressBarData.length != 0 &&
-      assessmentDates.length != 0
+      assessmentTestDates.length != 0
     ) {
       //     console.log(progressBarData);
       setCompetancyData([...progressBarData]);
-      setDatesArr([...assessmentDates]);
+      setDatesArr([...assessmentTestDates]);
       let getMaxDate = new Date(
-        Math.max(...assessmentDates.map((e) => new Date(e)))
+        Math.max(...assessmentTestDates.map((e) => new Date(e.assessment_date)))
       );
+      console.log("-------------getMaxDate---------------");
+      console.log(getMaxDate);
       getMaxDate = getMaxDate.toISOString();
       setMaxDate(getMaxDate);
       setDisplayRow([getMaxDate]);
@@ -61,8 +75,6 @@ function PlayerDevelopment(props) {
   }, [progressBarData]);
 
   const handleCheckBoxChange = (event, date) => {
-    console.log(event.target.value);
-    console.log(date);
     if (!displayRowArr.includes(date)) {
       setDisplayRow([...displayRowArr, date]);
     } else {
@@ -75,7 +87,23 @@ function PlayerDevelopment(props) {
   return (
     // <div>"test"</div>
     <div className="PlayerAssessmentPage">
-      <div className= "NewAssessment">
+      <div className="RolesContainer">
+        <FormGroup>
+          {rolesArr.map((role, i) => {
+            return (
+              <FormControlLabel
+                control={<Checkbox />}
+                key={ role}
+                label={role}
+                onChange={(ev) => {
+                  handleRoleChange(ev, role);
+                }}
+              />
+            )
+          })}
+        </FormGroup>
+      </div>
+      <div className="NewAssessment">
         <MenuItem
           onClick={() => {
             updateNav('../assessments');
@@ -89,21 +117,21 @@ function PlayerDevelopment(props) {
       </Typography>
       <div>
         <FormGroup>
-          {datesArr.map((date, i) => {
-            return date == maxDate ? (
+          {datesArr.filter(({role},index)=> role == "player" || selectedRoles.indexOf(role)>= 0).map((date, i) => {
+            return date.assessment_date == maxDate ? (
               <FormControlLabel
-                control={<Checkbox defaultChecked disabled/>}
-                label={date}
+                control={<Checkbox defaultChecked disabled />}
+                label={`${date.assessment_date},${date.role}`}
                 onChange={(ev) => {
-                  handleCheckBoxChange(ev, date);
+                  handleCheckBoxChange(ev, date.assessment_date);
                 }}
               />
             ) : (
               <FormControlLabel
                 control={<Checkbox />}
-                label={date}
+                label={`${date.assessment_date},${date.role}`}
                 onChange={(ev) => {
-                  handleCheckBoxChange(ev, date);
+                  handleCheckBoxChange(ev, date.assessment_date);
                 }}
               />
             );
@@ -150,8 +178,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("-------state-------");
-  console.log(state);
   return { pdpData: state.personalDevelopment.pdpData };
 };
 
