@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import LinearProgress from "@mui/material/LinearProgress";
+
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -14,10 +16,43 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
 
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+
 import { getPersonalDevPageInfo } from "./../../redux/index";
 import { connect } from "react-redux";
-import { sliderClasses } from "@mui/material";
+
 const rolesArr = ["coach", "parent"];
+
+const dummy = [
+  { assessment_date: "2022-01-25T17:10:41.719Z", role: "player" },
+  { assessment_date: "2022-01-25T17:07:51.897Z", role: "parent" },
+  { assessment_date: "2022-01-04T17:01:59.726Z", role: "coach" },
+  { assessment_date: "2022-01-20T17:10:41.719Z", role: "player" },
+  { assessment_date: "2022-01-20T17:07:51.897Z", role: "parent" },
+  { assessment_date: "2022-01-05T17:01:59.726Z", role: "coach" },
+  { assessment_date: "2022-01-21T17:10:41.719Z", role: "player" },
+  { assessment_date: "2022-01-21T17:07:51.897Z", role: "parent" },
+  { assessment_date: "2022-01-06T17:01:59.726Z", role: "coach" },
+];
+
+const radioSelectionList = dummy.reduce(
+  (a, c) =>
+    a[c.role]
+      ? { ...a, [c.role]: [...a[c.role], c.assessment_date] }
+      : { ...a, [c.role]: [c.assessment_date] },
+  {}
+);
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
+
 function PlayerDevelopment(props) {
   const navigate = useNavigate();
   console.log(props);
@@ -40,13 +75,12 @@ function PlayerDevelopment(props) {
 
   const handleRoleChange = (ev, role) => {
     const selectedRoleIndex = selectedRoles.indexOf(role);
-    if (selectedRoleIndex >= 0 ) {
+    if (selectedRoleIndex >= 0) {
       selectedRoles.splice(selectedRoleIndex, 1);
     } else {
       setSelectedRole([...selectedRoles, role]);
     }
- 
-  }
+  };
 
   const updateNav = (link) => {
     navigate(link);
@@ -83,6 +117,10 @@ function PlayerDevelopment(props) {
       setDisplayRow([...displayRowArr]);
     }
   };
+  const [selectedRadios, setSelectedRadios] = useState({player: radioSelectionList.player[0], parent: radioSelectionList.parent[0], coach: radioSelectionList.coach[0]});
+  const updateRadioSelections = (value, object) => {
+    setSelectedRadios({...selectedRadios, [object]: value});
+  }
 
   return (
     // <div>"test"</div>
@@ -93,20 +131,20 @@ function PlayerDevelopment(props) {
             return (
               <FormControlLabel
                 control={<Checkbox />}
-                key={ role}
+                key={role}
                 label={role}
                 onChange={(ev) => {
                   handleRoleChange(ev, role);
                 }}
               />
-            )
+            );
           })}
         </FormGroup>
       </div>
       <div className="NewAssessment">
         <MenuItem
           onClick={() => {
-            updateNav('../assessments');
+            updateNav("../assessments");
           }}
         >
           Assessments
@@ -117,26 +155,82 @@ function PlayerDevelopment(props) {
       </Typography>
       <div>
         <FormGroup>
-          {datesArr.filter(({role},index)=> role == "player" || selectedRoles.indexOf(role)>= 0).map((date, i) => {
-            return date.assessment_date == maxDate ? (
-              <FormControlLabel
-                control={<Checkbox defaultChecked disabled />}
-                label={`${date.assessment_date},${date.role}`}
-                onChange={(ev) => {
-                  handleCheckBoxChange(ev, date.assessment_date);
-                }}
-              />
-            ) : (
-              <FormControlLabel
-                control={<Checkbox />}
-                label={`${date.assessment_date},${date.role}`}
-                onChange={(ev) => {
-                  handleCheckBoxChange(ev, date.assessment_date);
-                }}
-              />
+          {datesArr
+            .filter(({ role }, index) => !!role)
+            .map((date, i) => {
+              return date.assessment_date == maxDate ? (
+                <FormControlLabel
+                  control={<Checkbox defaultChecked disabled />}
+                  label={`${date.assessment_date},${date.role}`}
+                  onChange={(ev) => {
+                    handleCheckBoxChange(ev, date.assessment_date);
+                  }}
+                />
+              ) : (
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label={`${date.assessment_date},${date.role}`}
+                  onChange={(ev) => {
+                    handleCheckBoxChange(ev, date.assessment_date);
+                  }}
+                />
+              );
+            })}
+        </FormGroup>
+        <Grid container spacing={2}>
+          {Object.keys(radioSelectionList).map((x) => {
+            return (
+              <Grid key={x} item xs={12} md={3}>
+                <Item>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                  >
+                    {x[0].toUpperCase() + x.slice(1)}
+                  </Typography>
+                  <RadioGroup
+                    aria-label={`${x}`}
+                    defaultValue="0"
+                    name="radio-buttons-group"
+                  >
+                    <List
+                      sx={{
+                        width: "100%",
+                        maxWidth: 360,
+                        bgcolor: "background.paper",
+                      }}
+                    >
+                      {[...radioSelectionList[x]].map((value, i) => {
+                        const labelId = `checkbox-list-label-${value}`;
+
+                        return (
+                          <ListItem key={value} disablePadding>
+                            <ListItemButton
+                              role={undefined}
+                              onClick={(value) => {}}
+                              dense
+                            >
+                              <ListItemIcon>
+                                <FormControlLabel
+                                  value={value}
+                                  onChange={() => {updateRadioSelections(value, x)}}
+                                  inputprops={{ "aria-labelledby": labelId }}
+                                  control={<Radio />}
+                                  checked={selectedRadios[x] === value}
+                                  label={`${value}`}
+                                />
+                              </ListItemIcon>
+                            </ListItemButton>
+                          </ListItem>
+                        );
+                      })}
+                    </List>
+                  </RadioGroup>
+                </Item>
+              </Grid>
             );
           })}
-        </FormGroup>
+        </Grid>
       </div>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={12}>
@@ -173,7 +267,8 @@ function PlayerDevelopment(props) {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    getPersonalDevPageInfo: (current_level) => dispatch(getPersonalDevPageInfo(current_level)),
+    getPersonalDevPageInfo: (current_level) =>
+      dispatch(getPersonalDevPageInfo(current_level)),
   };
 };
 

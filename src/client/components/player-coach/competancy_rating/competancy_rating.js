@@ -277,7 +277,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CompetancyRating);
 [...document.querySelectorAll('#CompetancyDetails > div')].filter((x, i) => ( i != 0 && x)).forEach(x => {
     const h = [...x.querySelectorAll('.MuiListItemSecondaryAction-root')];
     h.forEach(x => {
-    const f = x.querySelector('Button');
+    const f = x.querySelectorAll('Button')[Math.floor((Math.random() * 9) +1)];
     console.log(f.click())
 })
 })
