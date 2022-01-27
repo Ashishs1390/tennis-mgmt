@@ -146,21 +146,84 @@ const getDates = async (email, selected_child, role) => {
 
 }
 
+const getdatesbyRole = async (email, selected_child,role) => {
+  try {
+    let filterObj = {};
+    filterObj = {
+      email: role == "player" ? email : selected_child,
+    }
+    // const finalQuery = [];
+    let match = {
+      "$match": { ...filterObj }
+    };
+    let group = {
+      "$group": {
+        "_id": {
+          "role": "$role"
+        },
+
+        "assessment_date": { "$last": "$assessment_date" }
+      }
+    };
+    let project = {
+      "$project": {
+        "_id": 0,
+        "role": "$_id.role",
+        "assessment_date": "$assessment_date"
+
+      }
+    };
+
+    let finalQuery = [
+      { ...match },
+      { ...group },
+      { ...project }
+
+    ]
+    let assessmentDates = await userCompetancySchema.aggregate(finalQuery);
+    console.log(assessmentDates);
+    assessmentDates = JSON.parse(JSON.stringify(assessmentDates));
+    return assessmentDates;
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
 router.route("/assessment").get(async (req, res, next) => {
   try {
     const { email, selected_child, role } = req.user[0]; //jwt token
     const { current_level } = req.query;
+    const {dates_arr } = req.body
+    // console.log();
+    const gdr = getdatesbyRole(email, selected_child, role);
+    let datesArr = (await gdr).reduce((acc, curr) => {
+      if (acc) {
+        acc.push(curr.assessment_date)
+      }
+      return acc;
+    }, []);
+    if (dates_arr && dates_arr.length !== 0) {
+      datesArr = dates_arr;
+    } else {
+      datesArr = datesArr
+    }
+
+    console.log(datesArr);
     let filterObj = {};
     if (role == "parent" || role == "coach") {
       filterObj = {
         // [`${role}_email`]: email,
         email: selected_child,
         current_level: current_level,
+        assessment_date: { $in: [...datesArr] }
       }
     } else {
       filterObj = {
         email: email,
         current_level: current_level,
+        assessment_date: { $in: [...datesArr] }
+
       }
     }
 
@@ -365,7 +428,7 @@ router.route("/assessment").get(async (req, res, next) => {
     resObj = {
       progressBarData: assessmentData,
       assessmentDates,
-      assessmentTestDates:gd
+      assessmentTestDates: gd
     };
 
 
