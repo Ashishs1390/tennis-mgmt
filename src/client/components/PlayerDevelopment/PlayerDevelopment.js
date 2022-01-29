@@ -101,8 +101,8 @@ function PlayerDevelopment(props) {
     ) {
       //     console.log(progressBarData);
       setCompetancyData([...progressBarData]);
-      // const data = radioSelectionList([...assessmentTestDates]);
-      const data = radioSelectionList([...dummy]);
+      const data = radioSelectionList([...assessmentTestDates]);
+      // const data = radioSelectionList([...dummy]);
 
       const getValue = (val) => {
         return val && val.length >= 0 ? val[0] : [];

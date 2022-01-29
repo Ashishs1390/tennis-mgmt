@@ -60,7 +60,7 @@ export const getPersonalDevOnDate = (dates) => {
   return async (dispatch) => {
     dispatch(getPersonalDevCompLoad());
     let response = await get("/api/tennismgmt/competancy/assessment",{
-      params: { dates_arr : JSON.stringify([dates.player, dates.parent, dates.coach].filter(x => x)) },
+      params: { dates_arr : JSON.stringify([dates.player, dates.parent, dates.coach].filter(x => x && typeof x === "string")) },
     });
     if (response.error == false) {
       dispatch(getPersonalDevComp({ ...response.data.data }));

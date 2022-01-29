@@ -4,7 +4,6 @@ const competancymetadata = require("./../../models/competancymetadata");
 const competancyBundleSchema = require("./../../models/competencybundledata");
 
 router.route("/").get(async (req, res, next) => {
-  console.log("-----------get-----------")
   getCompetency(req, res);
 });
 
@@ -22,8 +21,6 @@ router.route("/").post(async (req, res, next) => {
       body: { data },
     } = req;
     const { email, selected_child, role } = req.user[0];// jwt token
-    console.log("---------------------email----------------------------")
-    console.log(email)
     let { current_level } = req.params;
     current_level = current_level || "u12boys";
     if (role == "parent" || role == "coach") {
@@ -42,7 +39,6 @@ router.route("/").post(async (req, res, next) => {
       });
       // data = addProperties(data)
     }
-    console.log(data);
     const insertIntoUserCollection = await userCompetancySchema.insertMany([
       ...data,
     ]);
@@ -181,7 +177,6 @@ const getdatesbyRole = async (email, selected_child,role) => {
 
     ]
     let assessmentDates = await userCompetancySchema.aggregate(finalQuery);
-    console.log(assessmentDates);
     assessmentDates = JSON.parse(JSON.stringify(assessmentDates));
     return assessmentDates;
   }
@@ -189,12 +184,12 @@ const getdatesbyRole = async (email, selected_child,role) => {
     console.log(err);
   }
 }
-["asas","asdas","sada"]
 router.route("/assessment").get(async (req, res, next) => {
   try {
-    const { email, selected_child, role } = req.user[0]; //jwt token
-    const { current_level } = req.query;
-    const {dates_arr } = req.params
+    // console.log(req.user[0])
+    const { email, selected_child, role, current_level } = req.user[0]; //jwt token
+    // const { current_level } = req.query;
+    const { dates_arr } = req.query;
     // console.log();
     const gdr = getdatesbyRole(email, selected_child, role);
     let datesArr = (await gdr).reduce((acc, curr) => {
@@ -204,12 +199,16 @@ router.route("/assessment").get(async (req, res, next) => {
       return acc;
     }, []);
     if (dates_arr && dates_arr.length !== 0) {
-      datesArr = dates_arr;
+      console.log("--------------dates_arr------------------")
+      console.log(typeof dates_arr)
+      console.log(dates_arr)
+      datesArr = JSON.parse(dates_arr);
+      console.log(typeof datesArr)
+
     } else {
       datesArr = datesArr
     }
 
-    console.log(datesArr);
     let filterObj = {};
     if (role == "parent" || role == "coach") {
       filterObj = {
@@ -226,8 +225,6 @@ router.route("/assessment").get(async (req, res, next) => {
 
       }
     }
-
-
     let resObj = {};
     const itnWeights = `${current_level}_weight`;
     let gd = await getDates(email, selected_child, role);
@@ -289,8 +286,6 @@ router.route("/assessment").get(async (req, res, next) => {
       {
         $match: {
           ...filterObj
-          // email: email,
-          // current_level: current_level,
         },
       },
       {
@@ -341,6 +336,7 @@ router.route("/assessment").get(async (req, res, next) => {
       },
     ]);
     assessmentData = JSON.parse(JSON.stringify(assessmentData));
+    console.log(assessmentData);
     assessmentData = assessmentData.reduce((acc, items) => {
       let { competency_bundle, info } = items;
       const competencyGroup = info.reduce(
@@ -405,7 +401,6 @@ router.route("/assessment").get(async (req, res, next) => {
           return x < y ? -1 : x > y ? 1 : 0;
         });
         item.competencies.forEach((i, index) => {
-          //   console.log(i);
           i.weights.sort((a, b) => {
             return b.assessment_date < a.assessment_date
               ? -1
