@@ -7,7 +7,7 @@ export {
   getCompetancy,
   updateCompetancyWeight,
   saveCompetancy,
-  getPersonalDevPageInfo,
 } from "./competancy/competancyActions";
+export { getPersonalDevPageInfo, getPersonalDevOnDate } from "./player-development/playerDevelopmentActions";
 export * from "./basicInfo/basicInfoActions";
 export { getSearchedPlayerByEmail, fetchLinkedPlayerList, addPlayerToList } from "./link-player/linkPlayerAction";

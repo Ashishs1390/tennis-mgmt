@@ -22,8 +22,10 @@ import RadioGroup from "@mui/material/RadioGroup";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
-import { getPersonalDevPageInfo } from "./../../redux/index";
+import { getPersonalDevPageInfo, getPersonalDevOnDate } from "./../../redux/index";
 import { connect } from "react-redux";
+
+import Loading from "../common/loading/loading";
 
 const rolesArr = ["coach", "parent"];
 
@@ -39,11 +41,11 @@ const dummy = [
   { assessment_date: "2022-01-06T17:01:59.726Z", role: "coach" },
 ];
 
-const radioSelectionList = dummy.reduce(
-  (a, c) =>
-    a[c.role]
+const radioSelectionList = (data) => data.reduce(
+  (a, c) => c.role ?
+    (a[c.role]
       ? { ...a, [c.role]: [...a[c.role], c.assessment_date] }
-      : { ...a, [c.role]: [c.assessment_date] },
+      : { ...a, [c.role]: [c.assessment_date] }) : a,
   {}
 );
 const Item = styled(Paper)(({ theme }) => ({
@@ -57,14 +59,17 @@ function PlayerDevelopment(props) {
   const navigate = useNavigate();
   console.log(props);
   const [compData, setCompetancyData] = useState([]);
-  const [datesArr, setDatesArr] = useState([]);
+  const [datesArr, setDatesArr] = useState({});
   const [maxDate, setMaxDate] = useState("");
   const [displayRowArr, setDisplayRow] = useState([]);
   const [selectedRoles, setSelectedRole] = useState([]);
   const {
     getPersonalDevPageInfo,
-    pdpData: { progressBarData, assessmentDates, assessmentTestDates },
+    pdpData: { progressBarData, assessmentDates, assessmentTestDates, loading },
   } = props;
+  //const [selectedRadios, setSelectedRadios] = useState({player: radioSelectionList.player[0], parent: radioSelectionList.parent[0], coach: radioSelectionList.coach[0]});
+  const [selectedRadios, setSelectedRadios] = useState({player: '', parent: '', coach: ''});
+  
   console.log("---progressBarData--");
   console.log(progressBarData);
 
@@ -96,7 +101,14 @@ function PlayerDevelopment(props) {
     ) {
       //     console.log(progressBarData);
       setCompetancyData([...progressBarData]);
-      setDatesArr([...assessmentTestDates]);
+      // const data = radioSelectionList([...assessmentTestDates]);
+      const data = radioSelectionList([...dummy]);
+
+      const getValue = (val) => {
+        return val && val.length >= 0 ? val[0] : [];
+      }
+      setSelectedRadios({player: getValue(data?.player), parent: getValue(data?.parent), coach: getValue(data?.coach)})
+      setDatesArr(data);
       let getMaxDate = new Date(
         Math.max(...assessmentTestDates.map((e) => new Date(e.assessment_date)))
       );
@@ -117,14 +129,17 @@ function PlayerDevelopment(props) {
       setDisplayRow([...displayRowArr]);
     }
   };
-  const [selectedRadios, setSelectedRadios] = useState({player: radioSelectionList.player[0], parent: radioSelectionList.parent[0], coach: radioSelectionList.coach[0]});
+  
   const updateRadioSelections = (value, object) => {
-    setSelectedRadios({...selectedRadios, [object]: value});
+    const selectedDates = {...selectedRadios, [object]: value};
+    props.getPersonalDevOnDate(selectedDates);
+    setSelectedRadios(selectedDates);
   }
 
   return (
     // <div>"test"</div>
     <div className="PlayerAssessmentPage">
+      <Loading open={loading} />
       <div className="RolesContainer">
         <FormGroup>
           {rolesArr.map((role, i) => {
@@ -154,7 +169,7 @@ function PlayerDevelopment(props) {
         player development plans -skill view
       </Typography>
       <div>
-        <FormGroup>
+        {/* <FormGroup>
           {datesArr
             .filter(({ role }, index) => !!role)
             .map((date, i) => {
@@ -176,9 +191,9 @@ function PlayerDevelopment(props) {
                 />
               );
             })}
-        </FormGroup>
+        </FormGroup> */}
         <Grid container spacing={2}>
-          {Object.keys(radioSelectionList).map((x) => {
+          { Object.keys(datesArr).map((x) => {
             return (
               <Grid key={x} item xs={12} md={3}>
                 <Item>
@@ -200,7 +215,7 @@ function PlayerDevelopment(props) {
                         bgcolor: "background.paper",
                       }}
                     >
-                      {[...radioSelectionList[x]].map((value, i) => {
+                      {[...datesArr[x]].map((value, i) => {
                         const labelId = `checkbox-list-label-${value}`;
 
                         return (
@@ -269,6 +284,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getPersonalDevPageInfo: (current_level) =>
       dispatch(getPersonalDevPageInfo(current_level)),
+    getPersonalDevOnDate: (data) => dispatch(getPersonalDevOnDate(data)),
   };
 };
 

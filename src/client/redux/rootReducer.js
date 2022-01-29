@@ -8,9 +8,14 @@ import {
 } from "./basicInfo/basicInfoReducer";
 import { reducer as videoAnalysisReducer } from "./videoanalysis/videoAnalysisReducer";
 import {
-  initalCompetnacyReducer,
-  initalPDPReducer,
+  initalCompetnacyReducer
 } from "./competancy/competancyReducer";
+
+import {
+  initalPDPReducer,
+} from "./player-development/playerDevelopmentReducer";
+
+
 import {
   initalVideoReducer,
   initalCompareReducer,

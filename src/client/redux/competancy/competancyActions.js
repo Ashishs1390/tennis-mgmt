@@ -5,8 +5,8 @@ import {
   SAVE_COMPETANCY_SUCESS,
   SAVE_COMPETANCY_FAILURE,
   LOADING_COMPETANCY,
-  FETCH_PERSONALDEV_COMP_SUCCESS,
-  FETCH_PERSONALDEV_COMP_FAILURE,
+  // FETCH_PERSONALDEV_COMP_SUCCESS,
+  // FETCH_PERSONALDEV_COMP_FAILURE,
 } from "./competancyActionTypes";
 import { get, post } from "../../api/axios.api";
 const current_level = localStorage.getItem("current_level");
@@ -78,31 +78,3 @@ export const saveCompetancy = (data) => {
   };
 };
 
-export const fetchPersonalDevComp = (data) => {
-  return {
-    type: FETCH_PERSONALDEV_COMP_SUCCESS,
-    payload: data,
-  };
-};
-
-export const fetchPersnalDevError = () => {
-  return {
-    type: FETCH_PERSONALDEV_COMP_FAILURE,
-    payload: error,
-  };
-};
-
-export const getPersonalDevPageInfo = (current_level) => {
-  return async (dispatch) => {
-    let response = await get("/api/tennismgmt/competancy/assessment",{
-      params: { current_level: current_level },
-    });
-    if (response.error == false) {
-      console.log("---------getPersonalDevPageInfo---------");
-      console.log(response);
-      dispatch(fetchPersonalDevComp({ ...response.data.data }));
-    } else {
-      dispatch(fetchPersnalDevError({ errMsg: "not able to list competancy" }));
-    }
-  };
-};
