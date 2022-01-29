@@ -88,16 +88,12 @@ function PlayerDevelopmentListItem(props) {
       <div>
         {/* <div className={`${classes.foo} ${classes.bar}`} >aaaa</div> */}
         <p className="displaycomp">{val.competency}</p>
-
-        {val.weights.map((weight, index) => {
+        {val.weights.filter(x=>x.role === 'player' ).map((weight, index) => {
           return (
             <Box
+              key={weight.competency + index}
               sx={{ width: "100%" }}
-              className={
-                displayRowArr.includes(weight.assessment_date)
-                  ? "pbshow"
-                  : "pbHide"
-              }
+             
             >
               <p className="displaydate">{`${weight.assessment_date},${weight.role }`}</p>
               <LinearProgressWithLabel
@@ -112,6 +108,15 @@ function PlayerDevelopmentListItem(props) {
                 value={parseInt(`${weight.assigned_weight}0`)}
               />
             </Box>
+          );
+        })}
+      </div>
+      <div>
+      {val.weights.filter(x=>x.role === 'parent' || x.role === 'coach').map((weight, index) => {
+          return (
+           <div className={'score-dot'} style={{left: weight.assigned_weight+'0%'}}>
+             {`${weight.assigned_weight}0`}
+           </div>
           );
         })}
       </div>

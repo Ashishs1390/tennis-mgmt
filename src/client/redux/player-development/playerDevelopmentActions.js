@@ -44,6 +44,7 @@ export const getPersnalDevError = () => {
 
 export const getPersonalDevPageInfo = (current_level) => {
   return async (dispatch) => {
+    dispatch(getPersonalDevCompLoad());
     let response = await get("/api/tennismgmt/competancy/assessment",{
       params: { current_level: current_level },
     });

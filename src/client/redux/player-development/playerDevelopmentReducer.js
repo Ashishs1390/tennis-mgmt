@@ -13,17 +13,18 @@ const initalPDPState = {
 };
 
 export const initalPDPReducer = (state = initalPDPState, action) => {
-  console.log(action);
   switch (action.type) {
     case FETCH_PERSONALDEV_COMP_SUCCESS:
       return {
         ...state,
+        loading: false,
         pdpData: action.payload,
         pdpError: {},
       };
     case FETCH_PERSONALDEV_COMP_FAILURE:
       return {
         ...state,
+        loading: false,
         pdpData: {},
         pdpError: { ...action.payload },
       };

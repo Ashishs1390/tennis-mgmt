@@ -65,7 +65,7 @@ function PlayerDevelopment(props) {
   const [selectedRoles, setSelectedRole] = useState([]);
   const {
     getPersonalDevPageInfo,
-    pdpData: { progressBarData, assessmentDates, assessmentTestDates, loading },
+    pdpData: { progressBarData, assessmentDates, assessmentTestDates, loading = false },
   } = props;
   //const [selectedRadios, setSelectedRadios] = useState({player: radioSelectionList.player[0], parent: radioSelectionList.parent[0], coach: radioSelectionList.coach[0]});
   const [selectedRadios, setSelectedRadios] = useState({player: '', parent: '', coach: ''});
@@ -99,21 +99,21 @@ function PlayerDevelopment(props) {
       progressBarData.length != 0 &&
       assessmentTestDates.length != 0
     ) {
-      //     console.log(progressBarData);
       setCompetancyData([...progressBarData]);
       const data = radioSelectionList([...assessmentTestDates]);
-      // const data = radioSelectionList([...dummy]);
+      //const data = radioSelectionList([...dummy]);
 
       const getValue = (val) => {
         return val && val.length >= 0 ? val[0] : [];
       }
-      setSelectedRadios({player: getValue(data?.player), parent: getValue(data?.parent), coach: getValue(data?.coach)})
+      if(selectedRadios.player === '') {
+        setSelectedRadios({player: getValue(data?.player), parent: getValue(data?.parent), coach: getValue(data?.coach)})
+      }
       setDatesArr(data);
       let getMaxDate = new Date(
         Math.max(...assessmentTestDates.map((e) => new Date(e.assessment_date)))
       );
-      console.log("-------------getMaxDate---------------");
-      console.log(getMaxDate);
+      
       getMaxDate = getMaxDate.toISOString();
       setMaxDate(getMaxDate);
       setDisplayRow([getMaxDate]);
