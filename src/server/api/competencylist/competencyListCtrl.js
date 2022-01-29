@@ -189,12 +189,12 @@ const getdatesbyRole = async (email, selected_child,role) => {
     console.log(err);
   }
 }
-
+["asas","asdas","sada"]
 router.route("/assessment").get(async (req, res, next) => {
   try {
     const { email, selected_child, role } = req.user[0]; //jwt token
     const { current_level } = req.query;
-    const {dates_arr } = req.body
+    const {dates_arr } = req.params
     // console.log();
     const gdr = getdatesbyRole(email, selected_child, role);
     let datesArr = (await gdr).reduce((acc, curr) => {
@@ -236,8 +236,6 @@ router.route("/assessment").get(async (req, res, next) => {
       {
         $match: {
           ...filterObj
-          // email: email,
-          // current_level: current_level,
         },
       },
       {
