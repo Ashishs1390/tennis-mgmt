@@ -186,7 +186,7 @@ const getdatesbyRole = async (email, selected_child,role) => {
 }
 router.route("/assessment").get(async (req, res, next) => {
   try {
-    // console.log(req.user[0])
+    console.log(req.user[0])
     const { email, selected_child, role, current_level } = req.user[0]; //jwt token
     // const { current_level } = req.query;
     const { dates_arr } = req.query;
@@ -214,13 +214,13 @@ router.route("/assessment").get(async (req, res, next) => {
       filterObj = {
         // [`${role}_email`]: email,
         email: selected_child,
-        current_level: current_level,
+        // current_level: current_level,
         assessment_date: { $in: [...datesArr] }
       }
     } else {
       filterObj = {
         email: email,
-        current_level: current_level,
+        // current_level: current_level,
         assessment_date: { $in: [...datesArr] }
 
       }
