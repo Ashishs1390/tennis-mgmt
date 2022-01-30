@@ -26,6 +26,7 @@ import { getPersonalDevPageInfo, getPersonalDevOnDate } from "./../../redux/inde
 import { connect } from "react-redux";
 
 import Loading from "../common/loading/loading";
+import { getDateDDMMYYYY } from '../../util/util';
 
 const rolesArr = ["coach", "parent"];
 
@@ -62,7 +63,7 @@ function PlayerDevelopment(props) {
   const [datesArr, setDatesArr] = useState({});
   const [maxDate, setMaxDate] = useState("");
   const [displayRowArr, setDisplayRow] = useState([]);
-  const [selectedRoles, setSelectedRole] = useState([]);
+  const [selectedRoles, setSelectedRole] = useState(['parent', 'coach']);
   const {
     getPersonalDevPageInfo,
     pdpData: { progressBarData, assessmentDates, assessmentTestDates, loading = false },
@@ -82,6 +83,7 @@ function PlayerDevelopment(props) {
     const selectedRoleIndex = selectedRoles.indexOf(role);
     if (selectedRoleIndex >= 0) {
       selectedRoles.splice(selectedRoleIndex, 1);
+      setSelectedRole([...selectedRoles]);
     } else {
       setSelectedRole([...selectedRoles, role]);
     }
@@ -147,7 +149,8 @@ function PlayerDevelopment(props) {
               <FormControlLabel
                 control={<Checkbox />}
                 key={role}
-                label={role}
+                label={role[0].toUpperCase() + role.substring(1)}
+                checked={!!selectedRoles.find(x => x === role)}
                 onChange={(ev) => {
                   handleRoleChange(ev, role);
                 }}
@@ -195,7 +198,7 @@ function PlayerDevelopment(props) {
         <Grid container spacing={2}>
           { Object.keys(datesArr).map((x) => {
             return (
-              <Grid key={x} item xs={12} md={3}>
+              <Grid key={x} item xs={12} md={2}>
                 <Item>
                   <Typography
                     variant="h6"
@@ -232,7 +235,7 @@ function PlayerDevelopment(props) {
                                   inputprops={{ "aria-labelledby": labelId }}
                                   control={<Radio />}
                                   checked={selectedRadios[x] === value}
-                                  label={`${value}`}
+                                  label={`${getDateDDMMYYYY(value)}`}
                                 />
                               </ListItemIcon>
                             </ListItemButton>
@@ -267,6 +270,7 @@ function PlayerDevelopment(props) {
                           index={index}
                           maxDate={maxDate}
                           displayRowArr={displayRowArr}
+                          selectedRoles={selectedRoles}
                         ></PlayerDevelopmentListItem>
                       );
                     })}

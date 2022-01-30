@@ -7,6 +7,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from '@mui/styles';
+import { getDateDDMMYYYY } from '../../util/util';
 import "./PlayerDevelopment.scss";
 
 const useStyles = makeStyles({
@@ -76,8 +77,7 @@ function LinearProgressWithLabel(props) {
 }
 
 function PlayerDevelopmentListItem(props) {
-  const { val, index, maxDate, displayRowArr } = props;
-
+  const { val, index, maxDate, displayRowArr, selectedRoles } = props;
   const propsStyle = {
     backgroundColor: "black",
     color: "red",
@@ -95,7 +95,7 @@ function PlayerDevelopmentListItem(props) {
               sx={{ width: "100%" }}
              
             >
-              <p className="displaydate">{`${weight.assessment_date},${weight.role }`}</p>
+              <p className="displaydate">{`${getDateDDMMYYYY(weight.assessment_date)},${weight.role }`}</p>
               <LinearProgressWithLabel
                 colors="success"
                 classes={
@@ -111,11 +111,13 @@ function PlayerDevelopmentListItem(props) {
           );
         })}
       </div>
-      <div>
-      {val.weights.filter(x=>x.role === 'parent' || x.role === 'coach').map((weight, index) => {
+      <div className="parent-coach-rating">
+      {val.weights.filter(x=>x.role === 'parent' || x.role === 'coach').filter(x => !!selectedRoles.find(y => y === x.role)).map((weight, index) => {
           return (
-           <div className={'score-dot'} style={{left: weight.assigned_weight+'0%'}}>
-             {`${weight.assigned_weight}0`}
+           <div title={`${weight.role} have given ${weight.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight.assessment_date))}`} className={`score-dot ${weight.assigned_weight <= 4
+            ? 'red-bg' : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
+            ? 'yellow-bg' : 'green-bg'}`} key={weight.role} data-rating={`${weight.assigned_weight}0`} data-date={getDateDDMMYYYY(new Date(weight.assessment_date))} style={{left: weight.assigned_weight+'0%'}}>
+             {weight.role === 'coach' ? 'C' : 'P'}
            </div>
           );
         })}
