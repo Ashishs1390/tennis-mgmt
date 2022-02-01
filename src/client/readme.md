@@ -502,6 +502,21 @@ post -> itn_level will be available in payload.
 submit data for parent and coach assessment
 
 
+BLue color for coach.
+grey for parent.
+
+little circle with ryg according to score.
+no percent col scores.
+date format should mm/dd/yy, player(score).
+score should be numbers 1-10 not %.
+add transparency..
+get rid of date below the circles.
+add two icons for coach and parent next to the word.
+pop up for more dates.
+move the value of coach assessment to upper left. 
+if overlapping coach and parent keep coach on top.
+
+
 
 
 

@@ -112,9 +112,9 @@ function PlayerDevelopmentListItem(props) {
         })}
       </div>
       <div className="parent-coach-rating">
-      {val.weights.filter(x=>x.role === 'parent' || x.role === 'coach').filter(x => !!selectedRoles.find(y => y === x.role)).map((weight, index) => {
+      {val.weights.filter(x=>x.role === 'parent' || x.role === 'coach').filter(x => !!selectedRoles.find(y => y === x.role)).map((weight, index) => { // checkboxes
           return (
-           <div title={`${weight.role} have given ${weight.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight.assessment_date))}`} className={`score-dot ${weight.assigned_weight <= 4
+           <div title={`${weight.role} has given ${weight.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight.assessment_date))}`} className={`score-dot ${weight.assigned_weight <= 4
             ? 'red-bg' : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
             ? 'yellow-bg' : 'green-bg'}`} key={weight.role} data-rating={`${weight.assigned_weight}0`} data-date={getDateDDMMYYYY(new Date(weight.assessment_date))} style={{left: weight.assigned_weight+'0%'}}>
              {weight.role === 'coach' ? 'C' : 'P'}
