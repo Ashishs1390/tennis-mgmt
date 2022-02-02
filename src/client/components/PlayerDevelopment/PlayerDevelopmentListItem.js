@@ -7,7 +7,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from '@mui/styles';
-import { getDateDDMMYYYY } from '../../util/util';
+import { getDateDDMMYYYY, getDateYYYYMMDD, getDateMMDDYY} from '../../util/util';
 import "./PlayerDevelopment.scss";
 
 const useStyles = makeStyles({
@@ -68,9 +68,9 @@ function LinearProgressWithLabel(props) {
         <LinearProgress variant="determinate" {...props} />
       </Box>
       <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(
+        {/* <Typography variant="body2" color="text.secondary">{`${Math.round(
           props.value
-        )}%`}</Typography>
+        )}%`}</Typography> */}
       </Box>
     </Box>
   );
@@ -95,7 +95,7 @@ function PlayerDevelopmentListItem(props) {
               sx={{ width: "100%" }}
              
             >
-              <p className="displaydate">{`${getDateDDMMYYYY(weight.assessment_date)},${weight.role }`}</p>
+              <p className="displaydate">{`${getDateMMDDYY(weight.assessment_date)},${weight.role },(${weight.assigned_weight})`}</p>
               <LinearProgressWithLabel
                 colors="success"
                 classes={
@@ -113,12 +113,25 @@ function PlayerDevelopmentListItem(props) {
       </div>
       <div className="parent-coach-rating">
       {val.weights.filter(x=>x.role === 'parent' || x.role === 'coach').filter(x => !!selectedRoles.find(y => y === x.role)).map((weight, index) => { // checkboxes
-          return (
-           <div title={`${weight.role} has given ${weight.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight.assessment_date))}`} className={`score-dot ${weight.assigned_weight <= 4
-            ? 'red-bg' : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
-            ? 'yellow-bg' : 'green-bg'}`} key={weight.role} data-rating={`${weight.assigned_weight}0`} data-date={getDateDDMMYYYY(new Date(weight.assessment_date))} style={{left: weight.assigned_weight+'0%'}}>
-             {weight.role === 'coach' ? 'C' : 'P'}
-           </div>
+        return (
+          <div>
+            {/* <div title={`${weight.role} has given ${weight.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight.assessment_date))}`} className={`score-dot ${weight.assigned_weight <= 4
+              ? 'red-bg' : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
+                ? 'yellow-bg' : 'green-bg'}`} key={weight.role} data-rating={`${weight.assigned_weight}0`} data-date={getDateDDMMYYYY(new Date(weight.assessment_date))} style={{ left: weight.assigned_weight + '0%' }}>
+              {weight.role === 'coach' ? 'C' : 'P'}
+            </div> */}
+
+             <div title={`${weight.role} has given ${weight.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight.assessment_date))}`} className={`score-dot ${weight.role == "parent"
+              ? 'parent-bg' : 'coach-bg'}`} key={weight.role} data-rating={`${weight.assigned_weight}`} style={{ left: weight.assigned_weight + '0%' }} >
+              <div className={`${weight.assigned_weight <= 4
+                ? 'sd-red' : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
+                  ? 'sd-yellow' : 'sd-green'}`} >
+                {weight.assigned_weight}
+                  </div>
+              {weight.role === 'coach' ? 'C' : 'P'}
+            </div>
+            </div>
+           
           );
         })}
       </div>

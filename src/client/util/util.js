@@ -6,3 +6,7 @@ export function getDateYYYYMMDD(date) {
 export function getDateDDMMYYYY(date) {
     return moment(date).format('DD MMM YYYY');
 }
+
+export function getDateMMDDYY(date){
+    return moment(date).format('MM-DD-YY')
+}

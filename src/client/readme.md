@@ -501,8 +501,8 @@ post -> itn_level will be available in payload.
 
 submit data for parent and coach assessment
 
-
-BLue color for coach.
+------------------------------------------------------
+BLue color for coach. #rgb(60 150 243 / 90%)
 grey for parent.
 
 little circle with ryg according to score.

@@ -72,8 +72,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log("82")
-    console.log(state);
   return state;
 };
 
