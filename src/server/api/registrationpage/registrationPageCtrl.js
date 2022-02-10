@@ -5,15 +5,24 @@ const basicInformation = require("./../../models/basicInformation");
 const competancymetadata = require("./../../models/competancymetadata")
 
 router.route("/").get(async (req, res, next) => {
+    console.log("--------get--------")
+    console.log(req.user)
     const data = await basicInformation.find(
         { email: req.user[0].email },
         { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, current_level: 1, _id: 0 }
-    );
+    ).catch((err) => {
+        console.log(err);
+        res.status(504).send({
+            errMsg: "internal server error!!!",
+            status: 504
+        })
+
+    });
 
     if (data.length == 0) {
         res.status(404).send({
             errMsg: "user not found!!!",
-            status: 504
+            status: 404
         })
     } else {
         const resObj = data["0"];

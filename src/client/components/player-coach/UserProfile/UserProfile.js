@@ -116,7 +116,8 @@ function UserProfile(props){
   
     const params = useParams();
     const { role } = params;
-    const updateUserInfo = async (obj) =>{
+  const updateUserInfo = async (obj) => {
+    console.log("------updateUserInfo-------")
         const data = await put('api/tennismgmt/registration/authed/',{...obj}).catch((err)=>{
             console.log(err)
         })

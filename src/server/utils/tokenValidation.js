@@ -27,6 +27,11 @@ function checkToken(req,res,next){
             }
 
         });
+    } else {
+        res.status(401).json({
+            errMsg: "Invalid token",
+            code: 401
+        })
     }
 }
 

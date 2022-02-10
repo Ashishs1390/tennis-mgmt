@@ -229,59 +229,6 @@ router.route("/assessment").get(async (req, res, next) => {
     const itnWeights = `${current_level}_weight`;
     let gd = await getDates(email, selected_child, role);
     let assessmentDates = await getAllDates(email, selected_child, role);
-    console.log(JSON.stringify([
-      {
-        $match: {
-          ...filterObj
-        },
-      },
-      {
-        $unwind: "$values",
-      },
-      {
-        $group: {
-          _id: {
-            competency_bundle: "$competency_bundle",
-            current_level: "$current_level",
-            values: "$values",
-            assessment_date: "$assessment_date",
-            role: "$role"
-          },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          competency_bundle: "$_id.competency_bundle",
-          current_level: "$_id.current_level",
-          values: "$_id.values",
-          assessment_date: "$_id.assessment_date",
-          role: "$_id.role"
-        },
-      },
-
-      {
-        $group: {
-          _id: {
-            competency_bundle: "$competency_bundle",
-          },
-          info: {
-            $push: {
-              values: "$values",
-              role: "$role",
-              assessment_date: "$assessment_date",
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          competency_bundle: "$_id.competency_bundle",
-          info: "$info",
-        },
-      },
-    ]))
     let assessmentData = await userCompetancySchema.aggregate([
       {
         $match: {
@@ -441,6 +388,7 @@ router.route("/latestassessment").get(async (req, res, next) => { });
 async function getCompetency(req, res) {
   const { email, selected_child, role } = req.user[0];
   const competancyData = await getAllDates(email, selected_child, role);
+  console.log(competancyData)
   if (competancyData && competancyData.length > 0) {
     return await getCompetencyLatest(req, res);
   } else {

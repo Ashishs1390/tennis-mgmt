@@ -37,8 +37,10 @@ function Login(props) {
         localStorage.setItem('localStore', JSON.stringify(localStore));
         localStorage.setItem('current_level', response.data.current_level);
         if (response.data.role == "player") {
+          console.log("----------login.js--------------")
           navigate(`/user/${response.data.role}`);
         } else {
+          console.log("--------login2----------")
           navigate(`/link/player`);
         }
       })

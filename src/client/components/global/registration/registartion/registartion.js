@@ -250,6 +250,7 @@ function PlayerRegistration(props) {
       );
       const outObj = { ...registrationData, role: role };
       postDetails(outObj);
+      navigate('./../../login')
     }
   };
 

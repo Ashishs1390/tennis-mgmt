@@ -15,10 +15,11 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
-
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+// import DatesPopUp from './../../css-components/DatesPopUp/DatesPopUp';
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-
+import Modal from '@mui/material/Modal';
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
@@ -26,10 +27,12 @@ import { getPersonalDevPageInfo, getPersonalDevOnDate } from "./../../redux/inde
 import { connect } from "react-redux";
 
 import Loading from "../common/loading/loading";
+// import DatesPopUp from "../../css-components/DatesPopUp/DatesPopUp";
 import { getDateDDMMYYYY } from '../../util/util';
+import PlayerDevelopmentDatesSection from "./PlayerDevelopmentDatesSection";
 
 const rolesArr = ["coach", "parent"];
-
+const rolesOrder = ["player", "parent", "coach"];
 const dummy = [
   { assessment_date: "2022-01-25T17:10:41.719Z", role: "player" },
   { assessment_date: "2022-01-25T17:07:51.897Z", role: "parent" },
@@ -69,11 +72,7 @@ function PlayerDevelopment(props) {
     pdpData: { progressBarData, assessmentDates, assessmentTestDates, loading = false },
   } = props;
   //const [selectedRadios, setSelectedRadios] = useState({player: radioSelectionList.player[0], parent: radioSelectionList.parent[0], coach: radioSelectionList.coach[0]});
-  const [selectedRadios, setSelectedRadios] = useState({player: '', parent: '', coach: ''});
-  
-  console.log("---progressBarData--");
-  console.log(progressBarData);
-
+  const [selectedRadios, setSelectedRadios] = useState({ player: '', parent: '', coach: '' });
   useEffect(() => {
     const current_level = localStorage.getItem("current_level");
     getPersonalDevPageInfo(current_level);
@@ -89,6 +88,29 @@ function PlayerDevelopment(props) {
     }
   };
 
+  const orderByRoles = (data, rolesOrder) => {
+    return Object.keys(data).map((item) => {
+      var n = rolesOrder.indexOf(item);
+      return [n, { [item]: data[item] }]
+    }).sort().reduce(function (acc, j) {
+      if (acc) {
+        acc = { ...acc, ...j[1] }
+      }
+      console.log(acc);
+      return acc;
+    }, {});
+  }
+
+  const splicedByRoles = (data) => {
+    Object.keys(data).map((item) => {
+      return data[item];
+    }).reduce((acc, i) => {
+      console.log("----------splicedByRoles-----------")
+      console.log(i);
+      return acc;
+    }, {});
+  }
+
   const updateNav = (link) => {
     navigate(link);
     setMenuOpen(false);
@@ -103,60 +125,68 @@ function PlayerDevelopment(props) {
     ) {
       setCompetancyData([...progressBarData]);
       const data = radioSelectionList([...assessmentTestDates]);
-      //const data = radioSelectionList([...dummy]);
-
+      const orderedData = orderByRoles(data, rolesOrder);
+      const splicedData = splicedByRoles(orderedData);
       const getValue = (val) => {
         return val && val.length >= 0 ? val[0] : [];
       }
-      if(selectedRadios.player === '') {
-        setSelectedRadios({player: getValue(data?.player), parent: getValue(data?.parent), coach: getValue(data?.coach)})
+      if (selectedRadios.player === '') {
+        setSelectedRadios({ player: getValue(data?.player), parent: getValue(data?.parent), coach: getValue(data?.coach) })
       }
-      setDatesArr(data);
+      setDatesArr(orderedData);
       let getMaxDate = new Date(
         Math.max(...assessmentTestDates.map((e) => new Date(e.assessment_date)))
       );
-      
+
       getMaxDate = getMaxDate.toISOString();
       setMaxDate(getMaxDate);
       setDisplayRow([getMaxDate]);
     }
   }, [progressBarData]);
 
-  const handleCheckBoxChange = (event, date) => {
-    if (!displayRowArr.includes(date)) {
-      setDisplayRow([...displayRowArr, date]);
-    } else {
-      const index = displayRowArr.indexOf(date);
-      displayRowArr.splice(index, 1);
-      setDisplayRow([...displayRowArr]);
-    }
-  };
-  
+  const [open, setOpen] = useState(false);
+
+  const handleMoreOpen = (bool) => setOpen(bool);
+  const handleMoreClose = () => setOpen(false);
+
+  const callback = (bool) => {
+    console.log(`------${bool}-----`);
+    handleMoreOpen(bool);
+
+  }
   const updateRadioSelections = (value, object) => {
-    const selectedDates = {...selectedRadios, [object]: value};
+    const selectedDates = { ...selectedRadios, [object]: value };
     props.getPersonalDevOnDate(selectedDates);
     setSelectedRadios(selectedDates);
   }
-
   return (
     // <div>"test"</div>
     <div className="PlayerAssessmentPage">
+      {/* <FormatBoldIcon>C</FormatBoldIcon> */}
       <Loading open={loading} />
       <div className="RolesContainer">
         <FormGroup>
           {rolesArr.map((role, i) => {
             return (
-              <FormControlLabel
-                control={<Checkbox />}
-                key={role}
-                label={role[0].toUpperCase() + role.substring(1)}
-                checked={!!selectedRoles.find(x => x === role)}
-                onChange={(ev) => {
-                  handleRoleChange(ev, role);
-                }}
-              />
+              <>
+                <FormControlLabel
+                  control={<Checkbox />}
+                  key={role}
+                  label={role[0].toUpperCase() + role.substring(1)}
+                  checked={!!selectedRoles.find(x => x === role)}
+                  onChange={(ev) => {
+                    handleRoleChange(ev, role);
+                  }}
+                />
+                <span className="alphabet">{`[${role[0].toUpperCase()}]`}</span>
+              </>
             );
           })}
+        </FormGroup>
+      </div>
+      <div>
+        <FormGroup>
+          <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
         </FormGroup>
       </div>
       <div className="NewAssessment">
@@ -171,34 +201,24 @@ function PlayerDevelopment(props) {
       <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
         player development plans -skill view
       </Typography>
-      <div>
-        {/* <FormGroup>
-          {datesArr
-            .filter(({ role }, index) => !!role)
-            .map((date, i) => {
-              return date.assessment_date == maxDate ? (
-                <FormControlLabel
-                  control={<Checkbox defaultChecked disabled />}
-                  label={`${date.assessment_date},${date.role}`}
-                  onChange={(ev) => {
-                    handleCheckBoxChange(ev, date.assessment_date);
-                  }}
-                />
-              ) : (
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label={`${date.assessment_date},${date.role}`}
-                  onChange={(ev) => {
-                    handleCheckBoxChange(ev, date.assessment_date);
-                  }}
-                />
-              );
-            })}
-        </FormGroup> */}
+      <PlayerDevelopmentDatesSection datesArr={datesArr} alldata={false} callback={callback} />
+      <Modal className="Modal DatesModal" open={open}
+        onClose={handleMoreClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description">
+        <div className="modal">
+          <PlayerDevelopmentDatesSection datesArr={datesArr} alldata={true} />
+        </div>
+      </Modal>
+
+      {/* <div className="DatesWrapper">
         <Grid container spacing={2}>
           { Object.keys(datesArr).map((x) => {
             return (
-              <Grid key={x} item xs={12} md={2}>
+              <Grid className="DatesRole" classkey={x} item xs={12} md={2}>
+                <Item className="MoreBtn" onClick={ handleMoreOpen}>
+                    <span>+more</span>
+                </Item>
                 <Item>
                   <Typography
                     variant="h6"
@@ -225,7 +245,6 @@ function PlayerDevelopment(props) {
                           <ListItem key={value} disablePadding>
                             <ListItemButton
                               role={undefined}
-                              onClick={(value) => {}}
                               dense
                             >
                               <ListItemIcon>
@@ -246,10 +265,78 @@ function PlayerDevelopment(props) {
                   </RadioGroup>
                 </Item>
               </Grid>
+             
             );
           })}
         </Grid>
-      </div>
+        <Modal className="Modal" open={open}
+          onClose={handleMoreClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description">
+          <div className="modal">
+            <div className="DatesWrapper">
+              <Grid container spacing={2}>
+                {Object.keys(datesArr).map((x) => {
+                  return (
+                    <Grid className="DatesRole" classkey={x} item xs={12} md={2}>
+                      <Item className="MoreBtn" onClick={handleMoreOpen}>
+                        <span>+more</span>
+                      </Item>
+                      <Item>
+                        <Typography
+                          variant="h6"
+                          component="div"
+                        >
+                          {x[0].toUpperCase() + x.slice(1)}
+                        </Typography>
+                        <RadioGroup
+                          aria-label={`${x}`}
+                          defaultValue="0"
+                          name="radio-buttons-group"
+                        >
+                          <List
+                            sx={{
+                              width: "100%",
+                              maxWidth: 360,
+                              bgcolor: "background.paper",
+                            }}
+                          >
+                            {[...datesArr[x]].map((value, i) => {
+                              const labelId = `checkbox-list-label-${value}`;
+
+                              return (
+                                <ListItem key={value} disablePadding>
+                                  <ListItemButton
+                                    role={undefined}
+                                    dense
+                                  >
+                                    <ListItemIcon>
+                                      <FormControlLabel
+                                        value={value}
+                                        onChange={() => { updateRadioSelections(value, x) }}
+                                        inputprops={{ "aria-labelledby": labelId }}
+                                        control={<Radio />}
+                                        checked={selectedRadios[x] === value}
+                                        label={`${getDateDDMMYYYY(value)}`}
+                                      />
+                                    </ListItemIcon>
+                                  </ListItemButton>
+                                </ListItem>
+                              );
+                            })}
+                          </List>
+                        </RadioGroup>
+                      </Item>
+                    </Grid>
+
+                  );
+                })}
+              </Grid>
+              
+            </div>
+          </div>
+        </Modal>
+      </div> */}
       <Grid container spacing={2}>
         <Grid item xs={12} lg={12}>
           <List className="MainCompetancyList">

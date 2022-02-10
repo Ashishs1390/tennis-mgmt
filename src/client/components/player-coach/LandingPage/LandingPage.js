@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Login from "../../global/login/Login";
 import { connect } from "react-redux";
 import { useNavigate, Link, Outlet } from "react-router-dom";
-import { fetchDetails } from "./../../../redux/index";
+// import { fetchDetails } from "./../../../redux/index";
 import AppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,9 +24,9 @@ function LandingPage(props) {
     setRole(role);
   }, [localStore]);
   const navigate = useNavigate();
-  useEffect(() => {
-    props.fetchDetails();
-  }, []);
+  // useEffect(() => {
+  //   props.fetchDetails();
+  // }, []);
 
   const [menuOpen, setMenuOpen] = useState(true);
 
@@ -137,11 +137,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchDetails: () =>
-      dispatch(fetchDetails()),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     fetchDetails: () =>
+//       dispatch(fetchDetails()),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
+export default connect(mapStateToProps, null)(LandingPage);

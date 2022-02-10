@@ -49,6 +49,7 @@ export const postDetails = (fields) => {
       .then( (response)=> {
         console.log("sucess")
         // handle success
+        debugger;
         dispatch(postDetailsSuccess([...response.data]));
 
       })
