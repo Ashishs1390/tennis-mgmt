@@ -33,17 +33,6 @@ import PlayerDevelopmentDatesSection from "./PlayerDevelopmentDatesSection";
 
 const rolesArr = ["coach", "parent"];
 const rolesOrder = ["player", "parent", "coach"];
-const dummy = [
-  { assessment_date: "2022-01-25T17:10:41.719Z", role: "player" },
-  { assessment_date: "2022-01-25T17:07:51.897Z", role: "parent" },
-  { assessment_date: "2022-01-04T17:01:59.726Z", role: "coach" },
-  { assessment_date: "2022-01-20T17:10:41.719Z", role: "player" },
-  { assessment_date: "2022-01-20T17:07:51.897Z", role: "parent" },
-  { assessment_date: "2022-01-05T17:01:59.726Z", role: "coach" },
-  { assessment_date: "2022-01-21T17:10:41.719Z", role: "player" },
-  { assessment_date: "2022-01-21T17:07:51.897Z", role: "parent" },
-  { assessment_date: "2022-01-06T17:01:59.726Z", role: "coach" },
-];
 
 const radioSelectionList = (data) => data.reduce(
   (a, c) => c.role ?

@@ -54,7 +54,7 @@ function PlayerDevelopmentDatesSection(props) {
     };
 
     const getValues = (val) => {
-      return val && val.length >= 0 ? val.slice(0.2) : [];
+      return val && val.length >= 0 ? val.slice(0,1) : [];
     };
 
     if (
