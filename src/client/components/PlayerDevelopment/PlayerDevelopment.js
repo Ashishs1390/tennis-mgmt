@@ -19,7 +19,7 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold';
 // import DatesPopUp from './../../css-components/DatesPopUp/DatesPopUp';
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import Modal from '@mui/material/Modal';
+
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
@@ -144,14 +144,13 @@ function PlayerDevelopment(props) {
     }
   }, [progressBarData]);
 
-  const [open, setOpen] = useState(false);
+ 
 
-  const handleMoreOpen = (bool) => setOpen(bool);
-  const handleMoreClose = () => setOpen(false);
+  
 
   const callback = (bool) => {
     console.log(`------${bool}-----`);
-    handleMoreOpen(bool);
+    // handleMoreOpen(bool);
 
   }
   const updateRadioSelections = (value, object) => {
@@ -201,142 +200,7 @@ function PlayerDevelopment(props) {
       <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
         player development plans -skill view
       </Typography>
-      <PlayerDevelopmentDatesSection datesArr={datesArr} alldata={false} callback={callback} />
-      <Modal className="Modal DatesModal" open={open}
-        onClose={handleMoreClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description">
-        <div className="modal">
-          <PlayerDevelopmentDatesSection datesArr={datesArr} alldata={true} />
-        </div>
-      </Modal>
-
-      {/* <div className="DatesWrapper">
-        <Grid container spacing={2}>
-          { Object.keys(datesArr).map((x) => {
-            return (
-              <Grid className="DatesRole" classkey={x} item xs={12} md={2}>
-                <Item className="MoreBtn" onClick={ handleMoreOpen}>
-                    <span>+more</span>
-                </Item>
-                <Item>
-                  <Typography
-                    variant="h6"
-                    component="div"
-                  >
-                    {x[0].toUpperCase() + x.slice(1)}
-                  </Typography>
-                  <RadioGroup
-                    aria-label={`${x}`}
-                    defaultValue="0"
-                    name="radio-buttons-group"
-                  >
-                    <List
-                      sx={{
-                        width: "100%",
-                        maxWidth: 360,
-                        bgcolor: "background.paper",
-                      }}
-                    >
-                      {[...datesArr[x]].map((value, i) => {
-                        const labelId = `checkbox-list-label-${value}`;
-
-                        return (
-                          <ListItem key={value} disablePadding>
-                            <ListItemButton
-                              role={undefined}
-                              dense
-                            >
-                              <ListItemIcon>
-                                <FormControlLabel
-                                  value={value}
-                                  onChange={() => {updateRadioSelections(value, x)}}
-                                  inputprops={{ "aria-labelledby": labelId }}
-                                  control={<Radio />}
-                                  checked={selectedRadios[x] === value}
-                                  label={`${getDateDDMMYYYY(value)}`}
-                                />
-                              </ListItemIcon>
-                            </ListItemButton>
-                          </ListItem>
-                        );
-                      })}
-                    </List>
-                  </RadioGroup>
-                </Item>
-              </Grid>
-             
-            );
-          })}
-        </Grid>
-        <Modal className="Modal" open={open}
-          onClose={handleMoreClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description">
-          <div className="modal">
-            <div className="DatesWrapper">
-              <Grid container spacing={2}>
-                {Object.keys(datesArr).map((x) => {
-                  return (
-                    <Grid className="DatesRole" classkey={x} item xs={12} md={2}>
-                      <Item className="MoreBtn" onClick={handleMoreOpen}>
-                        <span>+more</span>
-                      </Item>
-                      <Item>
-                        <Typography
-                          variant="h6"
-                          component="div"
-                        >
-                          {x[0].toUpperCase() + x.slice(1)}
-                        </Typography>
-                        <RadioGroup
-                          aria-label={`${x}`}
-                          defaultValue="0"
-                          name="radio-buttons-group"
-                        >
-                          <List
-                            sx={{
-                              width: "100%",
-                              maxWidth: 360,
-                              bgcolor: "background.paper",
-                            }}
-                          >
-                            {[...datesArr[x]].map((value, i) => {
-                              const labelId = `checkbox-list-label-${value}`;
-
-                              return (
-                                <ListItem key={value} disablePadding>
-                                  <ListItemButton
-                                    role={undefined}
-                                    dense
-                                  >
-                                    <ListItemIcon>
-                                      <FormControlLabel
-                                        value={value}
-                                        onChange={() => { updateRadioSelections(value, x) }}
-                                        inputprops={{ "aria-labelledby": labelId }}
-                                        control={<Radio />}
-                                        checked={selectedRadios[x] === value}
-                                        label={`${getDateDDMMYYYY(value)}`}
-                                      />
-                                    </ListItemIcon>
-                                  </ListItemButton>
-                                </ListItem>
-                              );
-                            })}
-                          </List>
-                        </RadioGroup>
-                      </Item>
-                    </Grid>
-
-                  );
-                })}
-              </Grid>
-              
-            </div>
-          </div>
-        </Modal>
-      </div> */}
+      <PlayerDevelopmentDatesSection datesArr={datesArr} />
       <Grid container spacing={2}>
         <Grid item xs={12} lg={12}>
           <List className="MainCompetancyList">
