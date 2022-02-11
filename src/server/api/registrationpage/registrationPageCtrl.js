@@ -5,8 +5,6 @@ const basicInformation = require("./../../models/basicInformation");
 const competancymetadata = require("./../../models/competancymetadata")
 
 router.route("/").get(async (req, res, next) => {
-    console.log("--------get--------")
-    console.log(req.user)
     const data = await basicInformation.find(
         { email: req.user[0].email },
         { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, current_level: 1, _id: 0 }

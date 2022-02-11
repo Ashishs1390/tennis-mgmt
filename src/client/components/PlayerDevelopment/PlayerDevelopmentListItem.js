@@ -77,7 +77,7 @@ function LinearProgressWithLabel(props) {
 }
 
 function PlayerDevelopmentListItem(props) {
-  const { val, index, maxDate, displayRowArr, selectedRoles } = props;
+  const { val, index, maxDate, displayRowArr, selectedRoles, hideScores} = props;
   const propsStyle = {
     backgroundColor: "black",
     color: "red",
@@ -125,7 +125,7 @@ function PlayerDevelopmentListItem(props) {
                 ? 'parent-bg' : 'coach-bg'}`} key={weight.role} data-rating={`${weight.assigned_weight}`} style={{ left: weight.assigned_weight + '0%' }} >
                 <div className={`${weight.role === 'coach' ? 'coachPosition' : 'parentPosition'} ${weight.assigned_weight <= 4
                   ? 'sd-red' : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
-                    ? 'sd-yellow' : 'sd-green'}`} >
+                    ? 'sd-yellow' : 'sd-green'} ${hideScores == true ? 'pbshow' : 'pbHide'}`} >
                   {weight.assigned_weight}
                 </div>
                 {weight.role === 'coach' ? 'C' : 'P'}

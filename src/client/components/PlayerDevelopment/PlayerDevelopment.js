@@ -61,12 +61,12 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function PlayerDevelopment(props) {
   const navigate = useNavigate();
-  console.log(props);
   const [compData, setCompetancyData] = useState([]);
   const [datesArr, setDatesArr] = useState({});
   const [maxDate, setMaxDate] = useState("");
   const [displayRowArr, setDisplayRow] = useState([]);
   const [selectedRoles, setSelectedRole] = useState(['parent', 'coach']);
+  const [hideScores, setHideScore] = useState(true);
   const {
     getPersonalDevPageInfo,
     pdpData: { progressBarData, assessmentDates, assessmentTestDates, loading = false },
@@ -96,7 +96,6 @@ function PlayerDevelopment(props) {
       if (acc) {
         acc = { ...acc, ...j[1] }
       }
-      console.log(acc);
       return acc;
     }, {});
   }
@@ -105,8 +104,6 @@ function PlayerDevelopment(props) {
     Object.keys(data).map((item) => {
       return data[item];
     }).reduce((acc, i) => {
-      console.log("----------splicedByRoles-----------")
-      console.log(i);
       return acc;
     }, {});
   }
@@ -144,15 +141,11 @@ function PlayerDevelopment(props) {
     }
   }, [progressBarData]);
 
- 
-
-  
-
-  const callback = (bool) => {
-    console.log(`------${bool}-----`);
-    // handleMoreOpen(bool);
+  const handleHideScores = (ev) => {
+    setHideScore(!hideScores);
 
   }
+
   const updateRadioSelections = (value, object) => {
     const selectedDates = { ...selectedRadios, [object]: value };
     props.getPersonalDevOnDate(selectedDates);
@@ -183,9 +176,11 @@ function PlayerDevelopment(props) {
           })}
         </FormGroup>
       </div>
-      <div>
+      <div className = "hideScoreContainer">
         <FormGroup>
-          <FormControlLabel control={<Checkbox defaultChecked />} label="Label" />
+          <FormControlLabel control={<Checkbox defaultChecked />} label="hide scores" onChange={(ev) => {
+            handleHideScores(ev);
+          }}/>
         </FormGroup>
       </div>
       <div className="NewAssessment">
@@ -222,6 +217,7 @@ function PlayerDevelopment(props) {
                           maxDate={maxDate}
                           displayRowArr={displayRowArr}
                           selectedRoles={selectedRoles}
+                          hideScores = {hideScores}
                         ></PlayerDevelopmentListItem>
                       );
                     })}
