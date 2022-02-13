@@ -123,20 +123,24 @@ router.route('/itn_level').get(async (req, res, next) => {
         console.log(req.user[0].email)
         res.cookie("token", "");
         const { email } = req.query;
+
         let userDetails = await basicInformation.find(
             { email: req.user[0].email },
             { current_level: 1, email: 1, _id: 0, role: 1, first_name: 1, last_name: 1 }
         );
+        let itn_level = await basicInformation.find({ email: email }, { current_level: 1, _id: 0 });
+        itn_level = JSON.parse(JSON.stringify(itn_level));
         userDetails = JSON.parse(JSON.stringify(userDetails))
         console.log(userDetails)
         userDetails[0].selected_child = email;
+        // userDetails[0].current_level = itn_level[0];
+        userDetails = { ...userDetails[0], ...itn_level[0] };
         console.log(userDetails)
-        const jsontoken = sign({ result: userDetails }, "Asdfkgr456Edlflg", {
+        const jsontoken = sign({ result: [userDetails] }, "Asdfkgr456Edlflg", {
             expiresIn: "24h",
         });
         res.cookie("token", jsontoken);
 
-        let itn_level = await basicInformation.find({ email: email }, { current_level: 1, _id: 0 })
         console.log(itn_level);
         if (itn_level.length !== 0) {
             res.status(200).send(itn_level[0])

@@ -9,7 +9,7 @@ import {
   // FETCH_PERSONALDEV_COMP_FAILURE,
 } from "./competancyActionTypes";
 import { get, post } from "../../api/axios.api";
-const current_level = localStorage.getItem("current_level");
+// const current_level = localStorage.getItem("current_level");
 export const fetchCompetancySuccess = (data) => {
   return {
     type: FETCH_INITIAL_COMPETANCY_SUCESS,
@@ -31,7 +31,7 @@ export const fetchCompetancyFailure = (error) => {
   };
 };
 
-export const getCompetancy = () => {
+export const getCompetancy = (current_level) => {
   return async (dispatch) => {
     dispatch(loadingCompetancy());
     let response = await get("/api/tennismgmt/competancy/", {

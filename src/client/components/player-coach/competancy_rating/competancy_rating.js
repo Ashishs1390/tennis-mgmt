@@ -21,6 +21,8 @@ function CompetancyRating(props) {
     props;
   const [competancyData, SetCompetancyData] = useState([]);
   const [competancyDataHandel, SetCompetancyDataHandel] = useState([]);
+  const current_level = localStorage.getItem("current_level");
+
   const updateBundelCompetancyRating = (i, j, weight) => {
     //updateCompetancyWeight(i, j, weight);
     const data = competancyData;
@@ -28,7 +30,7 @@ function CompetancyRating(props) {
     SetCompetancyData(data);
   };
   useEffect(() => {
-    getCompetancy();
+    getCompetancy(current_level);
   }, []);
   useEffect(() => {
     if (competancyDataHandel.length <= 0) {
@@ -257,7 +259,7 @@ function CompetancyRating(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCompetancy: () => dispatch(getCompetancy()),
+    getCompetancy: (current_level) => dispatch(getCompetancy(current_level)),
     updateCompetancyWeight: (bundel, competancy, weight) =>
       dispatch(updateCompetancyWeight({ bundel, competancy, weight })),
     saveCompetancy: (data) => dispatch(saveCompetancy({ data })),
