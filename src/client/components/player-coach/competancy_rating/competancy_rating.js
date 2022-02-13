@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Loading from "../../common/loading/loading";
 import TextField from "@mui/material/TextField";
 import { getDateYYYYMMDD } from "../../../util/util";
+import { useNavigate } from "react-router-dom";
 
 import "./competancy.scss";
 
@@ -22,7 +23,7 @@ function CompetancyRating(props) {
   const [competancyData, SetCompetancyData] = useState([]);
   const [competancyDataHandel, SetCompetancyDataHandel] = useState([]);
   const current_level = localStorage.getItem("current_level");
-
+  const navigate = useNavigate();
   const updateBundelCompetancyRating = (i, j, weight) => {
     //updateCompetancyWeight(i, j, weight);
     const data = competancyData;
@@ -32,6 +33,13 @@ function CompetancyRating(props) {
   useEffect(() => {
     getCompetancy(current_level);
   }, []);
+  useEffect(() => {
+    if(props.isSaved) {
+      navigate('../playerdevelopment');
+    } else if(props.isSaved === false) {
+      alert('Issue occured while saving competancy.');
+    }
+  }, [props.isSaved])
   useEffect(() => {
     if (competancyDataHandel.length <= 0) {
       SetCompetancyDataHandel(props.competancyData);
@@ -270,6 +278,7 @@ const mapStateToProps = (state) => {
   return {
     competancyData: state.competancy.competancyData,
     loading: state.competancy.loading,
+    isSaved: state.competancy.isSaved
   };
 };
 

@@ -7,6 +7,7 @@ export {
   getCompetancy,
   updateCompetancyWeight,
   saveCompetancy,
+  emptyCompetancySave,
 } from "./competancy/competancyActions";
 export { getPersonalDevPageInfo, getPersonalDevOnDate } from "./player-development/playerDevelopmentActions";
 export * from "./basicInfo/basicInfoActions";

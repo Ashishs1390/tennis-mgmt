@@ -11,10 +11,11 @@ import { get } from "../../../../api/axios.api";
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 
+
 function PlayerRegistration(props) {
   const navigate = useNavigate();
   const {
-    registration: { data, error },
+    registration: { data, error, registration },
     postDetails,
     emailValidation,
   } = props;
@@ -200,7 +201,7 @@ function PlayerRegistration(props) {
   }, []);
 
   useEffect(() => {
-    if (data.length > 0) {
+    if (data.length > 0 && !registration) {
       navigate(`./../../user/${role}`);
     }
   }, [data]);

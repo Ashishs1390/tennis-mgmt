@@ -5,6 +5,7 @@ import {
   SAVE_COMPETANCY_SUCESS,
   SAVE_COMPETANCY_FAILURE,
   LOADING_COMPETANCY,
+  SAVE_COMPETANCY_EMPTY
   // FETCH_PERSONALDEV_COMP_SUCCESS,
   // FETCH_PERSONALDEV_COMP_FAILURE,
 } from "./competancyActionTypes";
@@ -62,6 +63,12 @@ export const saveCompetancyFailure = (error) => {
 export const loadingCompetancy = () => {
   return {
     type: LOADING_COMPETANCY,
+  };
+};
+
+export const emptyCompetancySave = () => {
+  return {
+    type: SAVE_COMPETANCY_EMPTY,
   };
 };
 

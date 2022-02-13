@@ -26,6 +26,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { getPersonalDevPageInfo, getPersonalDevOnDate } from "./../../redux/index";
 import { connect } from "react-redux";
 
+import { emptyCompetancySave } from '../../redux/index'
+
 import Loading from "../common/loading/loading";
 // import DatesPopUp from "../../css-components/DatesPopUp/DatesPopUp";
 import { getDateDDMMYYYY } from '../../util/util';
@@ -65,6 +67,7 @@ function PlayerDevelopment(props) {
   useEffect(() => {
     const current_level = localStorage.getItem("current_level");
     getPersonalDevPageInfo(current_level);
+    props.emptyCompetancySave();
   }, []);
 
   const handleRoleChange = (ev, role) => {
@@ -225,6 +228,7 @@ const mapDispatchToProps = (dispatch) => {
     getPersonalDevPageInfo: (current_level) =>
       dispatch(getPersonalDevPageInfo(current_level)),
     getPersonalDevOnDate: (data) => dispatch(getPersonalDevOnDate(data)),
+    emptyCompetancySave: () => dispatch(emptyCompetancySave()),
   };
 };
 
