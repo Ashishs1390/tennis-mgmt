@@ -33,6 +33,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { get } from "../../../api/axios.api";
+import LogoutApp from '../../../services/logout';
 
 import "./link-player.scss";
 
@@ -89,6 +90,11 @@ function LinkPlayer(props) {
       }, 10);
     }
   }, [props.searchedPlayer]);
+
+  const logout = async () => {
+    const logoutApp = new LogoutApp(navigate);
+    logoutApp.logout();
+  }
 
   const handleToggle = (value) => {
     setEmailChecked(value);
@@ -156,7 +162,7 @@ function LinkPlayer(props) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Tennis management
             </Typography>
-            <Button color="inherit" onClick={() => { }}>
+            <Button color="inherit" onClick={() => { logout() }}>
               Logout
             </Button>
           </Toolbar>

@@ -6,7 +6,6 @@ import {
   GET_PERSONALDEV_COMP_FAILURE,
 } from "./playerDevelopmentActionTypes";
 import { get, post } from "../../api/axios.api";
-const current_level = localStorage.getItem("current_level");
 
 export const fetchPersonalDevComp = (data) => {
   return {

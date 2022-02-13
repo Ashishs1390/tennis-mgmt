@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { post } from "../../../api/axios.api";
+import LogoutApp from "../../../services/logout";
 
 function LandingPage(props) {
   const localStore = localStorage.getItem("localStore");
@@ -49,13 +49,8 @@ function LandingPage(props) {
   };
 
   const logout = async () => {
-    const result = await post('/api/tennismgmt/user/logout');
-    if (!result.error) {
-      navigate('/');
-      localStorage.clear();
-    } else {
-      alert('Some thing went wrong while logout, please try again');
-    }
+    const logoutApp = new LogoutApp(navigate);
+    logoutApp.logout();
   }
 
   return (

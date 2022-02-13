@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Loading from "../../common/loading/loading";
 import TextField from "@mui/material/TextField";
 import { getDateYYYYMMDD } from "../../../util/util";
+import { useNavigate } from "react-router-dom";
 
 import "./competancy.scss";
 
@@ -21,6 +22,8 @@ function CompetancyRating(props) {
     props;
   const [competancyData, SetCompetancyData] = useState([]);
   const [competancyDataHandel, SetCompetancyDataHandel] = useState([]);
+  const current_level = localStorage.getItem("current_level");
+  const navigate = useNavigate();
   const updateBundelCompetancyRating = (i, j, weight) => {
     //updateCompetancyWeight(i, j, weight);
     const data = competancyData;
@@ -28,8 +31,15 @@ function CompetancyRating(props) {
     SetCompetancyData(data);
   };
   useEffect(() => {
-    getCompetancy();
+    getCompetancy(current_level);
   }, []);
+  useEffect(() => {
+    if(props.isSaved) {
+      navigate('../playerdevelopment');
+    } else if(props.isSaved === false) {
+      alert('Issue occured while saving competancy.');
+    }
+  }, [props.isSaved])
   useEffect(() => {
     if (competancyDataHandel.length <= 0) {
       SetCompetancyDataHandel(props.competancyData);
@@ -257,7 +267,7 @@ function CompetancyRating(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCompetancy: () => dispatch(getCompetancy()),
+    getCompetancy: (current_level) => dispatch(getCompetancy(current_level)),
     updateCompetancyWeight: (bundel, competancy, weight) =>
       dispatch(updateCompetancyWeight({ bundel, competancy, weight })),
     saveCompetancy: (data) => dispatch(saveCompetancy({ data })),
@@ -268,6 +278,7 @@ const mapStateToProps = (state) => {
   return {
     competancyData: state.competancy.competancyData,
     loading: state.competancy.loading,
+    isSaved: state.competancy.isSaved
   };
 };
 

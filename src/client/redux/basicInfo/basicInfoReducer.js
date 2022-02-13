@@ -16,8 +16,8 @@ import {
 
 const initialState = {
     data:{},  
-    error:{status:200}
-    
+    error:{status:200},
+    registration: null,
 }
 
 const initalFetchState = {
@@ -37,6 +37,7 @@ export const reducer = (state = initialState,action)=>{
             return {
                 ...state,
                 data: action.payload,
+                registration: true,
                 error:{}
             }
         case POST_BASICINFO_FAILURE:

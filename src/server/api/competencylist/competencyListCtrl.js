@@ -4,6 +4,7 @@ const competancymetadata = require("./../../models/competancymetadata");
 const competancyBundleSchema = require("./../../models/competencybundledata");
 
 router.route("/").get(async (req, res, next) => {
+  console.log("--------")
   getCompetency(req, res);
 });
 
@@ -186,7 +187,7 @@ const getdatesbyRole = async (email, selected_child,role) => {
 }
 router.route("/assessment").get(async (req, res, next) => {
   try {
-    console.log(req.user[0])
+    console.log(req.user)
     const { email, selected_child, role, current_level } = req.user[0]; //jwt token
     // const { current_level } = req.query;
     const { dates_arr } = req.query;
@@ -200,11 +201,7 @@ router.route("/assessment").get(async (req, res, next) => {
     }, []);
     if (dates_arr && dates_arr.length !== 0) {
       console.log("--------------dates_arr------------------")
-      console.log(typeof dates_arr)
-      console.log(dates_arr)
       datesArr = JSON.parse(dates_arr);
-      console.log(typeof datesArr)
-
     } else {
       datesArr = datesArr
     }
@@ -283,7 +280,6 @@ router.route("/assessment").get(async (req, res, next) => {
       },
     ]);
     assessmentData = JSON.parse(JSON.stringify(assessmentData));
-    console.log(assessmentData);
     assessmentData = assessmentData.reduce((acc, items) => {
       let { competency_bundle, info } = items;
       const competencyGroup = info.reduce(
@@ -299,7 +295,7 @@ router.route("/assessment").get(async (req, res, next) => {
           values.assessment_date = assessment_date;
           values.role = role;
           acc["competencies"][key]["competency"] = values.competency;
-          acc["competencies"][key]["u12boys_weight"] = values.u12boys_weight;
+          acc["competencies"][key][`${itnWeights}`] = values[itnWeights];//need to change now
           acc["competencies"][key]["weights"].push(values);
           return acc;
         },
@@ -343,17 +339,14 @@ router.route("/assessment").get(async (req, res, next) => {
     assessmentData = assessmentData
       .map((item) => {
         item.competencies.sort((a, b) => {
+          console.log(itnWeights)
           var x = a[itnWeights];
           var y = b[itnWeights];
           return x < y ? -1 : x > y ? 1 : 0;
         });
         item.competencies.forEach((i, index) => {
           i.weights.sort((a, b) => {
-            return b.assessment_date < a.assessment_date
-              ? -1
-              : b.assessment_date > a.assessment_date
-                ? 1
-                : 0;
+            return b.itnWeights - a.itnWeights;
           });
         });
         var n = sortingArr.indexOf(item.competency_bundle);
