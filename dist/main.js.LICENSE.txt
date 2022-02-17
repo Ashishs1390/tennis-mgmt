@@ -7,6 +7,14 @@ object-assign
 /*! js-cookie v3.0.1 | MIT */
 
 /**
+ * A better abstraction over CSS.
+ *
+ * @copyright Oleg Isonen (Slobodskoi) / Isonen 2014-present
+ * @website https://github.com/cssinjs/jss
+ * @license MIT
+ */
+
+/**
  * React Router DOM v6.1.1
  *
  * Copyright (c) Remix Software Inc.
@@ -92,3 +100,7 @@ object-assign
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
+//! moment.js
+
+//! moment.js locale configuration
