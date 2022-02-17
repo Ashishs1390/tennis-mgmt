@@ -71,6 +71,7 @@ router.route('/').put(async (req, res, next) => {
     }
 });
 const getChildrenList = async (email) => {
+    console.log("----------getChildrenList-------------")
     let childList = await basicInformation.find({ email: email }, { children_email: 1, _id: 0 }).catch((err) => {
         console.log(err);
     })
@@ -84,7 +85,8 @@ const getChildrenList = async (email) => {
     }
 }
 const getSearchedChild = async ({ email }) => {
-    let output = await basicInformation.find({ email: email }, { email: 1, _id: 0 })
+    console.log("----------------getSearchedChild-----------------");
+    let output = await basicInformation.find({ email: email,role:"player" }, { email: 1, _id: 0 })
     return output;
 }
 
