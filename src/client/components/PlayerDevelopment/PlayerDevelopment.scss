@@ -12,7 +12,7 @@
 .RolesContainer {
   position: absolute;
   right: 0;
-  top: 100px;
+  top: 110px;
   
   & .MuiFormGroup-root {
     display: flex;
@@ -209,6 +209,9 @@
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
   background-color: #fff !important;
+  padding-right: 15px;
+  padding-bottom: 15px;
+  border-radius: 5px;
 }
 
 .DatesModal{

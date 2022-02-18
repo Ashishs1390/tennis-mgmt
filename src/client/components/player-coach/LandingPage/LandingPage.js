@@ -13,6 +13,9 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutApp from "../../../services/logout";
+import HeaderDetails from "../header-deatils/header-detail";
+
+import './landingpage.scss';
 
 function LandingPage(props) {
   const localStore = localStorage.getItem("localStore");
@@ -75,7 +78,10 @@ function LandingPage(props) {
           </Toolbar>
         </AppBar>
       </Box>
-      <Drawer open={menuOpen} onClose={toggleDrawer(false)}>
+      <Box sx={{ flexGrow: 1 }}>
+        <HeaderDetails />
+      </Box>
+      <Drawer sm={{top: '60px !important'}} open={menuOpen} onClose={toggleDrawer(false)}>
         <MenuItem
           onClick={() => {
             updateNav('./profilepage');

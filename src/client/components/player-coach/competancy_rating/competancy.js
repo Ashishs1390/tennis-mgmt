@@ -5,6 +5,8 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Rating from "./rating";
+import { useContext } from "react";
+import { AssessmentContext } from './competancy_rating';
 const useStyles = makeStyles({
     root: {
     },
@@ -12,13 +14,19 @@ const useStyles = makeStyles({
 
 export default function Competancy(props) {
     const classes = useStyles();
+    const context = useContext(AssessmentContext);
     const {updateCompetancyRating, questionNo, competency} = props;
     const updateRating = (i) => {
       updateCompetancyRating(i);
     }
 
+    const getDot = (e) => {
+      context.getDotPosition(e);
+    }
+
     return (
           <ListItem
+                onClick={(e) => {getDot(e)}}
                 alignItems="flex-start"
                 secondaryAction={
                   <Rating {...props} updateRating={updateRating}/>

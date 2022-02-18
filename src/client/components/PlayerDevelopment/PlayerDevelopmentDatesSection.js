@@ -165,7 +165,7 @@ function PlayerDevelopmentDatesSection(props) {
                       <List
                         sx={{
                           width: "100%",
-                          maxWidth: 360,
+                          minWidth: '154px',
                           bgcolor: "background.paper",
                         }}
                       >

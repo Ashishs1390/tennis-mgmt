@@ -33,7 +33,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { get } from "../../../api/axios.api";
-import LogoutApp from '../../../services/logout';
+import LogoutApp from "../../../services/logout";
 
 import "./link-player.scss";
 
@@ -67,12 +67,15 @@ function LinkPlayer(props) {
   const [validEmail, SetValidEmail] = useState(null);
   const [alreadyAddedEmail, setAlreadyAddedEmail] = useState(false);
   const [role, setRole] = useState("");
+  const [userDetails] = useState(
+    JSON.parse(localStorage.getItem("localStore"))
+  );
   const regEmail =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const txtCntrl = useRef();
   const navigate = useNavigate();
   useEffect(() => {
-    setTimeout(()=>{
+    setTimeout(() => {
       let localStore = localStorage.getItem("localStore");
       localStore = JSON.parse(localStore);
       setRole(localStore.role);
@@ -94,7 +97,7 @@ function LinkPlayer(props) {
   const logout = async () => {
     const logoutApp = new LogoutApp(navigate);
     logoutApp.logout();
-  }
+  };
 
   const handleToggle = (value) => {
     setEmailChecked(value);
@@ -103,15 +106,17 @@ function LinkPlayer(props) {
   const validateAndSubmit = (value, submit = true) => {
     const isValid = regEmail.test(value.trim());
     SetValidEmail(isValid);
-    if(isValid && props.searchedPlayer === value) {
+    if (isValid && props.searchedPlayer === value) {
       addSelectedEmailToList();
       return false;
     }
-    const isSearchError = props.errorSearh && props.errorSearh.split(' ')[props.errorSearh.split(' ').length - 1]
+    const isSearchError =
+      props.errorSearh &&
+      props.errorSearh.split(" ")[props.errorSearh.split(" ").length - 1];
     if (isValid && value && value === isSearchError) {
-       return false;
+      return false;
     }
-    
+
     const isAlreadyAddedEmail =
       props.searchedPlayerList.indexOf(value.trim()) >= 0;
     value.trim() && setAlreadyAddedEmail(isAlreadyAddedEmail);
@@ -134,14 +139,18 @@ function LinkPlayer(props) {
   };
 
   const getPlayerItnLevel = () => {
-    get('/api/tennismgmt/linktoplayer/itn_level', {params: { email: emailChecked}}).then(x=>{
-      updateConnectedChildren(emailChecked);
-      localStorage.setItem('child_email', emailChecked);
-      localStorage.setItem('current_level', x.data.data.current_level);
-      navigate(`../user/${role}`);
-    }).catch(err => {
-      console.log(err);
+    get("/api/tennismgmt/linktoplayer/itn_level", {
+      params: { email: emailChecked },
     })
+      .then((x) => {
+        updateConnectedChildren(emailChecked);
+        localStorage.setItem("child_email", emailChecked);
+        localStorage.setItem("current_level", x.data.data.current_level);
+        navigate(`../user/${role}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -155,14 +164,19 @@ function LinkPlayer(props) {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
-              onClick={() => { }}
+              onClick={() => {}}
             >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Tennis management
             </Typography>
-            <Button color="inherit" onClick={() => { logout() }}>
+            <Button
+              color="inherit"
+              onClick={() => {
+                logout();
+              }}
+            >
               Logout
             </Button>
           </Toolbar>
@@ -173,6 +187,22 @@ function LinkPlayer(props) {
         Player Connect
       </Typography>
 
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={10} md={2}></Grid>
+          <Grid item xs={10} md={6}>
+            <Typography
+              className="welcome-user"
+              variant="p"
+              component="div"
+              align="left"
+              sm={{ mt: 4 }}
+            >
+              {`Welcome ${userDetails.role} : ${userDetails.first_name} ${userDetails.last_name}`} 
+            </Typography>
+          </Grid>
+        </Grid>
+      </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
           <Grid item xs={10} md={2}></Grid>
@@ -218,9 +248,8 @@ function LinkPlayer(props) {
                 Email id already added in your list.
               </Typography>
             )}
-            {
-              validEmail && props.errorSearh && (
-                <Typography
+            {validEmail && props.errorSearh && (
+              <Typography
                 className="alert-email"
                 variant="p"
                 component="div"
@@ -228,11 +257,26 @@ function LinkPlayer(props) {
               >
                 {props.errorSearh}
               </Typography>
-              )
-            }
+            )}
+            {(searchEmail.trim() === "" ||
+              props.errorSearh ||
+              props.searchedPlayer !== searchEmail ||
+              props.loadingSearchedPlayer) &&
+            !props.loadingAddPlayer ? null : (
+              <Typography
+                className="add-email"
+                variant="p"
+                component="div"
+                align="left"
+                sm={{ mt: 4 }}
+              >
+                Selected Player is available, click on Add button to add player
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={10} md={2}>
-            {(searchEmail.trim() === "" || props.errorSearh ||
+            {(searchEmail.trim() === "" ||
+              props.errorSearh ||
               props.searchedPlayer !== searchEmail ||
               props.loadingSearchedPlayer) &&
             !props.loadingAddPlayer ? (
@@ -349,7 +393,7 @@ function LinkPlayer(props) {
               <Button
                 variant="contained"
                 onClick={(e) => {
-                  getPlayerItnLevel()
+                  getPlayerItnLevel();
                 }}
               >
                 Continue
