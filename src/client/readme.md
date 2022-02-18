@@ -505,7 +505,7 @@ submit data for parent and coach assessment
 BLue color for coach. #rgb(60 150 243 / 90%)
 grey for parent.
 
-little circle with ryg according to score.
+little circle with ryg according to score. done
 no percent col scores.
 date format should mm/dd/yy, player(score).
 score should be numbers 1-10 not %.
@@ -515,6 +515,17 @@ add two icons for coach and parent next to the word.
 pop up for more dates.
 move the value of coach assessment to upper left. 
 if overlapping coach and parent keep coach on top.
+
+
+--------------------------------------------------
+
+enable multi selection for the player dates. checkboxes instead of readio butn.
+show only dates available in parent and coach that are similar to players date selection.
+hide scores to show scores. default do not show scores.
+
+
+
+-------------------------------------------------------------------------------
 
 
 

@@ -206,6 +206,7 @@ function PlayerDevelopmentDatesSection(props) {
   );
 }
 
+
 const mapDispatchToProps = (dispatch) => {
   return {
     getPersonalDevPageInfo: (current_level) =>

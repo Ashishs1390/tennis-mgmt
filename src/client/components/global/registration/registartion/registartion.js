@@ -200,6 +200,8 @@ function PlayerRegistration(props) {
     }
   }, []);
 
+
+  
   useEffect(() => {
     if (data.length > 0 && !registration) {
       navigate(`./../../user/${role}`);
