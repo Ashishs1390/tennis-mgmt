@@ -27,7 +27,7 @@ function CompetancyRating(props) {
   const [{ playerName }] = useState({
     playerName: localStorage.getItem("child_email"),
   });
-  const [dotPosition, setDotPosition] = useState(0);
+  const [dotPosition, setDotPosition] = useState({x: 0, y: 0});
 
   const current_level = localStorage.getItem("current_level");
   const navigate = useNavigate();
@@ -87,15 +87,15 @@ function CompetancyRating(props) {
 
   const getDotPosition = (e) => {
     if ([...e.target.classList].indexOf('MuiButton-root') >= 0) {
-      const { top } = e.target.getBoundingClientRect();
-      setDotPosition(top + window.scrollY + 10);
+      const { top, left } = e.target.parentElement.getBoundingClientRect();
+      setDotPosition({x: left - 15 ,y: top + window.scrollY + 10});
     }
   };
 
   return (
     <AssessmentContext.Provider value={{ getDotPosition }}>
       <div id="CompetancyDetails">
-        { dotPosition > 0 && <div className="dot-indicator" style={{top: dotPosition + 'px'}}></div>}
+        { dotPosition.y > 0 && <div className="dot-indicator" style={{top: dotPosition.y + 'px', left:  dotPosition.x + 'px'}}></div>}
         <Typography
           sx={{ display: "block" }}
           component="h3"
