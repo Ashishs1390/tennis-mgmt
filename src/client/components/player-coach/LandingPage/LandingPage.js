@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Login from "../../global/login/Login";
 import { connect } from "react-redux";
 import { useNavigate, Link, Outlet } from "react-router-dom";
-// import { fetchDetails } from "./../../../redux/index";
+import { fetchDetails } from "./../../../redux/index";
 import AppBar from "@mui/material/AppBar";
 import Drawer from "@mui/material/Drawer";
 import MenuItem from "@mui/material/MenuItem";
@@ -18,18 +18,29 @@ import HeaderDetails from "../header-deatils/header-detail";
 import './landingpage.scss';
 
 function LandingPage(props) {
+  const { userInfo } = props;
   const localStore = localStorage.getItem("localStore");
+  const child_email = localStorage.getItem("child_email")
   const [role, setRole] = useState("");
+  const [childEmail, setEmail] = useState("");
   useEffect(() => {
-    console.log("----------localStore--------------")
-    console.log(localStore);
     const role = JSON.parse(localStore).role;
     setRole(role);
   }, [localStore]);
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   props.fetchDetails();
-  // }, []);
+  useEffect(() => {
+    setEmail(child_email);
+
+  }, [child_email]);
+  useEffect(() => {
+    if (role == "parent" || role == "coach") {
+      props.fetchDetails(childEmail);
+    }
+  }, [role]);
+
+  useEffect(() => {
+    localStorage.setItem("childInfo", JSON.stringify(userInfo.data));
+  }, [userInfo]);
 
   const [menuOpen, setMenuOpen] = useState(true);
 
@@ -132,17 +143,16 @@ function LandingPage(props) {
   );
 }
 const mapStateToProps = (state) => {
-
   return {
     userInfo: state.getData,
   };
 };
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     fetchDetails: () =>
-//       dispatch(fetchDetails()),
-//   };
-// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchDetails: (email) =>
+      dispatch(fetchDetails(email)),
+  };
+};
 
-export default connect(mapStateToProps, null)(LandingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

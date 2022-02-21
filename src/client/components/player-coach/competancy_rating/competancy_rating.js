@@ -25,7 +25,7 @@ function CompetancyRating(props) {
   const [competancyData, SetCompetancyData] = useState([]);
   const [competancyDataHandel, SetCompetancyDataHandel] = useState([]);
   const [{ playerName }] = useState({
-    playerName: localStorage.getItem("child_email"),
+    playerName: `${JSON.parse(localStorage.getItem("childInfo")).first_name} ${JSON.parse(localStorage.getItem("childInfo")).last_name}`,
   });
   const [dotPosition, setDotPosition] = useState({x: 0, y: 0});
 
@@ -66,7 +66,7 @@ function CompetancyRating(props) {
     let flag = true;
     competancyData.forEach((x) => {
       flag =
-        x.values.filter((y) => y.assigned_weight === 0).length <= 0 && flag;
+        x.values.every((y) => y.hasOwnProperty('assigned_weight') && y.assigned_weight > 0) && flag;
     });
     if (flag) {
       saveCompetancy(
@@ -81,7 +81,7 @@ function CompetancyRating(props) {
         })
       );
     } else {
-      alert("error");
+      alert("Please select the all assessment");
     }
   };
 

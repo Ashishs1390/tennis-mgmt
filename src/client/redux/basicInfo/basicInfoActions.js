@@ -132,9 +132,15 @@ const fetchUsersFailure = (error) =>{
   }
 }
 
-export const fetchDetails = () => {
+export const fetchDetails = (email) => {
+  const reqObj = {  };
+  if (email) {
+    reqObj["email"] = email;
+  }
+  console.log("0000000000reqObj00000000000000")
+  console.log(reqObj);
   return (dispatch) => {
-    get(`/api/tennismgmt/registration/authed/`)
+    get(`/api/tennismgmt/registration/authed/`, { params: { ...reqObj }})
       .then( (response)=> {
         console.log("sucess")
         console.log(response.data.data)
