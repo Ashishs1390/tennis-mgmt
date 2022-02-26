@@ -58,6 +58,7 @@ function PlayerDevelopment(props) {
   const [displayRowArr, setDisplayRow] = useState([]);
   const [selectedRoles, setSelectedRole] = useState(['parent', 'coach']);
   const [hideScores, setHideScore] = useState(true);
+  const [selectedCheckBox, setSelectedCheckBox] = useState({ player: [], parent: [], coach: [] });
   const {
     getPersonalDevPageInfo,
     pdpData: { progressBarData, assessmentDates, assessmentTestDates, loading = false },
@@ -69,6 +70,24 @@ function PlayerDevelopment(props) {
     getPersonalDevPageInfo(current_level);
     props.emptyCompetancySave();
   }, []);
+
+  const updateCheckBoxSelection = (value, role) => {
+    console.log(value);
+    console.log()
+    if (!selectedCheckBox[role].includes(value)) {
+      selectedCheckBox[role].push(value);
+    } else {
+      const index = selectedCheckBox[role].indexOf(value);
+      if (index > -1) {
+        selectedCheckBox[role].splice(index, 1);
+        if (selectedCheckBox[role].length >= 0) { 
+          selectedCheckBox[role].push([]);
+        } 
+      }
+    }
+    props.getPersonalDevOnDate({ ...selectedCheckBox});
+    setSelectedCheckBox({ ...selectedCheckBox });
+  }
 
   const handleRoleChange = (ev, role) => {
     const selectedRoleIndex = selectedRoles.indexOf(role);
@@ -122,6 +141,18 @@ function PlayerDevelopment(props) {
       if (selectedRadios.player === '') {
         setSelectedRadios({ player: getValue(data?.player), parent: getValue(data?.parent), coach: getValue(data?.coach) })
       }
+      if (selectedCheckBox.player.length === 0) {
+        let obj = {
+          player: [],
+          parent: [],
+          coach: []
+        };
+        obj.player.push(getValue(data?.player));
+        obj.parent.push(getValue(data?.parent));
+        obj.coach.push(getValue(data?.coach));
+
+        setSelectedCheckBox({ ...obj });
+      }
       setDatesArr(orderedData);
       let getMaxDate = new Date(
         Math.max(...assessmentTestDates.map((e) => new Date(e.assessment_date)))
@@ -139,7 +170,9 @@ function PlayerDevelopment(props) {
   }
 
   const updateRadioSelections = (value, object) => {
+    console.log({[object]: value})
     const selectedDates = { ...selectedRadios, [object]: value };
+    console.log(selectedDates);
     props.getPersonalDevOnDate(selectedDates);
     setSelectedRadios(selectedDates);
   }
@@ -170,7 +203,7 @@ function PlayerDevelopment(props) {
       </div>
       <div className = "hideScoreContainer">
         <FormGroup>
-          <FormControlLabel control={<Checkbox defaultChecked />} label="hide scores" onChange={(ev) => {
+          <FormControlLabel control={<Checkbox defaultChecked />} label="show scores" onChange={(ev) => {
             handleHideScores(ev);
           }}/>
         </FormGroup>
@@ -187,7 +220,53 @@ function PlayerDevelopment(props) {
       <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
         player development plans -skill view
       </Typography>
-      <PlayerDevelopmentDatesSection datesArr={datesArr} />
+      {/* <PlayerDevelopmentDatesSection datesArr={datesArr} /> */}
+      <div className="checkboxcontainer">
+        {
+          Object.keys(datesArr).map((x, index) => {
+            return (
+              <Grid className="DatesRole" key={x} item xs={12} md={2}>
+                <Item>
+                  <Typography variant="h6" component="div">
+                    {x[0].toUpperCase() + x.slice(1)}
+                  </Typography>
+                  <List
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    {
+                      datesArr[x].map((value, i) => {
+                        return (
+                          <ListItem key={value} disablePadding>
+                            <ListItemButton role={undefined} dense>
+                              <ListItemIcon>
+                                <FormControlLabel
+                                  value={value}
+                                  onChange={() => {
+                                    // updateRadioSelections(value, x, false);
+                                    updateCheckBoxSelection(value,x)
+                                  }}
+                                  // inputprops={{ "aria-labelledby": labelId }}
+                                  control={<Checkbox />}
+                                  checked={selectedCheckBox[x].includes(value)}
+                                  label={`${getDateDDMMYYYY(value)}`}
+                                />
+                              </ListItemIcon>
+                            </ListItemButton>
+                          </ListItem>
+                        )
+                      })
+                    }
+                  </List>
+                </Item>
+               </Grid>
+            )
+          })
+          }
+      </div>
       <Grid container spacing={2}>
         <Grid item xs={12} lg={12}>
           <List className="MainCompetancyList">

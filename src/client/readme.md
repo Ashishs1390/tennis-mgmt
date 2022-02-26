@@ -519,8 +519,8 @@ if overlapping coach and parent keep coach on top.
 
 --------------------------------------------------
 
-enable multi selection for the player dates. checkboxes instead of readio butn.
-show only dates available in parent and coach that are similar to players date selection.
+enable multi selection for the player dates. checkboxes instead of radio butn.
+show only dates available in parent and coach that are similar to players date selection. doubts
 hide scores to show scores. default do not show scores.
 
 

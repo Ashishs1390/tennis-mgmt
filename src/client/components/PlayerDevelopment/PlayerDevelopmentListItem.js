@@ -86,7 +86,6 @@ function PlayerDevelopmentListItem(props) {
   return (
     <ListItem className="CompetancyListItem" key={val.competency + index}>
       <div>
-        {/* <div className={`${classes.foo} ${classes.bar}`} >aaaa</div> */}
         <p className="displaycomp">{val.competency}</p>
         {val.weights.filter(x => x.role === 'player').map((weight, index) => {
           return (
@@ -106,35 +105,32 @@ function PlayerDevelopmentListItem(props) {
                       : { root: classes.rootGreen }
                 }
                 value={parseInt(`${weight.assigned_weight}0`)}
-              />
+              >
+                
+              </LinearProgressWithLabel>
+              <div className="parent-coach-rating">
+                {val.weights.filter(x => x.role === 'parent' || x.role === 'coach').filter(x => !!selectedRoles.find(y => y === x.role)).map((weight1, index) => { // checkboxes
+                  return (
+                    <div className={`${getDateMMDDYY(weight.assessment_date) == getDateMMDDYY(weight1.assessment_date) ? 'pbshow' : 'pbHide'}`}>
+                      <div title={`${weight1.role} has given ${weight1.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight1.assessment_date))}`} className={`score-dot ${weight1.role == "parent"
+                        ? 'parent-bg' : 'coach-bg'}`} key={weight1.role} data-rating={`${weight1.assigned_weight}`} style={{ left: weight1.assigned_weight + '0%' }} >
+                        <div className={`${weight1.role === 'coach' ? 'coachPosition' : 'parentPosition'} ${weight1.assigned_weight <= 4
+                          ? 'sd-red' : weight1.assigned_weight >= 5 && weight1.assigned_weight <= 7
+                            ? 'sd-yellow' : 'sd-green'} ${hideScores == true ? 'pbshow' : 'pbHide'}`} >
+                          {weight1.assigned_weight}
+                        </div>
+                        {weight1.role === 'coach' ? 'C' : 'P'}
+                      </div>
+                    </div>
+
+                  );
+                })}
+              </div>
             </Box>
           );
         })}
       </div>
-      <div className="parent-coach-rating">
-        {val.weights.filter(x => x.role === 'parent' || x.role === 'coach').filter(x => !!selectedRoles.find(y => y === x.role)).map((weight, index) => { // checkboxes
-          return (
-            <div>
-              {/* <div title={`${weight.role} has given ${weight.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight.assessment_date))}`} className={`score-dot ${weight.assigned_weight <= 4
-              ? 'red-bg' : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
-                ? 'yellow-bg' : 'green-bg'}`} key={weight.role} data-rating={`${weight.assigned_weight}0`} data-date={getDateDDMMYYYY(new Date(weight.assessment_date))} style={{ left: weight.assigned_weight + '0%' }}>
-              {weight.role === 'coach' ? 'C' : 'P'}
-            </div> */}
-
-              <div title={`${weight.role} has given ${weight.assigned_weight} rating on ${getDateDDMMYYYY(new Date(weight.assessment_date))}`} className={`score-dot ${weight.role == "parent"
-                ? 'parent-bg' : 'coach-bg'}`} key={weight.role} data-rating={`${weight.assigned_weight}`} style={{ left: weight.assigned_weight + '0%' }} >
-                <div className={`${weight.role === 'coach' ? 'coachPosition' : 'parentPosition'} ${weight.assigned_weight <= 4
-                  ? 'sd-red' : weight.assigned_weight >= 5 && weight.assigned_weight <= 7
-                    ? 'sd-yellow' : 'sd-green'} ${hideScores == true ? 'pbshow' : 'pbHide'}`} >
-                  {weight.assigned_weight}
-                </div>
-                {weight.role === 'coach' ? 'C' : 'P'}
-              </div>
-            </div>
-
-          );
-        })}
-      </div>
+      
     </ListItem>
   );
 }

@@ -57,10 +57,12 @@ export const getPersonalDevPageInfo = (current_level) => {
 
 
 export const getPersonalDevOnDate = (dates) => {
+  console.log("--------dates----------");
+  console.log([dates.player, dates.parent, dates.coach]);
   return async (dispatch) => {
     dispatch(getPersonalDevCompLoad());
     let response = await get("/api/tennismgmt/competancy/assessment",{
-      params: { dates_arr : JSON.stringify([dates.player, dates.parent, dates.coach].filter(x => x && typeof x === "string")) },
+      params: { dates_arr : JSON.stringify([...dates.player, ...dates.parent, ...dates.coach].filter(x => x && typeof x === "string")) },
     });
     if (response.error == false) {
       dispatch(getPersonalDevComp({ ...response.data.data }));
