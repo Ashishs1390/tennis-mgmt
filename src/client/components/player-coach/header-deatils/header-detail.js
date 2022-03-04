@@ -16,11 +16,14 @@ const HeaderDetails = () => {
           <span className="header-role">{userDetails.role[0]?.toUpperCase() + userDetails.role?.slice(1)}</span>:{" "}
           <span>{`${userDetails.first_name} ${userDetails.last_name}`}</span>
         </p>
+        {player &&
         <p>
           <span className="header-role">{`Player`}</span>:{" "}
           <span>{`${player}`}</span>
-        </p>
+          </p>
+        }
       </div>
+     
     </>
   );
 };

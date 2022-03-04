@@ -200,7 +200,6 @@ router.route("/assessment").get(async (req, res, next) => {
       return acc;
     }, []);
     if (dates_arr && dates_arr.length !== 0) {
-      console.log("--------------dates_arr------------------")
       datesArr = JSON.parse(dates_arr);
     } else {
       datesArr = datesArr
@@ -339,7 +338,6 @@ router.route("/assessment").get(async (req, res, next) => {
     assessmentData = assessmentData
       .map((item) => {
         item.competencies.sort((a, b) => {
-          console.log(itnWeights)
           var x = a[itnWeights];
           var y = b[itnWeights];
           return x < y ? -1 : x > y ? 1 : 0;
@@ -381,7 +379,6 @@ router.route("/latestassessment").get(async (req, res, next) => { });
 async function getCompetency(req, res) {
   const { email, selected_child, role } = req.user[0];
   const competancyData = await getAllDates(email, selected_child, role);
-  console.log(competancyData)
   if (competancyData && competancyData.length > 0) {
     return await getCompetencyLatest(req, res);
   } else {
