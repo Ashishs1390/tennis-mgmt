@@ -12,8 +12,8 @@ const useStyles = makeStyles({
 
 export default function Rating(props) {
     const classes = useStyles();
-    const {updateRating, assigned_weight} = props;
-    const [currentWeight,  setCurrentWeight] = useState(assigned_weight);
+    const { updateRating, assigned_weight, prev_weight } = props;
+    const [currentWeight, setCurrentWeight] = useState(assigned_weight);
     const updateWeight = (i) => {
         setCurrentWeight(i);
         updateRating(i);
@@ -23,9 +23,18 @@ export default function Rating(props) {
                 {
                     new Array(10).fill(1).map((x ,i)=> {
                         return (
-                        <Button key={i+1} variant={currentWeight === (i+1) ? "contained" : "outlined" } size="small" className={classes.root} onClick={() => {updateWeight(i+1)}}>
-                            {i + 1 }
-                        </Button>)
+                            <span>
+                                
+                            <Button key={i+1} variant={currentWeight === (i+1) ? "contained" : "outlined" } size="small" className={classes.root} onClick={() => {updateWeight(i+1)}}>
+                                    {
+                                        prev_weight === (i + 1) &&
+                                        <span className="prevDot"></span>
+
+                                    }
+                                    {i + 1}
+                            </Button>
+                            </span>
+                        )
                     })
                 }
             </div>

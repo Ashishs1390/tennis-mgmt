@@ -50,6 +50,11 @@ function CompetancyRating(props) {
   }, [props.isSaved]);
   useEffect(() => {
     if (competancyDataHandel.length <= 0) {
+      props.competancyData.forEach((comp) => {
+        comp.values.forEach((co) => {
+          co.prev_weight = co.assigned_weight;
+        });
+      })
       SetCompetancyDataHandel(props.competancyData);
     }
     SetCompetancyData(props.competancyData);
@@ -114,7 +119,7 @@ function CompetancyRating(props) {
           <div className="player-details">
             <table>
               <tbody>
-                <tr>
+                <tr className="player-content">
                   <td>
                     <Typography
                       sx={{ display: "block" }}
@@ -138,7 +143,7 @@ function CompetancyRating(props) {
                     </Typography>
                   </td>
                 </tr>
-                <tr>
+                <tr className="player-content">
                   <td>
                     <Typography
                       sx={{ display: "block" }}
@@ -162,7 +167,7 @@ function CompetancyRating(props) {
                     </Typography>
                   </td>
                 </tr>
-                <tr>
+                <tr className="player-content">
                   <td>
                     <Typography
                       sx={{ display: "block" }}
@@ -171,7 +176,7 @@ function CompetancyRating(props) {
                       align="right"
                       color="text.primary"
                     >
-                      Player Evaluation:
+                      Player Evaluation: {current_level}
                     </Typography>
                   </td>
                   <td>
@@ -184,7 +189,7 @@ function CompetancyRating(props) {
                     ></Typography>
                   </td>
                 </tr>
-                <tr>
+                <tr className="player-content">
                   <td>
                     <Typography
                       sx={{ display: "block" }}
@@ -193,7 +198,7 @@ function CompetancyRating(props) {
                       align="right"
                       color="text.primary"
                     >
-                      Goal Level: {current_level}
+                      Goal Level: 
                     </Typography>
                   </td>
                   <td>
@@ -206,7 +211,7 @@ function CompetancyRating(props) {
                     ></Typography>
                   </td>
                 </tr>
-                <tr>
+                <tr className="player-content">
                   <td>
                     <Typography
                       sx={{ display: "block" }}
@@ -230,7 +235,7 @@ function CompetancyRating(props) {
                     </Typography>
                   </td>
                 </tr>
-                <tr>
+                <tr className="player-content">
                   <td>
                     <Typography
                       sx={{ display: "block" }}
@@ -269,6 +274,7 @@ function CompetancyRating(props) {
         <Loading open={loading} />
         {competancyDataHandel && competancyDataHandel.length > 0 ? (
           [...competancyDataHandel].map((x, i) => (
+            <>
             <BundelCompetancy
               {...x}
               key={x.competency_bundle}
@@ -276,7 +282,8 @@ function CompetancyRating(props) {
                 this,
                 i
               )}
-            />
+              />
+            </>
           ))
         ) : (
           <p> Data Loading... </p>

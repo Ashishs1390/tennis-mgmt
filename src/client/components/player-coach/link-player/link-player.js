@@ -13,12 +13,13 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-
+import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -27,6 +28,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListSubheader from "@mui/material/ListSubheader";
 import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
+import NavBarParent from "../../player-coach/NavBarParent/NarBarParent";
 
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -70,10 +72,11 @@ function LinkPlayer(props) {
   const [userDetails] = useState(
     JSON.parse(localStorage.getItem("localStore"))
   );
+  const navigate = useNavigate();
   const regEmail =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const txtCntrl = useRef();
-  const navigate = useNavigate();
+
   useEffect(() => {
     setTimeout(() => {
       let localStore = localStorage.getItem("localStore");
@@ -94,15 +97,9 @@ function LinkPlayer(props) {
     }
   }, [props.searchedPlayer]);
 
-  const logout = async () => {
-    const logoutApp = new LogoutApp(navigate);
-    logoutApp.logout();
-  };
-
   const handleToggle = (value) => {
     setEmailChecked(value);
   };
-
   const validateAndSubmit = (value, submit = true) => {
     const isValid = regEmail.test(value.trim());
     SetValidEmail(isValid);
@@ -146,7 +143,7 @@ function LinkPlayer(props) {
         updateConnectedChildren(emailChecked);
         localStorage.setItem("child_email", emailChecked);
         localStorage.setItem("current_level", x.data.data.current_level);
-        navigate(`../user/${role}`);
+        navigate(`../user/${role}/playerdevelopment`);
       })
       .catch((err) => {
         console.log(err);
@@ -155,34 +152,7 @@ function LinkPlayer(props) {
 
   return (
     <div>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              onClick={() => {}}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Tennis management
-            </Typography>
-            <Button
-              color="inherit"
-              onClick={() => {
-                logout();
-              }}
-            >
-              Logout
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </Box>
-
+      <NavBarParent></NavBarParent>
       <Typography variant="h4" gutterBottom component="div" align="center">
         Player Connect
       </Typography>
@@ -400,7 +370,8 @@ function LinkPlayer(props) {
               </Button>
             </Grid>
           </Grid>
-        </Box>
+          </Box>
+          
       ) : (
         !props.loadingSearchedPlayerList && (
           <Box sx={{ flexGrow: 1 }}>

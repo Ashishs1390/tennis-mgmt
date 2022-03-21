@@ -15,7 +15,8 @@ const useStyles = makeStyles({
 export default function Competancy(props) {
     const classes = useStyles();
     const context = useContext(AssessmentContext);
-    const {updateCompetancyRating, questionNo, competency} = props;
+  const { updateCompetancyRating, questionNo, competency, y } = props;
+  console.log(y)
     const updateRating = (i) => {
       updateCompetancyRating(i);
     }
@@ -29,7 +30,7 @@ export default function Competancy(props) {
                 onClick={(e) => {getDot(e)}}
                 alignItems="flex-start"
                 secondaryAction={
-                  <Rating {...props} updateRating={updateRating}/>
+                  <Rating {...props} prev_weight={JSON.parse(JSON.stringify(y.prev_weight))} updateRating={updateRating}/>
                 }
               >
                 <ListItemText

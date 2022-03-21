@@ -9,6 +9,7 @@ const useStyles = makeStyles({
 });
 
 function BundelCompetancy(props) {
+  console.log("---------------BundelCompetancy-------------------")
   const classes = useStyles();
   const { competency_bundle, values, updateBundelCompetancyRating } = props;
 
@@ -28,12 +29,16 @@ function BundelCompetancy(props) {
       </Typography>
       {values && values.length > 0 ? (
         [...values].map((x, i) => (
-          <Competancy
-            key={x.competency + i}
-            questionNo={i + 1}
-            {...x}
-            updateCompetancyRating={updateCompetancyRating.bind(this, i)}
-          />
+        
+            <Competancy
+              key={x.competency + i}
+              questionNo={i + 1}
+              {...x}
+              y={JSON.parse(JSON.stringify(x))}
+              updateCompetancyRating={updateCompetancyRating.bind(this, i)}
+            />
+          
+          
         ))
       ) : (
         <p> No data available</p>

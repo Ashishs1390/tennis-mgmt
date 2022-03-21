@@ -2,9 +2,9 @@ const router = require("express").Router();
 const userCompetancySchema = require("./../../models/usercompetancy");
 const competancymetadata = require("./../../models/competancymetadata");
 const competancyBundleSchema = require("./../../models/competencybundledata");
+const { getAllDates } = require("../../utils/datesUtils");
 
 router.route("/").get(async (req, res, next) => {
-  console.log("--------")
   getCompetency(req, res);
 });
 
@@ -55,50 +55,50 @@ router.route("/").post(async (req, res, next) => {
     });
   }
 });
-const getAllDates = async (email, selected_child, role) => {
-  let filterObj = {};
+// const getAllDates = async (email, selected_child, role) => {
+//   let filterObj = {};
 
-  filterObj = {
-    // [`${role}_email`]: email,
-    email: role == "player" ? email : selected_child,
-    role: role
-  }
+//   filterObj = {
+//     // [`${role}_email`]: email,
+//     email: role == "player" ? email : selected_child,
+//     role: role
+//   }
 
 
 
-  let assessmentDates = await userCompetancySchema.aggregate([
-    {
-      $match: {
-        ...filterObj
-      },
-    },
-    {
-      $group: {
-        _id: {
-          assessment_date: "$assessment_date",
-        },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        assessment_date: "$_id.assessment_date",
-      },
-    },
-    {
-      $sort: {
-        assessment_date: -1,
-      },
-    },
-  ]);
-  assessmentDates = assessmentDates.reduce((acc, curr) => {
-    if (acc) {
-      acc.push(curr.assessment_date);
-    }
-    return acc;
-  }, []);
-  return assessmentDates;
-};
+//   let assessmentDates = await userCompetancySchema.aggregate([
+//     {
+//       $match: {
+//         ...filterObj
+//       },
+//     },
+//     {
+//       $group: {
+//         _id: {
+//           assessment_date: "$assessment_date",
+//         },
+//       },
+//     },
+//     {
+//       $project: {
+//         _id: 0,
+//         assessment_date: "$_id.assessment_date",
+//       },
+//     },
+//     {
+//       $sort: {
+//         assessment_date: -1,
+//       },
+//     },
+//   ]);
+//   assessmentDates = assessmentDates.reduce((acc, curr) => {
+//     if (acc) {
+//       acc.push(curr.assessment_date);
+//     }
+//     return acc;
+//   }, []);
+//   return assessmentDates;
+// };
 
 const getDates = async (email, selected_child, role) => {
   let filterObj = {};
@@ -482,35 +482,7 @@ async function getCompetencyLatest(req, res) {
       email: role == "player" ? email : selected_child,
       role: role,
       assessment_date: maxDate
-    }
-
-    // console.log(JSON.stringify([
-    //   {
-    //     $match: {
-    //       ...filterObj
-    //     },
-    //   },
-    //   {
-    //     $group: {
-    //       _id: {
-    //         email: "$email",
-    //         assessment_date: "$assessment_date",
-    //       },
-    //       compentancyArr: {
-    //         $push: {
-    //           competency_bundle: "$competency_bundle",
-    //           values: "$values",
-    //         },
-    //       },
-    //     },
-    //   },
-    //   {
-    //     $project: {
-    //       _id: 0,
-    //       compentancyArr: 1,
-    //     },
-    //   },
-    // ]))
+    };
     let assessmentDataLatest = await userCompetancySchema.aggregate([
       {
         $match: {

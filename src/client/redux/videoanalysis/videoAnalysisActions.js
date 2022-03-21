@@ -110,10 +110,7 @@ export const fetchCompareVideoFail =(error) =>{
 
 export const getCompareVideo = () =>{
   return async (dispatch) =>{
-    console.log("-----------getCompareVideo-------------")
     let response = await get("/api/tennismgmt/videolibrary/");
-    console.log("-------response----------")
-    console.log(response.data.data);
     if(response.error == false){
         dispatch(fetchCompareVideoSuc([...response.data.data]));
     }else{

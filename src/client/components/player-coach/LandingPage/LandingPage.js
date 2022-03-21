@@ -20,12 +20,16 @@ import './landingpage.scss';
 function LandingPage(props) {
   const { userInfo } = props;
   const localStore = localStorage.getItem("localStore");
+  const [userName, setUserName] = useState("");
   const child_email = localStorage.getItem("child_email")
   const [role, setRole] = useState("");
   const [childEmail, setEmail] = useState("");
+  const [menuOpen, setMenuOpen] = useState(true);
   useEffect(() => {
-    const role = JSON.parse(localStore).role;
+    const { first_name, last_name, role } = JSON.parse(localStore);
+    const fullName = `${first_name} ${last_name}`;
     setRole(role);
+    setUserName(fullName);
   }, [localStore]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -42,7 +46,7 @@ function LandingPage(props) {
     localStorage.setItem("childInfo", JSON.stringify(userInfo.data));
   }, [userInfo]);
 
-  const [menuOpen, setMenuOpen] = useState(true);
+
 
   const handleDrawerClick = () => {
     if (menuOpen == false) setMenuOpen(true);
@@ -85,7 +89,12 @@ function LandingPage(props) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Tennis management
             </Typography>
-            <Button color="inherit" onClick={logout}>Logout</Button>
+            <Typography>
+              <p className="nav_title">
+                {userName}
+              </p>
+              <Button color="inherit" onClick={logout}>Logout</Button>
+            </Typography>
           </Toolbar>
         </AppBar>
       </Box>

@@ -12,6 +12,8 @@ import CompareLibrary from "./components/player-coach/compare-library/compare-li
 import CompetancyRating from "./components/player-coach/competancy_rating/competancy_rating";
 import PlayerDevelopment from "./components/PlayerDevelopment/PlayerDevelopment";
 import LinkPlayer from "./components/player-coach/link-player/link-player";
+import CompetancyAggregation from "./components/player-coach/CompetancyAggregation/CompetancyAggregation";
+import UserListAggregation from "./components/player-coach/CompetancyAggregation/UserListAggregation";
 import Cookies from "js-cookie";
 
 function App() {
@@ -38,8 +40,22 @@ function App() {
               ></Route>
               <Route
                 path="link/player"
-                element={<LinkPlayer />}
+                element={
+                  isLoggedIn ? <LinkPlayer /> : <Navigate to="/"></Navigate>
+                }
               ></Route>
+              <Route
+                path="competancyaggregation"
+                element={
+                  isLoggedIn ? <UserListAggregation /> : <Navigate to="/"></Navigate>
+                }
+              >
+                <Route
+                  path="players/:playerId"
+                  element={<CompetancyAggregation />}
+                ></Route>
+
+              </Route>
               <Route
                 path="user/:role"
                 element={
@@ -112,4 +128,4 @@ function PageNotFound() {
   return <div>Page not found</div>;
 }
 
-function PrivateRoute() {}
+function PrivateRoute() { }

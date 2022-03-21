@@ -2,6 +2,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    
+    .player-content{
+       align-content: flex-start; 
+    }
 }
 
 .css-uls1yk-MuiDivider-root {
@@ -16,6 +20,16 @@
     border-radius: 10px;
     border: 1px solid rgb(122, 20, 188);
     animation: glowDot 2s ease-in 0s infinite;
+}
+.prevDot {
+    background-color: #1976d2;
+    margin-left: 0px;
+    position: relative;
+    top: -17px;
+    left: 17px;
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
 }
 
 @keyframes glowDot {

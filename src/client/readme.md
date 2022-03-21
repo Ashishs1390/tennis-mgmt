@@ -527,6 +527,73 @@ hide scores to show scores. default do not show scores.
 
 -------------------------------------------------------------------------------
 
+db.getCollection('users_competancy_list').aggregate([
+    {
+          "$match":{"email" : "ashishhsharma2121@gmail.com",
+                    "parent_email" : "p@gmail.com"
+              },  
+    },
+    {
+            "$group":{
+                    "_id":{
+                        "competency_bundle":"$competency_bundle",
+                        "assessment_date":"$assessment_date",
+                        "values": "$values",
+                        },
+                       
+                        
+                }
+    },
+    {
+        "$project":{
+                "_id":0,
+                 "competency_bundle": "$_id.competency_bundle",
+                 "assessment_date": "$_id.assessment_date",
+                "values":"$_id.values"
+            
+            }
+        
+    },
+    {
+            "$group":{
+                "_id": {
+            "competency_bundle": "$competency_bundle",
+          },
+                    "info": {
+            "$push": {
+              "values": "$values",
+              "assessment_date": "$assessment_date",
+            },
+          },
+                }
+        
+    },{
+        "$project": {
+          "_id": 0,
+          "competency_bundle": "$_id.competency_bundle",
+          "info": "$info",
+        },
+      },
+
+
+
+])
+
+
+
+continue -> 
+aggregated data -> players data
+
+new page -> all player list -> with check boxes -> button compare
+
+bar chart max count 10
+
+Player Evaluation: u12boys - current goal
+ 
+logined in username - in blue bar above logout button.
+
+
+
 
 
 

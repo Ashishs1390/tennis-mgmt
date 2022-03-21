@@ -12,3 +12,4 @@ export {
 export { getPersonalDevPageInfo, getPersonalDevOnDate } from "./player-development/playerDevelopmentActions";
 export * from "./basicInfo/basicInfoActions";
 export { getSearchedPlayerByEmail, fetchLinkedPlayerList, addPlayerToList } from "./link-player/linkPlayerAction";
+export { getCompetancyDetails } from './competancy-aggregation/competancyAggregationAction';

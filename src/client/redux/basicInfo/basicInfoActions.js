@@ -137,25 +137,15 @@ export const fetchDetails = (email) => {
   if (email) {
     reqObj["email"] = email;
   }
-  console.log("0000000000reqObj00000000000000")
-  console.log(reqObj);
   return (dispatch) => {
     get(`/api/tennismgmt/registration/authed/`, { params: { ...reqObj }})
       .then( (response)=> {
-        console.log("sucess")
-        console.log(response.data.data)
-        // handle success
         dispatch(fetchDetailsSuccess({...response.data.data}));
 
       })
       .catch( (error) =>{
-        console.log("-------error--------")
-        console.log(error);
         console.log(error.response.data)
-
         dispatch(fetchUsersFailure(error.response.data));
-
-        // handle error
       });
   };
 };

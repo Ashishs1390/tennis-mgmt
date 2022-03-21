@@ -21,6 +21,7 @@ import {
   initalCompareReducer,
 } from "./videoanalysis/videoAnalysisReducer";
 import { linkPlayerReducer } from "./link-player/linkPlayerReducer";
+import { initalAggrReducer} from "./competancy-aggregation/competancyAggregationReducer";
 
 const rootReducer = combineReducers({
   registration: reducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   competancy: initalCompetnacyReducer,
   personalDevelopment: initalPDPReducer,
   linkPlayerReducer: linkPlayerReducer,
+  aggregatedCompData:initalAggrReducer,
 });
 
 export default rootReducer;

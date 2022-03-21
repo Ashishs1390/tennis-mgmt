@@ -10,6 +10,7 @@ router.use('/tennismgmt/videolibrary', checkToken, require("./api/videoanalysisp
 router.use('/tennismgmt/list/agegrouplist', require("./api/list_collection/list_collection"));
 router.use('/tennismgmt/competancy', checkToken ,require("./api/competencylist/competencyListCtrl"));
 router.use('/tennismgmt/linktoplayer', checkToken ,require("./api/linktoplayer/linkToPlayerCtrl"));
+router.use('/tennismgmt/bundleaggdata', checkToken, require("./api/bundleaggregation/bundleAggCtrl"));
 
 
 module.exports = router;

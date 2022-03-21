@@ -72,8 +72,6 @@ function PlayerDevelopment(props) {
   }, []);
 
   const updateCheckBoxSelection = (value, role) => {
-    console.log(value);
-    console.log()
     if (!selectedCheckBox[role].includes(value)) {
       selectedCheckBox[role].push(value);
     } else {
