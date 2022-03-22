@@ -40,3 +40,4 @@ const userCompetancySchema = new Schema({
 module.exports = mongoose.model('userCompetancySchema', userCompetancySchema);
 
 
+
