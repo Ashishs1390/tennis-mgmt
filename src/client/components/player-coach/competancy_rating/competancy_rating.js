@@ -116,6 +116,7 @@ function CompetancyRating(props) {
             p: 2,
           }}
         >
+          
           <div className="player-details">
             <table>
               <tbody>
