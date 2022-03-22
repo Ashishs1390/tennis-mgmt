@@ -593,6 +593,12 @@ Player Evaluation: u12boys - current goal
 logined in username - in blue bar above logout button.
 
 
+---------------------
+
+link/player --- in menu
+profile page to be linked to user logined in blue bar above logout avatar img
+
+
 
 
 

@@ -31,10 +31,13 @@ function NavBarParent() {
         navigate(link);
     };
     useEffect(() => {
-        const { first_name, last_name } = JSON.parse(localStore);
-        const fullName = `${first_name} ${last_name}`;
-        setUserName(fullName);
-    }, [localStore]);
+        setTimeout(() => {
+            const { first_name, last_name } = JSON.parse(localStore);
+            const fullName = `${first_name} ${last_name}`;
+            setUserName(fullName);
+        }, [localStore]);    
+        })
+        
 
     const logout = async () => {
         const logoutApp = new LogoutApp(navigate);

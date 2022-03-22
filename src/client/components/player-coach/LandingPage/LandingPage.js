@@ -26,10 +26,13 @@ function LandingPage(props) {
   const [childEmail, setEmail] = useState("");
   const [menuOpen, setMenuOpen] = useState(true);
   useEffect(() => {
-    const { first_name, last_name, role } = JSON.parse(localStore);
-    const fullName = `${first_name} ${last_name}`;
-    setRole(role);
-    setUserName(fullName);
+    setTimeout(() => {
+      const { first_name, last_name, role } = JSON.parse(localStore);
+      const fullName = `${first_name} ${last_name}`;
+      setRole(role);
+      setUserName(fullName);
+    })
+    
   }, [localStore]);
   const navigate = useNavigate();
   useEffect(() => {

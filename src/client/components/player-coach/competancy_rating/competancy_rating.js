@@ -52,7 +52,11 @@ function CompetancyRating(props) {
     if (competancyDataHandel.length <= 0) {
       props.competancyData.forEach((comp) => {
         comp.values.forEach((co) => {
-          co.prev_weight = co.assigned_weight;
+          if (co.prev_weight) {
+            co.prev_weight = co.assigned_weight;
+          } else {
+            co.prev_weight = null;
+          }
         });
       })
       SetCompetancyDataHandel(props.competancyData);
@@ -116,7 +120,7 @@ function CompetancyRating(props) {
             p: 2,
           }}
         >
-          
+
           <div className="player-details">
             <table>
               <tbody>

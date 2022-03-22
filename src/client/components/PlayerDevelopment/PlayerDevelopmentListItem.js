@@ -77,7 +77,7 @@ function LinearProgressWithLabel(props) {
 }
 
 function PlayerDevelopmentListItem(props) {
-  const { val, index, maxDate, displayRowArr, selectedRoles, hideScores} = props;
+  const { val, index, maxDate, displayRowArr, selectedRoles, hideScores } = props;
   const propsStyle = {
     backgroundColor: "black",
     color: "red",
@@ -104,9 +104,9 @@ function PlayerDevelopmentListItem(props) {
                       ? { root: classes.rootYellow }
                       : { root: classes.rootGreen }
                 }
-                value={parseInt(`${weight.assigned_weight}0`)}
+                value={parseInt(`${weight.assigned_weight || 0}0`)}
               >
-                
+
               </LinearProgressWithLabel>
               <div className="parent-coach-rating">
                 {val.weights.filter(x => x.role === 'parent' || x.role === 'coach').filter(x => !!selectedRoles.find(y => y === x.role)).map((weight1, index) => { // checkboxes
@@ -130,7 +130,7 @@ function PlayerDevelopmentListItem(props) {
           );
         })}
       </div>
-      
+
     </ListItem>
   );
 }
