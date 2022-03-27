@@ -17,6 +17,7 @@ function NavBarParent() {
     const navigate = useNavigate();
     const [userName, setUserName] = useState("");
     const [menuOpen, setMenuOpen] = useState(true);
+    const [role, setRole] = useState("");
     const handleDrawerClick = () => {
         if (menuOpen == false) setMenuOpen(true);
         else setMenuOpen(false);
@@ -32,8 +33,9 @@ function NavBarParent() {
     };
     useEffect(() => {
         setTimeout(() => {
-            const { first_name, last_name } = JSON.parse(localStore);
+            const { first_name, last_name,role } = JSON.parse(localStore);
             const fullName = `${first_name} ${last_name}`;
+            setRole(role);
             setUserName(fullName);
         }, [localStore]);    
         })
@@ -86,6 +88,17 @@ function NavBarParent() {
                 >
                     Profile Page
                 </MenuItem>
+                {
+                    role === "parent" || role === "coach" && (<>
+                        <MenuItem
+                            onClick={() => {
+                                updateNav('../link/player');
+                            }}
+                        >
+                            Home Page
+                        </MenuItem>
+
+                    </>)}
                 <MenuItem
                     onClick={() => {
                         updateNav('../competancyaggregation');

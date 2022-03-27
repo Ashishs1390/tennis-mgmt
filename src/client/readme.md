@@ -597,6 +597,11 @@ logined in username - in blue bar above logout button.
 
 link/player --- in menu
 profile page to be linked to user logined in blue bar above logout avatar img
+logut inside avatar
+
+
+enabled video analysis page for parent and coach
+
 
 
 

@@ -52,7 +52,7 @@ function CompetancyRating(props) {
     if (competancyDataHandel.length <= 0) {
       props.competancyData.forEach((comp) => {
         comp.values.forEach((co) => {
-          if (co.prev_weight) {
+          if (!co.prev_weight) {
             co.prev_weight = co.assigned_weight;
           } else {
             co.prev_weight = null;

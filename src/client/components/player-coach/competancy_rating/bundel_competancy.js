@@ -34,7 +34,7 @@ function BundelCompetancy(props) {
               key={x.competency + i}
               questionNo={i + 1}
               {...x}
-              y={JSON.parse(JSON.stringify(x))}
+              y={x}
               updateCompetancyRating={updateCompetancyRating.bind(this, i)}
             />
           

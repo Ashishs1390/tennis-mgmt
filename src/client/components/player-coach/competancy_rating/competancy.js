@@ -30,7 +30,7 @@ export default function Competancy(props) {
                 onClick={(e) => {getDot(e)}}
                 alignItems="flex-start"
                 secondaryAction={
-                  <Rating {...props} prev_weight={JSON.parse(JSON.stringify(y.prev_weight))} updateRating={updateRating}/>
+                  <Rating {...props} prev_weight={y.prev_weight} updateRating={updateRating}/>
                 }
               >
                 <ListItemText

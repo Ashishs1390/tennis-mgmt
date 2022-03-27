@@ -5,14 +5,19 @@ const { v4: uuidv4 } = require('uuid');
 
 
 router.route('/').post(async(req,res,next)=>{
-  
+
+    const { email, role, selected_child } = req.user[0];
+    let matchkey = role == "player" ? email : selected_child;
+
+
     const obj = {
         ...req.body,
-        user_name:req.user[0].email
+        //user_name:req.user[0].email
+        user_name:matchkey
 
     }
     const {date} = req.body;
-    const data = await videoanalysis.findOneAndUpdate({email: req.user[0].email},{
+    const data = await videoanalysis.findOneAndUpdate({ email: matchkey},{
         $set:{...obj}
     },{
         upsert:true,
@@ -42,7 +47,7 @@ router.route('/').post(async(req,res,next)=>{
         videoHistoryInfoSchema.updateOne({email:req.user[0].email},
             {
                 ...pushObj,
-                "$set":{email:req.user[0].email}
+                "$set": { email: req.matchkey}
             },{
                 upsert:true,
                 returnNewDocument: false
@@ -78,8 +83,11 @@ router.route('/').post(async(req,res,next)=>{
    
 });
 
-router.route('/').get(async(req,res,next)=>{
-    const data = await videoanalysis.find({email: req.user[0].email},{_v:0,_id:0}).catch((err)=>{
+router.route('/').get(async (req, res, next) => {
+    console.log(req.user[0]);
+    const { email, role, selected_child } = req.user[0];
+    let matchkey = role == "player" ? email : selected_child;
+    const data = await videoanalysis.find({ email: matchkey},{_v:0,_id:0}).catch((err)=>{
         console.log(err);
         res.status(504).send({
             errMsg:"internal server error",status:504
@@ -100,8 +108,10 @@ router.route('/').get(async(req,res,next)=>{
 
 });
 
-router.route('/history').get(async(req,res,next)=>{
-    const data = await videoHistoryInfoSchema.find({email: req.user[0].email},{_v:0,_id:0}).catch((err)=>{
+router.route('/history').get(async (req, res, next) => {
+    const { email, role, selected_child } = req.user[0];
+    let matchkey = role == "player" ? email : selected_child;
+    const data = await videoHistoryInfoSchema.find({ email: matchkey},{_v:0,_id:0}).catch((err)=>{
         console.log(err);
         res.status(504).send({
             errMsg:"internal server error",status:504

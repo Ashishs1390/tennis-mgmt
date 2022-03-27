@@ -135,7 +135,19 @@ function LandingPage(props) {
             Compare Library
           </MenuItem>
         </>)
-        } <MenuItem
+        }
+        {
+          role === "parent" || role === "coach" &&(<>
+            <MenuItem
+              onClick={() => {
+                updateNav('../link/player');
+              }}
+            >
+              Home Page
+            </MenuItem>
+          
+          </>)}
+        <MenuItem
           onClick={() => {
             updateNav('./assessments');
           }}
@@ -148,6 +160,27 @@ function LandingPage(props) {
           }}
           >
           Player Development
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            updateNav('./video/analysis');
+          }}
+        >
+          Video Page
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            updateNav('./strockanalysislist');
+          }}
+        >
+          Strock Analysis List Page
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            updateNav('./comparelibrary');
+          }}
+        >
+          Compare Library
         </MenuItem>
       </Drawer>
       <Outlet></Outlet>
