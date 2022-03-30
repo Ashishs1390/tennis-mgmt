@@ -151,6 +151,7 @@ function LandingPage(props) {
           onClick={() => {
             updateNav('./assessments');
           }}
+          
         >
           Assessments
         </MenuItem>
