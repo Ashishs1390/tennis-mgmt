@@ -104,7 +104,18 @@ function LandingPage(props) {
       <Box sx={{ flexGrow: 1 }}>
         <HeaderDetails />
       </Box>
-      <Drawer sm={{top: '60px !important'}} open={menuOpen} onClose={toggleDrawer(false)}>
+      <Drawer sm={{ top: '60px !important' }} open={menuOpen} onClose={toggleDrawer(false)}>
+        {
+          role === "parent" || role === "coach" && (<>
+            <MenuItem
+              onClick={() => {
+                updateNav('../link/player');
+              }}
+            >
+              Home Page
+            </MenuItem>
+
+          </>)}
         <MenuItem
           onClick={() => {
             updateNav('./profilepage');
@@ -112,7 +123,6 @@ function LandingPage(props) {
         >
           Profile Page
         </MenuItem>
-        {role === "player" && (<>
           <MenuItem
             onClick={() => {
               updateNav('./video/analysis');
@@ -134,53 +144,21 @@ function LandingPage(props) {
           >
             Compare Library
           </MenuItem>
-        </>)
-        }
-        {
-          role === "parent" || role === "coach" &&(<>
-            <MenuItem
-              onClick={() => {
-                updateNav('../link/player');
-              }}
-            >
-              Home Page
-            </MenuItem>
-          
-          </>)}
-        <MenuItem
+       
+        {/* <MenuItem
           onClick={() => {
             updateNav('./assessments');
           }}
+          
         >
           Assessments
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             updateNav('./playerdevelopment');
           }}
           >
           Player Development
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            updateNav('./video/analysis');
-          }}
-        >
-          Video Page
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            updateNav('./strockanalysislist');
-          }}
-        >
-          Strock Analysis List Page
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            updateNav('./comparelibrary');
-          }}
-        >
-          Compare Library
         </MenuItem>
       </Drawer>
       <Outlet></Outlet>
