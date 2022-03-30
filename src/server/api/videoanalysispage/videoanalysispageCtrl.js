@@ -63,6 +63,7 @@ router.route('/').post(async(req,res,next)=>{
             ...resObj
         });
 
+        
     }
 
     if(data && data.length > 0) {
