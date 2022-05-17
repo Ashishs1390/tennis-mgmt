@@ -6,15 +6,18 @@ const competancymetadata = require("./../../models/competancymetadata");
 
 router.route("/").get(async (req, res, next) => {
     const { email } = req.query;
+    console.log(email);
     let emailObj = {};
     if (email) {
         emailObj["email"] = email;
     } else {
         emailObj["email"] = req.user[0].email;
     }
+    console.log(JSON.stringify({ ...emailObj },
+        { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, current_level: 1, _id: 0, parent_email: 1, coach_email: 1 }))
     const data = await basicInformation.find(
         { ...emailObj },
-        { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, current_level: 1, _id: 0 }
+        { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, current_level: 1, _id: 0, parent_email: 1, coach_email: 1 }
     ).catch((err) => {
         console.log(err);
         res.status(504).send({
@@ -30,6 +33,7 @@ router.route("/").get(async (req, res, next) => {
             status: 404
         })
     } else {
+        console.log(data);
         const resObj = data["0"];
         res.send(resObj);
     }

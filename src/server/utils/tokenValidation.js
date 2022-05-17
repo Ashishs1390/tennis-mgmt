@@ -14,7 +14,8 @@ function checkToken(req,res,next){
         })
     }
 
-    if(token){
+    if (token) {
+        console.log(token)
         verify(token,JWT_KEY,(err,decoded)=>{
             if(err){
                 res.status(401).json({

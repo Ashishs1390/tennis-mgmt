@@ -32,7 +32,7 @@ const basicInformationSchema = new Schema({
         type: Array
     },
     coach_email: {
-        type: String
+        type: Array
     },
     children_email: {
         type:Array

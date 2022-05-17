@@ -3,11 +3,12 @@ const app = express();
 const path = require("path");
 const dotenv = require('dotenv');
 dotenv.config();
-const port = process.env.PORT ||  8000;
 
+const port = process.env.PORT ||  8000;
 require('./middlewares/appMiddlewares')(app);
 const api = require('./routes.js');
 const db = require('./middlewares/dbConnection');
+console.log("-----------index---------------");
 app.use('/api/',api);
 // app.get("/healthcheck",(req,res)=>{
 //     console.log("aaaa")
