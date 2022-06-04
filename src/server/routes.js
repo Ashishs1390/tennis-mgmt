@@ -19,16 +19,16 @@ var corsOptions = {
 var corsOptions1 = {
     "origin": "http://localhost:3001",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-//     // mode: 'same-origin',
-//     // credentials: true,
-//     // redirect: 'follow',
+    //     // mode: 'same-origin',
+    //     // credentials: true,
+    //     // redirect: 'follow',
     credentials: 'include',
-//     // "preflightContinue": true,
-//     // headers: headers,
-//     // "changeOrigin": true,
-//     // "cookieDomainRewrite": "localhost",
-//     // "optionsSuccessStatus": 204
-}
+    //     // "preflightContinue": true,
+    //     // headers: headers,
+    //     // "changeOrigin": true,
+    //     // "cookieDomainRewrite": "localhost",
+    //     // "optionsSuccessStatus": 204
+};
 const checkToken = require("./utils/tokenValidation");
 // const requestObjectCreation = require("./utils/requestCreation")
 router.use('/tennismgmt/registration/authed', cors(corsOptions1), checkToken, require('./api/registrationpage/registrationPageCtrl'));
@@ -41,6 +41,9 @@ router.use('/tennismgmt/list/agegrouplist', cors(corsOptions), require("./api/li
 router.use('/tennismgmt/competancy', cors(corsOptions1), checkToken ,require("./api/competencylist/competencyListCtrl"));
 router.use('/tennismgmt/linktoplayer', cors(corsOptions1), checkToken ,require("./api/linktoplayer/linkToPlayerCtrl"));
 router.use('/tennismgmt/bundleaggdata', cors(corsOptions1), checkToken, require("./api/bundleaggregation/bundleAggCtrl"));
-
+console.log("-------1111--------")
+router.use('/tennismgmt/itn_level', cors(corsOptions) ,require("./api/linktoplayer/linkToPlayerAuthed"));
+    
+    
 
 module.exports = router;

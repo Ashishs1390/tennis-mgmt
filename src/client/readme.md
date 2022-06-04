@@ -603,6 +603,11 @@ logut inside avatar
 enabled video analysis page for parent and coach
 
 
+-------------------------------------------------
+redirect issue
+
+
+
 
 
 

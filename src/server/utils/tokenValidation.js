@@ -3,6 +3,7 @@ const {JWT_KEY} = require('./constants');
 
 function checkToken(req,res,next){
     let token;
+    console.log("---in check token---")
     if(req.get("authorization") !== undefined){
         token = req.get("authorization");
         token = token.slice(7);

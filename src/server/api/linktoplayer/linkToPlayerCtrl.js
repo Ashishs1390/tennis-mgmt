@@ -1,6 +1,23 @@
 const router = require("express").Router();
 const basicInformation = require("./../../models/basicInformation");
 const { sign } = require("jsonwebtoken");
+var cors = require('cors')
+// var headers = new Headers();
+// headers.append('Content-Type', 'application/json');
+// headers.append('Accept', 'application/json');
+var corsOptions = {
+    "origin": "http://localhost:3001",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    mode: 'same-origin',
+    credentials: true,
+    redirect: 'follow',
+    // credentials: 'include',
+    "preflightContinue": true,
+    // headers: headers,
+    "changeOrigin": true,
+    "cookieDomainRewrite": "localhost",
+    "optionsSuccessStatus": 204
+}
 
 router.route('/').put(async (req, res, next) => {
     try {
@@ -71,11 +88,9 @@ router.route('/').put(async (req, res, next) => {
     }
 });
 const getChildrenList = async (email) => {
-    console.log("----------getChildrenList-------------")
     let childList = await basicInformation.find({ email: email }, { children_email: 1, _id: 0 }).catch((err) => {
         console.log(err);
     })
-    console.log(childList[0]);
     childList = JSON.parse(JSON.stringify(childList))
     childlist = childList[0];
 
@@ -85,15 +100,12 @@ const getChildrenList = async (email) => {
     }
 }
 const getSearchedChild = async ({ email }) => {
-    console.log("----------------getSearchedChild-----------------");
     let output = await basicInformation.find({ email: email,role:"player" }, { email: 1, _id: 0 })
     return output;
 }
 
 router.route('/').get(async (req, res, next) => {
-    console.log(req.query)
     try {
-        console.log(req.user[0]);
         const { email } = req.user[0];
 
 
@@ -104,7 +116,6 @@ router.route('/').get(async (req, res, next) => {
 
         } else {
             const resp = await getSearchedChild(req.query);
-            console.log(resp)
             if (resp.length != 0) {
                 res.status(200).send(resp)
             } else {
@@ -137,6 +148,7 @@ router.route('/itn_level').get(async (req, res, next) => {
         userDetails[0].selected_child = email;
         // userDetails[0].current_level = itn_level[0];
         userDetails = { ...userDetails[0], ...itn_level[0] };
+        console.log("-----------11111111-----------------")
         console.log(userDetails)
         const jsontoken = sign({ result: [userDetails] }, "Asdfkgr456Edlflg", {
             expiresIn: "24h",
