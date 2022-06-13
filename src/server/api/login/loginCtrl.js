@@ -24,7 +24,7 @@ router.route("/").post(async (req, res, next) => {
     if (passwordCheck) {
       userDetails[0].password = undefined;
       const jsontoken = sign({ result: userDetails }, "Asdfkgr456Edlflg", {
-        expiresIn: "23.50h",
+        expiresIn: "24h",
       });
       console.log(jsontoken);
       res.cookie("token", jsontoken);
