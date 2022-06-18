@@ -606,11 +606,16 @@ enabled video analysis page for parent and coach
 -------------------------------------------------
 redirect issue
 
+Tennislms_123
+
+ ec2-18-237-239-203.us-west-2.compute.amazonaws.com 
+
+ ssh -i "hellotennis.cer" ec2-user@ec2-18-237-239-203.us-west-2.compute.amazonaws.com
 
 
-
-
-
+Putty 
+username- ec2-user
+Arsenal@1886
 
 
 
