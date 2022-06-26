@@ -7,7 +7,6 @@ router.route('/').post(async (req, res, next) => {
     console.log("--------------itn_level1123243---------------------")
     try {
         let emailFromToken;
-        // console.log(req.user[0].email)
         let token = req.get("authorization");
         if (token) {
             token = req.get("authorization");
