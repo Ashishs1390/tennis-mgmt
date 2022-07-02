@@ -28,7 +28,6 @@ router.route('/').put(async (req, res, next) => {
         let updatedInfo;
         let updatePlayerObj = {};
         let updatePCObj = {};
-        console.log(isExist);
         if (isExist.length == 0) {
             res.status(404).send({
                 errorMsg: "player not found",
@@ -43,7 +42,6 @@ router.route('/').put(async (req, res, next) => {
             updatePlayerObj.coach_email = coach_email;
             updatePCObj.email = coach_email;
         }
-        console.log(updatePlayerObj)
         const updatedPlayerInfo = await basicInformation.findOneAndUpdate(
             { email: player_email }, {
             $addToSet: {
@@ -133,7 +131,6 @@ router.route('/').get(async (req, res, next) => {
 })
 router.route('/itn_level').get(async (req, res, next) => {
     try {
-        console.log(req.user[0].email)
         res.cookie("token", "");
         const { email } = req.query;
 
@@ -144,18 +141,14 @@ router.route('/itn_level').get(async (req, res, next) => {
         let itn_level = await basicInformation.find({ email: email }, { current_level: 1, _id: 0 });
         itn_level = JSON.parse(JSON.stringify(itn_level));
         userDetails = JSON.parse(JSON.stringify(userDetails))
-        console.log(userDetails)
         userDetails[0].selected_child = email;
         // userDetails[0].current_level = itn_level[0];
         userDetails = { ...userDetails[0], ...itn_level[0] };
-        console.log("-----------11111111-----------------")
-        console.log(userDetails)
         const jsontoken = sign({ result: [userDetails] }, "Asdfkgr456Edlflg", {
             expiresIn: "24h",
         });
         res.cookie("token", jsontoken);
 
-        console.log(itn_level);
         if (itn_level.length !== 0) {
             res.status(200).send(itn_level[0])
         } else {

@@ -177,8 +177,6 @@ const getdatesbyRole = async (email, selected_child,role) => {
       { ...project }
 
     ]
-    console.log("--------------date----------------")
-    console.log(JSON.stringify(finalQuery));
     let assessmentDates = await userCompetancySchema.aggregate(finalQuery);
     assessmentDates = JSON.parse(JSON.stringify(assessmentDates));
     return assessmentDates;

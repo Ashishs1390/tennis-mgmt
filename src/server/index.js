@@ -8,8 +8,6 @@ const port = process.env.PORT ||  8000;
 require('./middlewares/appMiddlewares')(app);
 const api = require('./routes.js');
 const db = require('./middlewares/dbConnection');
-console.log("-----------index---------------");
-console.log(process.env.NODE_ENV);
 app.use('/api/',api);
 // app.get("/healthcheck",(req,res)=>{
 //     console.log("aaaa")

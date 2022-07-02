@@ -2,17 +2,13 @@ const router = require("express").Router();
 const basicInformation = require("./../../models/basicInformation");
 const { sign, verify } = require("jsonwebtoken");
 const { JWT_KEY } = require('./../../utils/constants');
-console.log("--------------itn_level---------------------")
 router.route('/').post(async (req, res, next) => {
-    console.log("--------------itn_level1123243---------------------")
     try {
         let emailFromToken;
-        // console.log(req.user[0].email)
         let token = req.get("authorization");
         if (token) {
             token = req.get("authorization");
             token = token.slice(7);
-            console.log(token)
             verify(token, JWT_KEY, (err, decoded) => {
                 req.user = decoded.result; // email, current_level
             });
@@ -26,14 +22,11 @@ router.route('/').post(async (req, res, next) => {
         )
 
         userDetails = JSON.parse(JSON.stringify(userDetails))
-        console.log(userDetails)
         userDetails[0].selected_child = email;
         let itn_level = await basicInformation.find({ email: email }, { current_level: 1, _id: 0 });
         itn_level = JSON.parse(JSON.stringify(itn_level));
         userDetails[0].current_level = itn_level[0];
         userDetails = { ...userDetails[0], ...itn_level[0] };
-        console.log("-----------11111111-----------------")
-        console.log(userDetails)
         const jsontoken = sign({ result: [userDetails] }, "Asdfkgr456Edlflg", {
             expiresIn: "24h",
         });
