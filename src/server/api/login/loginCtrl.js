@@ -26,7 +26,6 @@ router.route("/").post(async (req, res, next) => {
       const jsontoken = sign({ result: userDetails }, "Asdfkgr456Edlflg", {
         expiresIn: "23.50h",
       });
-      console.log(jsontoken);
       res.cookie("token", jsontoken);
       res.json({
         message: "login successfully",

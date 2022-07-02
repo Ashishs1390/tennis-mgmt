@@ -4,7 +4,6 @@ const basicInformation = require('./../../models/basicInformation');
 const userCompetancySchema = require("./../../models/usercompetancy");
 
 let getPlayerInfo = async (playerEmails) => {
-    console.log(playerEmails)
     let finalQuery = playerEmails.reduce((acc, email) => {
         acc.push((async () => await basicInformation.find({ email: email }, { current_level: 1,email:1,_id:0 }))());
         return acc;
@@ -18,8 +17,6 @@ let getPlayerInfo = async (playerEmails) => {
 };
 
 let getCompetancyBundleData = async (data) => {
-    console.log("-------data--------")
-    console.log(data);
     let result = data.reduce((acc, curr) => {
         acc.push((async () => await userCompetancySchema.aggregate([
             {
@@ -89,7 +86,6 @@ let getCompetancyBundleData = async (data) => {
     let returnData = await Promise.all(result).catch((err) => {
         console.log(err);
     });
-    console.log(returnData);
 
     return returnData;
 }

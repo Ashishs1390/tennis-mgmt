@@ -33,15 +33,12 @@ router.route('/').post(async (req, res, next) => {
     if (data) {
         for (let d in data) {
             if (d.includes("frame") && data[d] !== undefined) {
-                console.log("===================")
-                console.log(data[d]);
                 let urlForMetaInfo = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${data[d]}`;
                 let metaInfo = await axios.get(urlForMetaInfo).catch((err) => {
                     console.log(err)
                     return err;
                 });
                 const metaData = metaInfo.data;
-                console.log(metaData);
                 srcArr.push({ src: data[d], ...metaData });
             }
         }
@@ -52,9 +49,7 @@ router.route('/').post(async (req, res, next) => {
             }
             return acc;
         }, { "$push": { "frames": { "$each": [] } } })
-        console.log("----------pushObj------------")
         pushObj = await pushObj;
-        console.log(JSON.stringify(pushObj));
         videoHistoryInfoSchema.updateOne({ email: req.user[0].email },
             {
                 ...pushObj,
@@ -64,12 +59,9 @@ router.route('/').post(async (req, res, next) => {
             returnNewDocument: false
         }
         ).then((output) => {
-            console.log("----------output-----------")
             console.log(output);
         })
         const resObj = data._doc;
-        console.log("---------------resObj---------------------")
-        console.log(resObj)
         res.send({
             ...resObj
         });
@@ -96,7 +88,6 @@ router.route('/').post(async (req, res, next) => {
 });
 
 router.route('/').get(async (req, res, next) => {
-    console.log(req.user[0]);
     const { email, role, selected_child } = req.user[0];
     let matchkey = role == "player" ? email : selected_child;
     const data = await videoanalysis.find({ email: matchkey }, { _v: 0, _id: 0 }).catch((err) => {
@@ -105,7 +96,6 @@ router.route('/').get(async (req, res, next) => {
             errMsg: "internal server error", status: 504
         })
     });
-    console.log(data);
     let resObj;
     if (data.length != 0) {
         resObj = data[0]._doc;
