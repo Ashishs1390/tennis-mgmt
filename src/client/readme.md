@@ -611,7 +611,7 @@ Tennislms_123
  ec2-18-237-239-203.us-west-2.compute.amazonaws.com 
 
  ssh -i "hellotennis.cer" ec2-user@ec2-18-237-239-203.us-west-2.compute.amazonaws.com
-
+pm2 start src/server/index.js --name tennismgmt
 
 Putty 
 username- ec2-user

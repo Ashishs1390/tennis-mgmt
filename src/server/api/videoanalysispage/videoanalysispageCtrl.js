@@ -67,18 +67,22 @@ router.route('/').post(async (req, res, next) => {
         });
 
 
-    }
-
-    if (data && data.length > 0) {
-        const resObj = data._doc;
-        res.send({
-            ...resObj
-        });
     } else {
         res.status(404).send({
             msg: "no data", status: 404
         })
     }
+
+    // if (data && data.length > 0) {
+    //     const resObj = data._doc;
+    //     res.send({
+    //         ...resObj
+    //     });
+    // } else {
+    //     res.status(404).send({
+    //         msg: "no data", status: 404
+    //     })
+    // }
 
 
 
