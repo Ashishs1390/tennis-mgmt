@@ -88,7 +88,7 @@ router.route('/').put(async (req, res, next) => {
 const getChildrenList = async (email) => {
     let childList = await basicInformation.find({ email: email }, { children_email: 1, _id: 0 }).catch((err) => {
         console.log(err);
-    })
+    });
     childList = JSON.parse(JSON.stringify(childList))
     childlist = childList[0];
 
@@ -96,6 +96,24 @@ const getChildrenList = async (email) => {
     if (childList.length !== 0) {
         return (childList[0].children_email)
     }
+}
+
+const getChildInfo = async (emails) => {
+    let finalQuery = emails.reduce((acc, email) => {
+        acc.push((async () => await basicInformation.find({ email: email }, { first_name: 1, last_name:1, email: 1, _id: 0 }))());
+        return acc;
+    }, []);
+    let returnData = await Promise.all(finalQuery).catch((err) => {
+        console.log(err);
+    });
+    returnData = JSON.parse(JSON.stringify(returnData));
+    returnData = returnData.reduce((acc, curr) => {
+        acc.push(...curr);
+        return acc;
+    }, []);
+    console.log(returnData);
+    return returnData;
+    
 }
 const getSearchedChild = async ({ email }) => {
     let output = await basicInformation.find({ email: email,role:"player" }, { email: 1, _id: 0 })
@@ -127,8 +145,33 @@ router.route('/').get(async (req, res, next) => {
     } catch (err) {
         console.log(err);
     }
-
 })
+router.route('/new').get(async (req, res, next) => {
+    try {
+        const { email } = req.user[0];
+        if (req.query && Object.keys(req.query).length === 0
+            && Object.getPrototypeOf(req.query) === Object.prototype) {
+            const resp = await getChildrenList(email);
+            const finalResp = await getChildInfo(resp);
+            res.status(200).send(finalResp)
+
+        } else {
+            const resp = await getSearchedChild(req.query);
+            if (resp.length != 0) {
+                res.status(200).send(resp)
+            } else {
+                res.status(404).json({
+                    errMsg: "No player found",
+                    status: 404
+                })
+            }
+
+        }
+    } catch (err) {
+        console.log(err);
+    }
+})
+
 router.route('/itn_level').get(async (req, res, next) => {
     try {
         res.cookie("token", "");
