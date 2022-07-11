@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const moment = require('moment');
 const userCompetancySchema = require("./../../models/usercompetancy");
 const competancymetadata = require("./../../models/competancymetadata");
 const competancyBundleSchema = require("./../../models/competencybundledata");
@@ -187,7 +188,6 @@ const getdatesbyRole = async (email, selected_child,role) => {
 }
 router.route("/assessment").get(async (req, res, next) => {
   try {
-    console.log(req.user)
     const { email, selected_child, role, current_level } = req.user[0]; //jwt token
     // const { current_level } = req.query;
     const { dates_arr } = req.query;
@@ -359,7 +359,7 @@ router.route("/assessment").get(async (req, res, next) => {
     resObj = {
       progressBarData: assessmentData,
       assessmentDates,
-      assessmentTestDates: gd
+      assessmentNewDates: gd
     };
 
 
@@ -475,7 +475,9 @@ async function getCompetencyLatest(req, res) {
     let maxDate = new Date(
       Math.max(...assessmentDates.map((e) => new Date(e)))
     );
+    // maxDate = moment(maxDate).format('YYYY-MM-DDTHH:mm:ss');
     maxDate = maxDate.toISOString();
+
     let filterObj = {};
     filterObj = {
       // [`${role}_email`]: email,
@@ -516,7 +518,8 @@ async function getCompetencyLatest(req, res) {
 
     } else {
       res.status(404).send({
-        message
+        message: "no data",
+        status: 404,
       });
     }
   } catch (err) {
