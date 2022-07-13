@@ -3,6 +3,8 @@ var cors = require('cors')
 // var headers = new Headers();
 // headers.append('Content-Type', 'application/json');
 // headers.append('Accept', 'application/json');
+// "origin": "http://18.237.239.203",
+
 var corsOptions = {
     "origin": "http://localhost:3001",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -13,7 +15,7 @@ var corsOptions = {
     "preflightContinue": true,
     // headers: headers,
     "changeOrigin": true,
-    "cookieDomainRewrite": "http://localhost:3001",
+    "cookieDomainRewrite": "localhost:3001",
     "optionsSuccessStatus": 204
 }
 var corsOptions1 = {

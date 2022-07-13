@@ -9,7 +9,7 @@ var corsOptions = {
     "origin": "http://localhost:3001",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     mode: 'same-origin',
-    credentials: true,
+    credentials: true, 
     redirect: 'follow',
     // credentials: 'include',
     "preflightContinue": true,
