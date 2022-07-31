@@ -29,17 +29,16 @@ router.route('/').post(async (req, res, next) => {
         })
     });
     let srcArr = [];
-    
-    if (data) {
-        for (let d in data) {
-            if (d.includes("frame") && data[d] !== undefined) {
-                let urlForMetaInfo = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${data[d]}`;
+    if (respObj) {
+        for (let d in respObj) {
+            if (d.includes("frame") && respObj[d] !== undefined) {
+                let urlForMetaInfo = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${respObj[d]}`;
                 let metaInfo = await axios.get(urlForMetaInfo).catch((err) => {
                     console.log(err)
                     return err;
                 });
                 const metaData = metaInfo.data;
-                srcArr.push({ src: data[d], ...metaData });
+                srcArr.push({ src: respObj[d], ...metaData });
             }
         }
 
