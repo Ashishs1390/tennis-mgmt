@@ -620,10 +620,29 @@ Arsenal@1886
 
 parent and coach can see the all videos of player and they there in same 
 
-progressivetennisparents.com
+testprogressivetennisparents.com
+
+http://18.237.239.203/
+
+
+https://medium.com/@jameshamann/configuring-your-elastic-beanstalk-app-for-ssl-9065ca091f49
+
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https.html
+
+https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https.html
+23:09
+Arkajit
+https://console.aws.amazon.com/ec2/
+23:28
+Arkajit
+https://docs.aws.amazon.com/cloudhsm/latest/userguide/ssl-offload-enable-traffic-and-verify-certificate.html
+23:52
+Arkajit
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/SSL-on-amazon-linux-2.html
 
 
 
 
 
 
+http://18.237.239.203/

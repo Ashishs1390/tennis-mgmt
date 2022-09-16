@@ -6,7 +6,7 @@ var cors = require('cors')
 // "origin": "http://18.237.239.203",
 
 var corsOptions = {
-    "origin": "http://18.237.239.203",
+    "origin": "http://progressivetennisparents.com",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     mode: 'same-origin',
     credentials: true,
@@ -19,7 +19,7 @@ var corsOptions = {
     "optionsSuccessStatus": 204
 }
 var corsOptions1 = {
-    "origin": "http://18.237.239.203",
+    "origin": "http://progressivetennisparents.com",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     //     // mode: 'same-origin',
     //     // credentials: true,
