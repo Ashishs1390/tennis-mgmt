@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const test = require("./../../models/testCollection");
-const { genSaltSync, compareSync } = require("bcrypt");
+const { genSaltSync, compareSync } = require("bcryptjs");
 const { sign } = require("jsonwebtoken");
 const basicInformation = require("./../../models/basicInformation");
 

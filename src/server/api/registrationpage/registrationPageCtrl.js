@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const test = require("./../../models/testCollection");
-const { genSaltSync, hashSync } = require("bcrypt");
+const { genSaltSync, hashSync } = require("bcryptjs");
 const basicInformation = require("./../../models/basicInformation");
 const competancymetadata = require("./../../models/competancymetadata");
 

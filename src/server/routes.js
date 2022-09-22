@@ -44,7 +44,8 @@ router.use('/tennismgmt/competancy', cors(corsOptions1), checkToken ,require("./
 router.use('/tennismgmt/linktoplayer', cors(corsOptions1), checkToken ,require("./api/linktoplayer/linkToPlayerCtrl"));
 router.use('/tennismgmt/bundleaggdata', cors(corsOptions1), checkToken, require("./api/bundleaggregation/bundleAggCtrl"));
 router.use('/tennismgmt/itn_level', cors(corsOptions) ,require("./api/linktoplayer/linkToPlayerAuthed"));
-    
+router.use('/tennismgmt/pricing', cors(corsOptions), require("./api/pricing/pricingCtrl"));
+
     
 
 module.exports = router;

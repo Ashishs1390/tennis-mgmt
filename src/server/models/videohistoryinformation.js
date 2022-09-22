@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { array } = require('prop-types');
 const Schema = mongoose.Schema;
 
 const videoHistoryInfoSchema = new Schema({

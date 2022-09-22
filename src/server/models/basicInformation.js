@@ -39,6 +39,12 @@ const basicInformationSchema = new Schema({
     },
     temp_password: {
         type: String
+    },
+    merchant_id: {
+        type:String
+    },
+    isPayment: {
+        type:String
     }
 },
     {
