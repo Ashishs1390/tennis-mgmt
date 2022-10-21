@@ -14,7 +14,11 @@ router.route("/").get(async (req, res, next) => {
     }
     const data = await basicInformation.find(
         { ...emailObj },
-        { first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, current_level: 1, _id: 0, parent_email: 1, coach_email: 1, children_email:1 }
+        {
+            first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, current_level: 1, _id: 0,
+            parent_email: 1, coach_email: 1, children_email: 1, order_id: 1, isPayment:1
+        
+        }
     ).catch((err) => {
         console.log(err);
         res.status(504).send({

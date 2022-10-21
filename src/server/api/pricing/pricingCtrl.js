@@ -1,19 +1,36 @@
 const router = require('express').Router();
 const basicInformation = require('./../../models/basicInformation');
 router.route('/').post(async (req, res, next) => {
-    const { merchant_id, isPayment } = req.body;
+    const { order_id, isPayment } = req.body;
     const { email } = req.user[0];
-    console.log(merchant_id);
+    console.log(order_id);
     console.log(isPayment);
     let obj = {
-        merchant_id: merchant_id,
+        order_id: order_id,
         isPayment: isPayment
-    }
-    basicInformation.findOneAndUpdate({ email: email }, {
-        $addToSet: {
+    };
+    console.log(email);
+    console.log(obj);
+    let cc = await basicInformation.findOneAndUpdate({ email: email }, {
+        $set: {
             ...obj
-    } })
-    res.send({ a: '10' });
+        }
+    }, {
+        upsert: true,
+        returnOriginal: false
+    }).catch((err) => {
+        console.log(err);
+        res.status(504).json({
+            errMsg: "internal server error",
+            status: 504
+        })
+    });
+    console.log(cc);
+    res.send({
+        msg: 'Subscription Info updated successfully..!!!',
+        status: 200
+    });
+
 });
 
 module.exports = router;

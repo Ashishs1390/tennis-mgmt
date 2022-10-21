@@ -14,3 +14,4 @@ package-lock.json
 
 npm-debug.log
 /*.env
+/src/credentials.txt

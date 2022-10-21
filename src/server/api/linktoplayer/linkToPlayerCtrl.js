@@ -56,7 +56,7 @@ router.route('/').put(async (req, res, next) => {
                 errMsg: "internal server error",
                 status: 504
             })
-        })
+        });
         if (updatedPlayerInfo) {
             updatedInfo = await basicInformation.findOneAndUpdate(
                 { ...updatePCObj }, {
