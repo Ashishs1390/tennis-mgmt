@@ -40,7 +40,7 @@ const basicInformationSchema = new Schema({
     temp_password: {
         type: String
     },
-    merchant_id: {
+    order_id: {
         type:String
     },
     isPayment: {
