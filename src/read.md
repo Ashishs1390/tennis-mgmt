@@ -79,3 +79,7 @@ Product details
         }
     ]
 }
+
+
+academy_steps -> academy_courses
+academy-> academy_course_steps

@@ -45,6 +45,9 @@ const basicInformationSchema = new Schema({
     },
     isPayment: {
         type:String
+    },
+    courses: {
+        type: Object
     }
 },
     {

@@ -5,14 +5,14 @@ const AcademySchema = new Schema({
    
 },
     {
-        collection: "academy"
+        collection: "academy_course_steps"
     });
 
 
 const AcademyStepsSchema = new Schema({
 
 }, {
-    collection: "academy_steps"
+    collection: "academy_courses"
 });
 
 module.exports = {
