@@ -5,16 +5,18 @@ router.route('/').get(async (req, res, next) => {
     const email = req.user[0].email;
     const academyData = await academy.find({}, { __v: 0, _id: 0 });
     let academyStepsData = await academySteps.find({}, { __v: 0, _id: 0 });
+    academyStepsData = JSON.parse(JSON.stringify(academyStepsData));
     let basicInfoData = await basicInformation.findOne({ email: email }, { _v: 0, _id: 0 });
     basicInfoData = JSON.parse(JSON.stringify(basicInfoData));
-    let courses = basicInfoData.courses;
-    let coursesKey = Object.keys(courses);
-    academyStepsData = JSON.parse(JSON.stringify(academyStepsData));
-    academyStepsData[0].courses.forEach((each) => {
-        if (coursesKey.includes(each.slug)) {
-            each.activeStep = courses[each.slug];
-        }
-    });
+    let courses = basicInfoData?.courses;
+    if (courses) {
+        let coursesKey = Object.keys(courses);
+        academyStepsData[0].courses.forEach((each) => {
+            if (coursesKey.includes(each.slug)) {
+                each.activeStep = courses[each.slug];
+            }
+        });     
+    }
     res.send({ academyData, academyStepsData });
 });
 
