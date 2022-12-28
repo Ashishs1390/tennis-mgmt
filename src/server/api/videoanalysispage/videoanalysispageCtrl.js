@@ -10,6 +10,7 @@ router.route('/').post(async (req, res, next) => {
     const { email, role, selected_child } = req.user[0];
     let matchkey = role == "player" ? email : selected_child;
     let respObj = {};
+
     const obj = {
         ...req.body,
         user_name: matchkey
@@ -17,6 +18,13 @@ router.route('/').post(async (req, res, next) => {
     }
     respObj = { ...obj };
     const { date } = req.body;
+    let frameArr = [];
+    for (let o in obj) {
+        if (o.includes('frame')) {
+            frameArr.push(obj[o]);
+        }
+    }
+    frameArr = [...new Set(frameArr)];
     const data = await videoanalysis.findOneAndUpdate({ email: matchkey }, {
         $set: { ...obj }
     }, {
@@ -28,27 +36,39 @@ router.route('/').post(async (req, res, next) => {
             errMsg: "internal server error", status: 504
         })
     });
+    const getHistoryData = await videoHistoryInfoSchema.find({ email: matchkey }).catch((err) => {
+        console.log(err);
+        res.status(504).send({
+            errMsg: "internal server error", status: 504
+        })
+    });
+    let historyFrames = getHistoryData[0].frames;
     let srcArr = [];
-    if (respObj) {
-        for (let d in respObj) {
-            if (d.includes("frame") && respObj[d] !== undefined) {
-                let urlForMetaInfo = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${respObj[d]}`;
-                let metaInfo = await axios.get(urlForMetaInfo).catch((err) => {
-                    console.log(err)
-                    return err;
-                });
-                const metaData = metaInfo.data;
-                srcArr.push({ src: respObj[d], ...metaData });
+    if (frameArr.length>0) {
+        for (let s of frameArr) {
+            let bool = historyFrames.some(item => {
+                return item.src == s
+            });
+            if (!bool) {
+                // if (s.includes("frame") && respObj[s] !== undefined) {
+                    let urlForMetaInfo = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${s}`;
+                    let metaInfo = await axios.get(urlForMetaInfo).catch((err) => {
+                        console.log(err)
+                        return err;
+                    });
+                    const metaData = metaInfo.data;
+                    srcArr.push({ src: s, ...metaData });
+                // }
             }
-        }
 
+        };    
         let pushObj = srcArr.reduce((acc, val) => {
             if (acc) {
-                acc["$push"]["frames"]["$each"].push({ date: date, id: uuidv4(),...val });
+                acc["$push"]["frames"]["$each"].push({ date: date, id: uuidv4(), ...val });
             }
             return acc;
-        }, { "$push": { "frames": { "$each": [] } } })
-        pushObj = await pushObj;
+        }, { "$push": { "frames": { "$each": [] } } });
+        // pushObj = await pushObj;
         videoHistoryInfoSchema.updateOne({ email: req.user[0].email },
             {
                 ...pushObj,
@@ -114,8 +134,8 @@ router.route('/').get(async (req, res, next) => {
 router.route('/history').get(async (req, res, next) => {
     const { email, role, selected_child } = req.user[0];
     let pcData = [];
-    let matchkey = role == "player" ? email : selected_child;
-    if (role == "parent" || "coach") {
+    let matchkey = (role == "player") ? email : selected_child;
+    if (role == "parent" || role == "coach") {
         pcData = await videoHistoryInfoSchema.find({ email: email }, { _v: 0, _id: 0 }).catch((err) => {
             console.log(err);
             res.status(504).send({
@@ -123,9 +143,14 @@ router.route('/history').get(async (req, res, next) => {
             })
         });
         pcData = JSON.parse(JSON.stringify(pcData));
-
+    } else {
+        pcData = [
+            {
+                frames: []
+            }
+        ];
     }
-
+ 
     let data = await videoHistoryInfoSchema.find({ email: matchkey }, { _v: 0, _id: 0 }).catch((err) => {
         console.log(err);
         res.status(504).send({
@@ -142,13 +167,6 @@ router.route('/history').get(async (req, res, next) => {
             errMsg: "no data", status: 404
         })
     }
-
-
 });
-
-
-
-
-
 
 module.exports = router;
