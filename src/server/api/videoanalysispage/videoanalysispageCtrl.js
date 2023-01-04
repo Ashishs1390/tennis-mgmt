@@ -42,7 +42,9 @@ router.route('/').post(async (req, res, next) => {
             errMsg: "internal server error", status: 504
         })
     });
-    let historyFrames = getHistoryData[0].frames;
+    console.log(getHistoryData);
+
+    let historyFrames = getHistoryData[0]?.frames ? getHistoryData[0].frames : [];
     let srcArr = [];
     if (frameArr.length>0) {
         for (let s of frameArr) {
@@ -130,8 +132,7 @@ router.route('/').get(async (req, res, next) => {
 
 
 });
-
-router.route('/history').get(async (req, res, next) => {
+const getHistoryData = async (req, res) => {
     const { email, role, selected_child } = req.user[0];
     let pcData = [];
     let matchkey = (role == "player") ? email : selected_child;
@@ -150,7 +151,7 @@ router.route('/history').get(async (req, res, next) => {
             }
         ];
     }
- 
+
     let data = await videoHistoryInfoSchema.find({ email: matchkey }, { _v: 0, _id: 0 }).catch((err) => {
         console.log(err);
         res.status(504).send({
@@ -158,7 +159,7 @@ router.route('/history').get(async (req, res, next) => {
         })
     });
     data = JSON.parse(JSON.stringify(data));
-    
+    console.log(data);
     if (data.length !== 0 || pcData.length !== 0) {
         const frames = [...data[0].frames, ...pcData[0].frames]
         res.send({ frames: frames })
@@ -167,6 +168,41 @@ router.route('/history').get(async (req, res, next) => {
             errMsg: "no data", status: 404
         })
     }
+}
+
+router.route('/history').get(async (req, res, next) => {
+    getHistoryData(req, res);
+   
 });
 
+router.route('/history').delete(async (req, res, next) => {
+    const { videos } = req.body;
+    const { email, role, selected_child } = req.user[0];
+    let matchkey = (role == "player") ? email : selected_child;
+    let query = videos.reduce((acc, curr) => {
+        acc.push(curr.src);
+        return acc;
+    }, []);
+    query = new Set([...query]);
+    query = [...query];
+    // db.getCollection('video_history_info').updateMany({ "email": "player27@gmail.com" },
+    //     { "$pull": { 'frames': { src: { '$in': ['6VJBBUqr1wM'] } } } })
+    console.log('---------------------')
+    console.log(JSON.stringify([{ 'email': matchkey },
+        { '$pull': { 'frames': { 'src': { '$in': query } } } }]));
+    let data = await videoHistoryInfoSchema.updateMany({ 'email': matchkey },
+        { '$pull': { 'frames': { 'src': { '$in': query } } } }
+    ).catch((err) => {
+        console.log(err);
+        res.status(504).send({
+            errMsg: "internal server error", status: 504
+        })
+    });
+    data = JSON.parse(JSON.stringify(data));
+    console.log(data);
+    if (data) {
+        res.send(data);
+
+    }
+});
 module.exports = router;
