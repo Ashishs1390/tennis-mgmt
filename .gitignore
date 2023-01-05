@@ -11,7 +11,7 @@
 .DS_Store
 
 package-lock.json
-
+credentials.txt
 npm-debug.log
 /*.env
 /src/credentials.txt
