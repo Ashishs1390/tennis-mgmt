@@ -151,6 +151,13 @@ const getHistoryData = async (req, res) => {
             }
         ];
     }
+    if (pcData.length == 0) {
+        pcData = [
+            {
+                frames: []
+            }
+        ];
+    }
 
     let data = await videoHistoryInfoSchema.find({ email: matchkey }, { _v: 0, _id: 0 }).catch((err) => {
         console.log(err);
@@ -160,6 +167,7 @@ const getHistoryData = async (req, res) => {
     });
     data = JSON.parse(JSON.stringify(data));
     console.log(data);
+    console.log(pcData);
     if (data.length !== 0 || pcData.length !== 0) {
         const frames = [...data[0].frames, ...pcData[0].frames]
         res.send({ frames: frames })
@@ -187,9 +195,7 @@ router.route('/history').delete(async (req, res, next) => {
     query = [...query];
     // db.getCollection('video_history_info').updateMany({ "email": "player27@gmail.com" },
     //     { "$pull": { 'frames': { src: { '$in': ['6VJBBUqr1wM'] } } } })
-    console.log('---------------------')
-    console.log(JSON.stringify([{ 'email': matchkey },
-        { '$pull': { 'frames': { 'src': { '$in': query } } } }]));
+   
     let data = await videoHistoryInfoSchema.updateMany({ 'email': matchkey },
         { '$pull': { 'frames': { 'src': { '$in': query } } } }
     ).catch((err) => {
@@ -199,7 +205,6 @@ router.route('/history').delete(async (req, res, next) => {
         })
     });
     data = JSON.parse(JSON.stringify(data));
-    console.log(data);
     if (data) {
         res.send(data);
 
