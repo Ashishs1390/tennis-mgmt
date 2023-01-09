@@ -168,6 +168,13 @@ router.route('/history').get(async (req, res, next) => {
                 errMsg: "internal server error", status: 504
             })
         });
+        if (data.length == 0) {
+            data = [
+                {
+                    frames: []
+                }
+            ];
+        }
         data = JSON.parse(JSON.stringify(data));
         if (data.length !== 0 || pcData.length !== 0) {
             const frames = [...data[0].frames, ...pcData[0].frames];
