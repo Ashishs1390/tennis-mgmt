@@ -132,54 +132,57 @@ router.route('/').get(async (req, res, next) => {
 
 
 });
-const getHistoryData = async (req, res) => {
-    const { email, role, selected_child } = req.user[0];
-    let pcData = [];
-    let matchkey = (role == "player") ? email : selected_child;
-    if (role == "parent" || role == "coach") {
-        pcData = await videoHistoryInfoSchema.find({ email: email }, { _v: 0, _id: 0 }).catch((err) => {
+
+
+router.route('/history').get(async (req, res, next) => {
+    try {
+        const { email, role, selected_child } = req.user[0];
+        let pcData = [];
+        let matchkey = (role == "player") ? email : selected_child;
+        if (role == "parent" || role == "coach") {
+            pcData = await videoHistoryInfoSchema.find({ email: email }, { _v: 0, _id: 0 }).catch((err) => {
+                console.log(err);
+                res.status(504).send({
+                    errMsg: "internal server error", status: 504
+                })
+            });
+            pcData = JSON.parse(JSON.stringify(pcData));
+        } else {
+            pcData = [
+                {
+                    frames: []
+                }
+            ];
+        }
+        if (pcData.length == 0) {
+            pcData = [
+                {
+                    frames: []
+                }
+            ];
+        }
+
+        let data = await videoHistoryInfoSchema.find({ email: matchkey }, { _v: 0, _id: 0 }).catch((err) => {
             console.log(err);
             res.status(504).send({
                 errMsg: "internal server error", status: 504
             })
         });
-        pcData = JSON.parse(JSON.stringify(pcData));
-    } else {
-        pcData = [
-            {
-                frames: []
-            }
-        ];
-    }
-    if (pcData.length == 0) {
-        pcData = [
-            {
-                frames: []
-            }
-        ];
-    }
-
-    let data = await videoHistoryInfoSchema.find({ email: matchkey }, { _v: 0, _id: 0 }).catch((err) => {
-        console.log(err);
+        data = JSON.parse(JSON.stringify(data));
+        if (data.length !== 0 || pcData.length !== 0) {
+            const frames = [...data[0].frames, ...pcData[0].frames];
+            res.send({ frames: frames });
+        } else {
+            res.status(404).send({
+                errMsg: "no data", status: 404
+            })
+        }
+    } catch (error) {
+        console.log(error);
         res.status(504).send({
-            errMsg: "internal server error", status: 504
-        })
-    });
-    data = JSON.parse(JSON.stringify(data));
-    console.log(data);
-    console.log(pcData);
-    if (data.length !== 0 || pcData.length !== 0) {
-        const frames = [...data[0].frames, ...pcData[0].frames]
-        res.send({ frames: frames })
-    } else {
-        res.status(404).send({
-            errMsg: "no data", status: 404
+            errMsg: `internal server error ${error}`, status: 504
         })
     }
-}
-
-router.route('/history').get(async (req, res, next) => {
-    getHistoryData(req, res);
    
 });
 
