@@ -71,10 +71,12 @@ router.route('/').post(async (req, res, next) => {
             return acc;
         }, { "$push": { "frames": { "$each": [] } } });
         // pushObj = await pushObj;
+        console.log(req.matchkey);
+        console.log(matchkey,'------')
         videoHistoryInfoSchema.updateOne({ email: req.user[0].email },
             {
                 ...pushObj,
-                "$set": { email: req.matchkey }
+                "$set": { email: matchkey }
             }, {
             upsert: true,
             returnNewDocument: false
