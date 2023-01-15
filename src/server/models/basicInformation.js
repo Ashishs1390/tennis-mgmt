@@ -48,7 +48,58 @@ const basicInformationSchema = new Schema({
     },
     courses: {
         type: Object
+    },
+    yob: {
+        type: String
+    },
+    weight: {
+        type: String
+    },
+    weight_lb: {
+        type: String
+    },
+    weight_kg: {
+        type: String
+    },
+    height: {
+        type: String
+    },
+    height_cm: {
+      type:String  
+    },
+    height_inch: {
+      type:String  
+    },
+    time_frame :{
+        type: String
+    },
+    racquet: {
+        type: String
+    },
+    racquet_string: {
+        type: String
+    },
+    racquet_tension: {
+        type: String
+    },
+    plays_type: {
+        type:String
+    },
+    forehand: {
+        type:String
+    },
+    backhand: {
+        type:String
+    },
+    player_type: {
+        type:String
+    },
+    note: {
+        type:String
     }
+    
+
+
 },
     {
         collection: "basic_information"

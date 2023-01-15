@@ -9,11 +9,13 @@ router.route('/').post(async (req, res, next) => {
 
     const { email, role, selected_child } = req.user[0];
     let matchkey = role == "player" ? email : selected_child;
+    // let matchkey = email;
     let respObj = {};
 
     const obj = {
         ...req.body,
-        user_name: matchkey
+        user_name: matchkey,
+        role
 
     }
     respObj = { ...obj };
@@ -42,14 +44,13 @@ router.route('/').post(async (req, res, next) => {
             errMsg: "internal server error", status: 504
         })
     });
-    console.log(getHistoryData);
 
     let historyFrames = getHistoryData[0]?.frames ? getHistoryData[0].frames : [];
     let srcArr = [];
     if (frameArr.length>0) {
         for (let s of frameArr) {
             let bool = historyFrames.some(item => {
-                return item.src == s
+                return item.src == s;
             });
             if (!bool) {
                 // if (s.includes("frame") && respObj[s] !== undefined) {
@@ -59,7 +60,7 @@ router.route('/').post(async (req, res, next) => {
                         return err;
                     });
                     const metaData = metaInfo.data;
-                    srcArr.push({ src: s, ...metaData });
+                    srcArr.push({ src: s, ...metaData,role });
                 // }
             }
 
@@ -72,8 +73,9 @@ router.route('/').post(async (req, res, next) => {
         }, { "$push": { "frames": { "$each": [] } } });
         // pushObj = await pushObj;
         console.log(req.matchkey);
-        console.log(matchkey,'------')
-        videoHistoryInfoSchema.updateOne({ email: req.user[0].email },
+        console.log(matchkey, '------')
+        console.log(pushObj);
+        videoHistoryInfoSchema.findOneAndUpdate({ email: matchkey },
             {
                 ...pushObj,
                 "$set": { email: matchkey }
@@ -84,11 +86,6 @@ router.route('/').post(async (req, res, next) => {
         ).then((output) => {
             console.log(output);
         })
-        // const resObj = data._doc;
-        // res.send({
-        //     ...resObj
-        // });
-
 
     } else {
         res.status(404).send({
@@ -135,34 +132,34 @@ router.route('/').get(async (req, res, next) => {
 
 });
 
-
 router.route('/history').get(async (req, res, next) => {
     try {
         const { email, role, selected_child } = req.user[0];
         let pcData = [];
         let matchkey = (role == "player") ? email : selected_child;
-        if (role == "parent" || role == "coach") {
-            pcData = await videoHistoryInfoSchema.find({ email: email }, { _v: 0, _id: 0 }).catch((err) => {
-                console.log(err);
-                res.status(504).send({
-                    errMsg: "internal server error", status: 504
-                })
-            });
-            pcData = JSON.parse(JSON.stringify(pcData));
-        } else {
-            pcData = [
-                {
-                    frames: []
-                }
-            ];
-        }
-        if (pcData.length == 0) {
-            pcData = [
-                {
-                    frames: []
-                }
-            ];
-        }
+        // if (role == "parent" || role == "coach") {
+
+        //     pcData = await videoHistoryInfoSchema.find({ email: email }, { _v: 0, _id: 0 }).catch((err) => {
+        //         console.log(err);
+        //         res.status(504).send({
+        //             errMsg: "internal server error", status: 504
+        //         })
+        //     });
+        //     pcData = JSON.parse(JSON.stringify(pcData));
+        // } else {
+        //     pcData = [
+        //         {
+        //             frames: []
+        //         }
+        //     ];
+        // }
+        // if (pcData.length == 0) {
+        //     pcData = [
+        //         {
+        //             frames: []
+        //         }
+        //     ];
+        // }
 
         let data = await videoHistoryInfoSchema.find({ email: matchkey }, { _v: 0, _id: 0 }).catch((err) => {
             console.log(err);
@@ -178,14 +175,16 @@ router.route('/history').get(async (req, res, next) => {
             ];
         }
         data = JSON.parse(JSON.stringify(data));
-        if (data.length !== 0 || pcData.length !== 0) {
-            const frames = [...data[0].frames, ...pcData[0].frames];
-            res.send({ frames: frames });
-        } else {
-            res.status(404).send({
-                errMsg: "no data", status: 404
-            })
-        }
+        const frames = [...data[0].frames];
+        res.send({ frames: frames });
+        // if (data.length !== 0 || pcData.length !== 0) {
+        //     const frames = [...data[0].frames, ...pcData[0].frames];
+        //     res.send({ frames: frames });
+        // } else {
+        //     res.status(404).send({
+        //         errMsg: "no data", status: 404
+        //     })
+        // }
     } catch (error) {
         console.log(error);
         res.status(504).send({
@@ -197,6 +196,7 @@ router.route('/history').get(async (req, res, next) => {
 
 router.route('/history').delete(async (req, res, next) => {
     const { videos } = req.body;
+    console.log(videos,'------------');
     const { email, role, selected_child } = req.user[0];
     let matchkey = (role == "player") ? email : selected_child;
     let query = videos.reduce((acc, curr) => {
