@@ -40,16 +40,17 @@ router.route("/").get(async (req, res, next) => {
 });
 
 router.route("/").put(async (req, res, next) => {
-    const { first_name, last_name, email } = req.body;
-    let userObj = { first_name, last_name };
-    if (req.body["email"] !== undefined) {
-        let userDetails = await basicInformation.find({ email }, { email: 1, _id: 0 });
-        if (userDetails.length == 0) {
-            userObj = { ...userObj, email }
-        } else {
-            res.status(404).send({ msg: "user exist", status: 403 });
-        }
-    }
+    const { first_name, last_name } = req.body;
+    const email = req.user[0];
+    let userObj = { ...req.body };
+    // if (req.body["email"] !== undefined) {
+        // let userDetails = await basicInformation.find({ email }, { email: 1, _id: 0 });
+        // if (userDetails.length == 0) {
+        //     userObj = { ...userObj, email }
+        // } else {
+        //     res.status(404).send({ msg: "user exist", status: 403 });
+        // }
+    // }
     const updatedData = await basicInformation.updateOne(
         { email: req.user[0].email }, {
             $set: {

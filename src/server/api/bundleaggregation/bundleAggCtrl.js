@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const { getAllDates } = require("../../utils/datesUtils");
+const { getAllDates, getAllDatesParentCoach } = require("../../utils/datesUtils");
 const basicInformation = require('./../../models/basicInformation');
 const userCompetancySchema = require("./../../models/usercompetancy");
 
 let getPlayerInfo = async (playerEmails) => {
     let finalQuery = playerEmails.reduce((acc, email) => {
-        acc.push((async () => await basicInformation.find({ email: email }, { current_level: 1,email:1,_id:0 }))());
+        acc.push((async () => await basicInformation.find({ email: email }, { current_level: 1, email: 1, coach_email: 1, parent_email:1,_id:0 }))());
         return acc;
     }, []);
     let returnData = await Promise.all(finalQuery).catch((err) => {
@@ -18,12 +18,12 @@ let getPlayerInfo = async (playerEmails) => {
 
 let getCompetancyBundleData = async (data) => {
     let result = data.reduce((acc, curr) => {
-        acc.push((async () => await userCompetancySchema.aggregate([
+        acc.push((async () => await userCompetancySchema.aggregate([    
             {
                 "$match": {
-                    "email": curr.email,
-                    "assessment_date": Array.isArray(curr.dates) ? '' : curr.dates    //"2022-01-22T17:03:14.305Z"
-
+                    // "email": curr.email,
+                    // "assessment_date": Array.isArray(curr.dates) ? '' : curr.dates    //"2022-01-22T17:03:14.305Z"
+                    ...curr
                 },
             },
             {
@@ -35,7 +35,8 @@ let getCompetancyBundleData = async (data) => {
                     },
                     email: { $first: "$email" },
                     current_level: { $first: "$current_level" },
-                    role: { $first: "$role" },
+                    role: { $first: "$role" }
+
 
                 }
             },
@@ -47,7 +48,7 @@ let getCompetancyBundleData = async (data) => {
                     "values": "$_id.values",
                     email: "$email",
                     current_level: "$current_level",
-                    role:"$role"
+                    role: "$role"
 
                 }
 
@@ -101,6 +102,7 @@ let dataCreation = (data) => {
                 acc["data"][d.competency_bundle] = {};
                 acc["email"] = d.email;
                 acc["current_level"] = d.current_level;
+                acc["role"] = d.role;
 
             }
             acc["data"][d.competency_bundle] = avg / total;
@@ -109,7 +111,37 @@ let dataCreation = (data) => {
         acc.push(processedData);
         return acc;
     }, []);
+     dataProcess = dataProcess.reduce((acc, curr) => {
+        if (!acc[curr.email]) {
+            acc[curr.email] = [];
+        } 
+        // acc[curr.email].push(curr);
+        curr.data = Object.keys(curr.data).sort().reduce((acc, key) => {
+            acc[key] = curr.data[key];
+            return acc;
+        }, {});
+        acc[curr.email].push({ [curr.role]:curr.data });
+
+        return acc;
+    }, {});
     return dataProcess;
+}
+
+const getEmailsForCoachParent = (data) => {
+    data = data.reduce((acc, curr) => {
+        let obj = {};
+        obj.player = curr[0].email;
+        obj.current_level = curr[0].current_level;
+        if (curr[0].parent_email.length > 0) {
+            obj.parent = curr[0].parent_email[0];
+        }
+        if (curr[0].coach_email.length > 0) {
+            obj.coach = curr[0].coach_email[0];
+        }
+        acc.push(obj);  
+        return acc;
+    }, []);
+    return data;
 }
 
 router.route('/').get(async (req, res, next) => {
@@ -119,31 +151,64 @@ router.route('/').get(async (req, res, next) => {
         withOutAssessments = [];
     if (selectedPlayers.length > 0) {
         let info = await getPlayerInfo(selectedPlayers);
+        const getEmailsFromPlayers = getEmailsForCoachParent(info);
         let infoDates = [];
-        for (let curr of info) {
-            let result = await getAllDates(curr[0].email, null, "player");
-            infoDates.push({
-                dates: result.length !==0 ?result[0]:result,
-                email: curr[0].email,
-                current_level:curr[0].current_level
-            });
+        for (const roles of getEmailsFromPlayers) {
+            let email = roles['player'];
+            const current_level = roles['current_level']
+            for (let role in roles) {
+                let pcmail = roles[role];
+                if (role !== 'current_level') {
+                    let result = await getAllDatesParentCoach(email, pcmail, role);
+                    let obj = {
+                        assessment_date: result.length !== 0 ? result[0] : result,
+                        email: email,
+                        current_level
+                    }
+                    if (role == 'parent') {
+                        obj['parent_email'] = pcmail
+                    }
+                    if (role == 'coach') {
+                        obj['coach_email'] = pcmail
+                    }
+                    infoDates.push(obj);
+                }
+            }
         }
+        // for (let curr of info) {
+        //     let result = await getAllDates(curr[0].email, null, "player");
+        //     infoDates.push({
+        //         dates: result.length !==0 ?result[0]:result,
+        //         email: curr[0].email,
+        //         current_level:curr[0].current_level
+        //     });
+        // }
         infoDates.forEach((value) => {
-            if (!Array.isArray(value.dates)) {
+            if (!Array.isArray(value.assessment_date)) {
                 withAssessments.push(value);
             } else {
                 withOutAssessments.push(value);
             }
         });
+        
         withOutAssessments = withOutAssessments.reduce((acc, curr) => {
-            acc.push({ email: curr.email, data: {} });
+            if (!acc[curr.email]) {
+                acc[curr.email] = [];
+            }
+            // acc.push({ email: curr.email, data: {} });
             return acc;
-        }, []);
-
+        }, {});
+        // console.log(withAssessments);
         const competancyBundleData = await getCompetancyBundleData(withAssessments);
         const finalData = dataCreation(competancyBundleData);
-        finalResponse = [...finalData, ...withOutAssessments];
+        finalResponse = { ...finalData };
+        // console.log(finalResponse);
         res.send(finalResponse);
+    } else {
+        res.status(504).json({
+            errMsg: "internal server error",
+            status: 504
+        })
     }
 
 

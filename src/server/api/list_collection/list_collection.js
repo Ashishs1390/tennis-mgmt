@@ -10,7 +10,6 @@ router.route('/').get(async(req,res,next)=>{
             status:504
         })
     }));
-    console.log('#####:#####', listData);
     if(listData && listData.length >0){
         console.log(listData)
         listData = JSON.parse(JSON.stringify(listData));

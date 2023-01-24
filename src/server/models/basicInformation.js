@@ -97,8 +97,6 @@ const basicInformationSchema = new Schema({
     note: {
         type:String
     }
-    
-
 
 },
     {
