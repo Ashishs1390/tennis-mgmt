@@ -94,7 +94,7 @@ const basicInformationSchema = new Schema({
     player_type: {
         type:String
     },
-    note: {
+    notes: {
         type:String
     }
 
