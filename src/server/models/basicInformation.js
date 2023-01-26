@@ -96,6 +96,12 @@ const basicInformationSchema = new Schema({
     },
     notes: {
         type:String
+    },
+    height_type: {
+        type:String
+    },
+    weight_type: {
+        type:String
     }
 
 },
