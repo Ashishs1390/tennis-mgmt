@@ -82,7 +82,7 @@ const basicInformationSchema = new Schema({
     racquet_tension: {
         type: String
     },
-    plays_type: {
+    plays: {
         type:String
     },
     forehand: {

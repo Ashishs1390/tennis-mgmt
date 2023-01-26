@@ -18,7 +18,7 @@ router.route("/").get(async (req, res, next) => {
             first_name: 1, last_name: 1, email: 1, role: 1, user_name: 1, current_level: 1, _id: 0,
             parent_email: 1, coach_email: 1, children_email: 1, order_id: 1, isPayment: 1,
             ackhand: 1, forehand: 1, backhand: 1, goal_level: 1, height: 1, height_type: 1,
-            player_type: 1, plays: 1, recquet: 1, string: 1, tension: 1, time_frame: 1,
+            player_type: 1, plays: 1, recquet: 1, recquet_string: 1, recquet_tension: 1, time_frame: 1,
             weight: 1, weight_type: 1, yob: 1, notes:1
     
         
