@@ -28,6 +28,9 @@ const basicInformationSchema = new Schema({
     current_level: {
         type: String
     },
+    goal_level: {
+        type: String
+    },
     parent_email: {
         type: Array
     },
