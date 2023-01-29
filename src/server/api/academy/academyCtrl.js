@@ -3,6 +3,7 @@ const { academy, academySteps } = require('./../../models/academy');
 const basicInformation = require("./../../models/basicInformation");
 router.route('/').get(async (req, res, next) => {
     const email = req.user[0].email;
+    const isPayment = req.user[0].isPayment;
     const academyData = await academy.find({}, { __v: 0, _id: 0 });
     let academyStepsData = await academySteps.find({}, { __v: 0, _id: 0 });
     academyStepsData = JSON.parse(JSON.stringify(academyStepsData));
@@ -17,7 +18,17 @@ router.route('/').get(async (req, res, next) => {
             }
         });     
     }
-    res.send({ academyData, academyStepsData });
+    let obj = {
+
+    }
+    if (isPayment === "true") { 
+        obj = { academyData, academyStepsData }
+    } else {
+        obj = {
+            msg : "Please subscribe...!!!!"
+        }
+    }
+    res.send(obj);
 });
 
 router.route('/').post(async (req, res, next) => {
