@@ -49,7 +49,12 @@ router.route("/").post(async (req, res, next) => {
         height: userDetails[0].height ? userDetails[0].height : '',
         height_type: userDetails[0].height_type ? userDetails[0].height_type : '',
         weight: userDetails[0].weight ? userDetails[0].weight : '',
-        weight_type: userDetails[0].weight_type ? userDetails[0].weight_type : ''
+        weight_type: userDetails[0].weight_type ? userDetails[0].weight_type : '',
+
+        // weight_type: userDetails[0].weight_type ? userDetails[0].weight_type : '',
+        goal_level: userDetails[0].goal_level ? goal_level : '',
+        time_frame: userDetails[0].time_frame ? time_frame :''
+
       });
     } else {
       res.status(404).send({
