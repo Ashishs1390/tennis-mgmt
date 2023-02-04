@@ -15,7 +15,10 @@ router.route("/").post(async (req, res, next) => {
   const { email, password } = req.body;
   const userDetails = await basicInformation.find(
     { email: email },
-    { current_level: 1, email: 1, password: 1, _id: 0, role: 1, first_name: 1, last_name: 1, isPayment:1 }
+    {
+      current_level: 1, email: 1, password: 1, _id: 0, role: 1, first_name: 1, last_name: 1, isPayment: 1
+      , plays: 1, player_type: 1, height: 1, height_type: 1, weight:1 ,weight_type:1
+    }
   );
   if (userDetails.length == 0) {
     res.status(404).send({ message: "user does not exist", status: 404 });
@@ -40,7 +43,13 @@ router.route("/").post(async (req, res, next) => {
         role: userDetails[0].role,
         first_name: userDetails[0].first_name,
         last_name: userDetails[0].last_name,
-        isPayment: userDetails[0].isPayment ? userDetails[0].isPayment :false
+        isPayment: userDetails[0].isPayment ? userDetails[0].isPayment : false,
+        plays: userDetails[0].plays ? userDetails[0].plays : '',
+        player_type: userDetails[0].player_type ? userDetails[0].player_type : '',
+        height: userDetails[0].height ? userDetails[0].height : '',
+        height_type: userDetails[0].height_type ? userDetails[0].height_type : '',
+        weight: userDetails[0].weight ? userDetails[0].weight : '',
+        weight_type: userDetails[0].weight_type ? userDetails[0].weight_type : ''
       });
     } else {
       res.status(404).send({
